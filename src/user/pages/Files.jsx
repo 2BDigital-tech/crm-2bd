@@ -58,7 +58,7 @@ const columns = [
     width: 150,
     type: "number",
     valueFormatter: ({ value }) =>
-      value ? parseInt(value) : "pas d'estimation",
+      value ? parseInt(value) : "Pas d'estimation",
     editable: true,
   },
 ];
@@ -132,7 +132,7 @@ export default function Files() {
       <Box
         sx={{
           height: 800,
-          marginLeft: "290px",
+          marginLeft: "300px",
         }}
       >
         <DataGrid
@@ -147,8 +147,8 @@ export default function Files() {
           }}
           rows={quotationData}
           columns={columns}
-          pageSize={10}
-          rowsPerPageOptions={[9]}
+          pageSize={11}
+          rowsPerPageOptions={[10]}
           //   checkboxSelection
           getRowId={(row) => row.quotationId}
           disableSelectionOnClick
