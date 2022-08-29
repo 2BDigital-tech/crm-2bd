@@ -32,7 +32,7 @@ const columns = [
   {
     field: "phone",
     headerName: "Phone",
-    width: 250,
+    width: 180,
     editable: true,
   },
   {
@@ -50,8 +50,7 @@ const columns = [
   {
     field: "typology",
     headerName: "Typology",
-    width: 150,
-    editable: true,
+    width: 80,
   },
   {
     field: "price",
@@ -133,7 +132,7 @@ export default function Files() {
       <Box
         sx={{
           height: 800,
-          marginLeft: "300px",
+          marginLeft: "290px",
         }}
       >
         <DataGrid
