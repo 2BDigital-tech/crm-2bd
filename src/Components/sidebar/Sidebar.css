@@ -1,0 +1,13 @@
+.sidelogo {
+  margin-top: 35px;
+  margin-left: 40px;
+}
+
+.nav-links[aria-current="page"] {
+  background-color: rgb(216, 13, 98);
+  border-radius: 25px;
+  padding-block: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  font-size: larger;
+}
