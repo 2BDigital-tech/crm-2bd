@@ -7,7 +7,7 @@ import Sidebar from "./Components/sidebar/Sidebar";
 import Clients from "./user/pages/Clients";
 import SearchAppBar from "./Components/TopNav/TopNav";
 import { useNavigate } from "react-router-dom";
-import Files from "./user/pages/Files";
+import Leads from "./user/pages/Leads";
 
 const App = () => {
   const [token, setToken] = useState();
@@ -59,7 +59,7 @@ const App = () => {
       <Routes>
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/users" element={<Clients />} />
-        <Route path="/files" element={<Files />} />
+        <Route path="/leads" element={<Leads />} />
         <Route path="/data" element={null} />
         <Route path="/chat" element={null} />
         <Route path="/" element={<Navigate replace to="/login" />} />

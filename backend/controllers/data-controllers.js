@@ -1,13 +1,12 @@
 const { MongoClient } = require("mongodb");
+require("dotenv").config();
 
 const connect = async (req, res, next) => {
   /**
    * Connection URI. Update <username>, <password>, and <your-cluster-url> to reflect your cluster.
    * See https://docs.mongodb.com/ecosystem/drivers/node/ for more details
    */
-  const uri =
-    "mongodb+srv://jordan:quickimmo@cluster0.m7tdv.mongodb.net/?retryWrites=true&w=majority";
-  // "mongodb+srv://jordant:test@cluster0.mp1u70r.mongodb.net/?retryWrites=true&w=majority";
+  const uri = process.env.MONGODB_NILLAETBEN;
   const client = new MongoClient(uri);
 
   let response;

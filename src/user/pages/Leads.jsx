@@ -83,7 +83,7 @@ function CustomToolbar() {
   );
 }
 
-export default function Files() {
+export default function Leads() {
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const [quotationData, setQuotationData] = useState([]);
 
@@ -93,6 +93,11 @@ export default function Files() {
       backgroundColor: "#202020",
       minHeight: 2200,
     },
+    formContainer: {
+      padding: "30px",
+      paddingTop: "100px",
+      paddingBottom: "50px",
+    },
   };
 
   useEffect(() => {
@@ -100,6 +105,7 @@ export default function Files() {
       try {
         const response = await sendRequest("http://localhost:5002/api/data");
         // setQuotationData(response);
+        console.log(response[3]);
         let arr = [];
         console.log(response[0]);
         if (response) {
@@ -128,34 +134,37 @@ export default function Files() {
 
   return (
     <div style={styles.paperContainer}>
-      {isLoading && <LoadingSpinner asOverlay />}
-      <Box
-        sx={{
-          height: 800,
-          marginLeft: "300px",
-        }}
-      >
-        <DataGrid
-          style={{
-            width: "100%",
-            display: "flex",
-            backgroundColor: "#2d2d2d",
-            borderRadius: "10px",
-            padding: 35,
-            color: "white",
-            backgroundColor: "#393939",
+      <div style={styles.formContainer}>
+        {isLoading && <LoadingSpinner asOverlay />}
+        <Box
+          sx={{
+            height: 800,
+            marginLeft: "300px",
           }}
-          rows={quotationData}
-          columns={columns}
-          pageSize={11}
-          rowsPerPageOptions={[10]}
-          //   checkboxSelection
-          getRowId={(row) => row.quotationId}
-          disableSelectionOnClick
-          components={{ Toolbar: CustomToolbar }}
-          experimentalFeatures={{ newEditingApi: true }}
-        />
-      </Box>
+        >
+          <DataGrid
+            style={{
+              width: "100%",
+              display: "flex",
+              backgroundColor: "#2d2d2d",
+              borderRadius: "10px",
+              padding: 35,
+              color: "white",
+              backgroundColor: "#393939",
+              height: 850,
+            }}
+            rows={quotationData}
+            columns={columns}
+            pageSize={11}
+            rowsPerPageOptions={[10]}
+            //   checkboxSelection
+            getRowId={(row) => row.quotationId}
+            disableSelectionOnClick
+            components={{ Toolbar: CustomToolbar }}
+            experimentalFeatures={{ newEditingApi: true }}
+          />
+        </Box>
+      </div>
     </div>
   );
 }

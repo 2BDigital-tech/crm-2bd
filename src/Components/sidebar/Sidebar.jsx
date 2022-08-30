@@ -141,11 +141,11 @@ const Sidebar = () => {
                     textTransform: "capitalize",
                     borderRadius: 15,
                     backgroundColor:
-                      auth.path !== "/files" ? "#2d2d2d" : "#D00062",
+                      auth.path !== "/leads" ? "#2d2d2d" : "#D00062",
                     fontSize: "18px",
                   }}
                   sx={{
-                    border: auth.path !== "/files" ? 0 : 3,
+                    border: auth.path !== "/leads" ? 0 : 3,
                     borderColor: "#202020",
                     boxShadow: 0,
                     width: "100%",
@@ -157,10 +157,10 @@ const Sidebar = () => {
                   }}
                 >
                   <NavLink
-                    to="/files"
+                    to="/leads"
                     style={{ textDecoration: "none", color: "white" }}
                   >
-                    Dossiers
+                    Leads
                   </NavLink>
                 </Button>
               </ListItem>
