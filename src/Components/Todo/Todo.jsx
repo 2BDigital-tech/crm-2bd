@@ -21,19 +21,32 @@ import {
   ColorSchemeProvider,
   ColorScheme,
 } from "@mantine/core";
-import { useColorScheme } from "@mantine/hooks";
 import { useHotkeys, useLocalStorage } from "@mantine/hooks";
+import LoadingSpinner from "../../shared/UIElements/LoadingSpinner";
 
 export default function Todo() {
-  const [tasks, setTasks] = useState([]);
+  const [tasks, setTasks] = useState();
   const [taskTitle, setTaskTitle] = useState("");
   const [taskSummary, setTaskSummary] = useState("");
   const [opened, setOpened] = useState(false);
-
   const auth = useContext(AuthContext);
+
+  useEffect(() => {
+    const fetchTasks = async () => {
+      try {
+        const response = await sendRequest(
+          `http://localhost:5002/api/tasks/${localStorage.getItem("userId")}`
+        );
+        setTasks(response.tasks);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchTasks();
+  }, []);
+
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
-  const preferredColorScheme = useColorScheme();
   const [colorScheme, setColorScheme] = useLocalStorage({
     key: "mantine-color-scheme",
     defaultValue: "dark",
@@ -52,24 +65,22 @@ export default function Todo() {
     setTaskSummary(event.target.value);
   };
 
-  useEffect(() => {
-    const fetchTasks = async () => {
-      try {
-        const response = await sendRequest(
-          `http://localhost:5002/api/tasks/${auth.userId}`
-        );
-        setTasks(response.tasks);
-      } catch (err) {
-        console.log(err);
+  const deleteTask = async (taskId) => {
+    try {
+      const responseData = await sendRequest(
+        `http://localhost:5002/api/tasks/deleteTask/${taskId}`,
+        "DELETE"
+      );
+      if (responseData) {
+        window.location.reload(false);
       }
-    };
-    fetchTasks();
-  }, []);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const submitHandler = async (event) => {
     event.preventDefault();
-    console.log({ taskTitle, taskSummary, auth });
-
     try {
       const responseData = await sendRequest(
         "http://localhost:5002/api/tasks/addTask",
@@ -77,7 +88,7 @@ export default function Todo() {
         JSON.stringify({
           title: taskTitle,
           summary: taskSummary,
-          creator: auth.userId,
+          creator: localStorage.getItem("userId"),
         }),
         false
       );
@@ -141,6 +152,7 @@ export default function Todo() {
               >
                 Creer
               </Button>
+              {isLoading && <LoadingSpinner />}
             </Group>
           </Modal>
           <Container size={550} my={40}>
@@ -165,7 +177,8 @@ export default function Todo() {
 								  )}
 							  </ActionIcon> */}
             </Group>
-            {tasks.length > 0 ? (
+            {isLoading && <LoadingSpinner />}
+            {tasks ? (
               tasks.map((task, index) => {
                 if (task.title) {
                   return (
@@ -173,7 +186,7 @@ export default function Todo() {
                       <Group position={"apart"}>
                         <Text weight={"bold"}>{task.title}</Text>
                         <ActionIcon
-                          onClick={() => {}}
+                          onClick={() => deleteTask(task._id)}
                           color={"red"}
                           variant={"transparent"}
                         >

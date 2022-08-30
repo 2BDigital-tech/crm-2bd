@@ -145,17 +145,18 @@ const Dashboard = () => {
               Dashboard
             </Typography>
 
-            <Grid container 
-            columnSpacing={{ xs: 2, sm: 3, md: 4 }}
-            // display={{ xs: "flex", sm: "none", md: "flex" }}
+            <Grid
+              container
+              columnSpacing={{ xs: 2, sm: 3, md: 4 }}
+              // display={{ xs: "flex", sm: "none", md: "flex" }}
             >
-              <Grid 
-              item xs={3}
-              // item xs={{ xl: 4, sm: 2 }}
-              sx={{ mb: "5%" }}>
-                <Grid 
-                item xs={12} 
-                sx={{ mb: "5%" }}>
+              <Grid
+                item
+                xs={3}
+                // item xs={{ xl: 4, sm: 2 }}
+                sx={{ mb: "5%" }}
+              >
+                <Grid item xs={12} sx={{ mb: "5%" }}>
                   <Item className="">
                     <Typography
                       variant={"h5"}
@@ -208,7 +209,6 @@ const Dashboard = () => {
                       variant="h4"
                       color="#BBBBBB"
                       fontWeight={"bold"}
-                      
                     >
                       {numOfUsers}
                     </Typography>
@@ -222,7 +222,6 @@ const Dashboard = () => {
                       color="#BBBBBB"
                       fontWeight={"bold"}
                       sx={{ mb: "2%" }}
-
                     >
                       Nouveaux utilisateurs
                     </Typography>
@@ -236,10 +235,11 @@ const Dashboard = () => {
                   </Item>
                 </Grid>
               </Grid>
-              
 
-              <Grid item xs={6} 
-              // display={{ xs: "flex", sm: "none", md: "flex" }}
+              <Grid
+                item
+                xs={6}
+                // display={{ xs: "flex", sm: "none", md: "flex" }}
               >
                 <Grid item xs={12}>
                   <Item2>

@@ -28,6 +28,7 @@ const App = () => {
     localStorage.setItem("token", JSON.stringify({ token: token }));
     localStorage.setItem("username", username);
     localStorage.setItem("user_role", role);
+    localStorage.setItem("userId", id);
     setUserId(id);
     setUsername(localStorage.getItem("username"));
   }, []);
@@ -37,6 +38,7 @@ const App = () => {
     localStorage.setItem("user_role", "");
     localStorage.setItem("token", "");
     localStorage.setItem("username", "");
+    localStorage.setItem("userId", "");
     setUsername("");
     navigate("/login");
   }, []);
