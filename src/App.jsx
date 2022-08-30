@@ -61,7 +61,6 @@ const App = () => {
         <Route path="/users" element={<Clients />} />
         <Route path="/leads" element={<Leads />} />
         <Route path="/data" element={null} />
-        <Route path="/chat" element={null} />
         <Route path="/" element={<Navigate replace to="/login" />} />
         <Route path="/login" element={<Login />} />
       </Routes>
