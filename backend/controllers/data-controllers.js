@@ -23,7 +23,7 @@ const connect = async (req, res, next) => {
 async function getQuotationData(client) {
   let docs = [];
   const result = await client
-    .db("quick-immo")
+    .db("quick-immo-dev")
     .collection("quotations")
     .find({})
     .toArray();

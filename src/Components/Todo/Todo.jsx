@@ -1,202 +1,213 @@
 import {
-	Button,
-	Container,
-	Text,
-	Title,
-	Modal,
-	TextInput,
-	Group,
-	Card,
-	ActionIcon,
-	Code,
-} from '@mantine/core';
-import { useState, useRef, useEffect } from 'react';
-import { MoonStars, Sun, Trash } from 'tabler-icons-react';
+  Button,
+  Container,
+  Text,
+  Title,
+  Modal,
+  TextInput,
+  Group,
+  Card,
+  ActionIcon,
+  Code,
+} from "@mantine/core";
+import { useState, useRef, useEffect } from "react";
+import { MoonStars, Sun, Trash } from "tabler-icons-react";
+import { useContext } from "react";
+import { AuthContext } from "../../shared/context/auth-context";
+import { useHttpClient } from "../../hooks/http-hook";
 
 import {
-	MantineProvider,
-	ColorSchemeProvider,
-	ColorScheme,
-} from '@mantine/core';
-import { useColorScheme } from '@mantine/hooks';
-import { useHotkeys, useLocalStorage } from '@mantine/hooks';
+  MantineProvider,
+  ColorSchemeProvider,
+  ColorScheme,
+} from "@mantine/core";
+import { useColorScheme } from "@mantine/hooks";
+import { useHotkeys, useLocalStorage } from "@mantine/hooks";
 
 export default function Todo() {
-	const [tasks, setTasks] = useState([]);
-	const [opened, setOpened] = useState(false);
+  const [tasks, setTasks] = useState([]);
+  const [taskTitle, setTaskTitle] = useState("");
+  const [taskSummary, setTaskSummary] = useState("");
+  const [opened, setOpened] = useState(false);
 
-	const preferredColorScheme = useColorScheme();
-	const [colorScheme, setColorScheme] = useLocalStorage({
-		key: 'mantine-color-scheme',
-		defaultValue: 'dark',
-		getInitialValueInEffect: true,
-	});
-	const toggleColorScheme = value =>
-		setColorScheme(value || (colorScheme === 'dark' ? 'dark' : 'dark'));
+  const auth = useContext(AuthContext);
+  const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
-	useHotkeys([['mod+J', () => toggleColorScheme()]]);
+  const preferredColorScheme = useColorScheme();
+  const [colorScheme, setColorScheme] = useLocalStorage({
+    key: "mantine-color-scheme",
+    defaultValue: "dark",
+    getInitialValueInEffect: true,
+  });
+  const toggleColorScheme = (value) =>
+    setColorScheme(value || (colorScheme === "dark" ? "dark" : "dark"));
 
-	const taskTitle = useRef('');
-	const taskSummary = useRef('');
+  useHotkeys([["mod+J", () => toggleColorScheme()]]);
 
-	function createTask() {
-		setTasks([
-			...tasks,
-			{
-				title: taskTitle.current.value,
-				summary: taskSummary.current.value,
-			},
-		]);
+  const taskTitleHandler = (event) => {
+    setTaskTitle(event.target.value);
+  };
 
-		saveTasks([
-			...tasks,
-			{
-				title: taskTitle.current.value,
-				summary: taskSummary.current.value,
-			},
-		]);
-	}
+  const taskSummaryHandler = (event) => {
+    setTaskSummary(event.target.value);
+  };
 
-	function deleteTask(index) {
-		var clonedTasks = [...tasks];
+  useEffect(() => {
+    const fetchTasks = async () => {
+      try {
+        const response = await sendRequest(
+          `http://localhost:5002/api/tasks/${auth.userId}`
+        );
+        setTasks(response.tasks);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchTasks();
+  }, []);
 
-		clonedTasks.splice(index, 1);
+  const submitHandler = async (event) => {
+    event.preventDefault();
+    console.log({ taskTitle, taskSummary, auth });
 
-		setTasks(clonedTasks);
+    try {
+      const responseData = await sendRequest(
+        "http://localhost:5002/api/tasks/addTask",
+        "POST",
+        JSON.stringify({
+          title: taskTitle,
+          summary: taskSummary,
+          creator: auth.userId,
+        }),
+        false
+      );
+      console.log(responseData);
+      if (responseData) {
+        window.location.reload(false);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
-		saveTasks([...clonedTasks]);
-	}
-
-	function loadTasks() {
-		let loadedTasks = localStorage.getItem('tasks');
-
-		let tasks = JSON.parse(loadedTasks);
-
-		if (tasks) {
-			setTasks(tasks);
-		}
-	}
-
-	function saveTasks(tasks) {
-		localStorage.setItem('tasks', JSON.stringify(tasks));
-	}
-
-	useEffect(() => {
-		loadTasks();
-	}, []);
-
-	return (
-		<ColorSchemeProvider
-			colorScheme={colorScheme}
-			toggleColorScheme={toggleColorScheme}>
-			<MantineProvider
-				theme={{ colorScheme, defaultRadius: 'md' }}
-				withGlobalStyles
-				withNormalizeCSS>
-				<div className='App'>
-					<Modal
-						opened={opened}
-						size={'md'}
-						title={'New Task'}
-						withCloseButton={true}
-						onClose={() => {
-							setOpened(false);
-						}}
-						centered>
-						<TextInput
-							mt={'md'}
-							ref={taskTitle}
-							placeholder={'Task Title'}
-							required
-							label={'Title'}
-						/>
-						<TextInput
-							ref={taskSummary}
-							mt={'md'}
-							placeholder={'Task Summary'}
-							label={'Summary'}
-						/>
-						<Group mt={'md'} position={'apart'}>
-							<Button
-								onClick={() => {
-									setOpened(false);
-								}}
-								variant={'subtle'}>
-								Cancel
-							</Button>
-							<Button
-                                variant="gradient" gradient={{ from: 'indigo', to: '#D00062' }}
-								onClick={() => {
-									createTask();
-									setOpened(false);
-								}}>
-								Create Task
-							</Button>
-						</Group>
-					</Modal>
-					<Container size={550} my={40}>
-						<Group position={'apart'}>
-							<Title
-                                  align="center"
-							         sx={{ mb: "5%" }}
-                                     variant="h5"
-                                     color="#BBBBBB"
-                                     fontWeight={"bold"}>
-                                    Todo{" "}
-    							</Title>
-							{/* <ActionIcon
-								color={'#D00062'}
-								onClick={() => toggleColorScheme()}
-								size='lg'>
-								{colorScheme === 'dark' ? (
-									<Sun size={16} />
-								) : (
-									<MoonStars size={16} />
-								)}
-							</ActionIcon> */}
-						</Group>
-						{tasks.length > 0 ? (
-							tasks.map((task, index) => {
-								if (task.title) {
-									return (
-										<Card withBorder key={index} mt={'sm'}>
-											<Group position={'apart'}>
-												<Text weight={'bold'}>{task.title}</Text>
-												<ActionIcon
-													onClick={() => {
-														deleteTask(index);
-													}}
-													color={'red'}
-													variant={'transparent'}>
-													<Trash />
-												</ActionIcon>
-											</Group>
-											<Text color={'dimmed'} size={'md'} mt={'sm'}>
-												{task.summary
-													? task.summary
-													: 'No summary was provided for this task'}
-											</Text>
-										</Card>
-									);
-								}
-							})
-						) : (
-							<Text size={'lg'} mt={'md'} color={'dimmed'}>
-								You have no tasks
-							</Text>
-						)}
-						<Button
-                            variant="gradient" gradient={{ from: '#D00062', to: 'indigo' }}
-							onClick={() => {
-								setOpened(true);
-							}}
-							fullWidth
-							mt={'md'}>
-							New Task
-						</Button>
-					</Container>
-				</div>
-			</MantineProvider>
-		</ColorSchemeProvider>
-	);
+  return (
+    <ColorSchemeProvider
+      colorScheme={colorScheme}
+      toggleColorScheme={toggleColorScheme}
+    >
+      <MantineProvider
+        theme={{ colorScheme, defaultRadius: "md" }}
+        withGlobalStyles
+        withNormalizeCSS
+      >
+        <div className="App">
+          <Modal
+            opened={opened}
+            size={"md"}
+            title={"New Task"}
+            withCloseButton={true}
+            onClose={() => {
+              setOpened(false);
+            }}
+            centered
+          >
+            <TextInput
+              mt={"md"}
+              placeholder={"Task Title"}
+              required
+              label={"Title"}
+              onChange={taskTitleHandler}
+            />
+            <TextInput
+              mt={"md"}
+              placeholder={"Task Summary"}
+              label={"Summary"}
+              onChange={taskSummaryHandler}
+            />
+            <Group mt={"md"} position={"apart"}>
+              <Button
+                onClick={() => {
+                  setOpened(false);
+                }}
+                variant={"subtle"}
+              >
+                Annuler
+              </Button>
+              <Button
+                type="submit"
+                variant="gradient"
+                gradient={{ from: "indigo", to: "#D00062" }}
+                onClick={submitHandler}
+              >
+                Creer
+              </Button>
+            </Group>
+          </Modal>
+          <Container size={550} my={40}>
+            <Group position={"apart"}>
+              <Title
+                align="center"
+                sx={{ mb: "5%" }}
+                variant="h5"
+                color="#BBBBBB"
+                fontWeight={"bold"}
+              >
+                Todo{" "}
+              </Title>
+              {/* <ActionIcon
+								  color={'#D00062'}
+								  onClick={() => toggleColorScheme()}
+								  size='lg'>
+								  {colorScheme === 'dark' ? (
+									  <Sun size={16} />
+								  ) : (
+									  <MoonStars size={16} />
+								  )}
+							  </ActionIcon> */}
+            </Group>
+            {tasks.length > 0 ? (
+              tasks.map((task, index) => {
+                if (task.title) {
+                  return (
+                    <Card withBorder key={index} mt={"sm"}>
+                      <Group position={"apart"}>
+                        <Text weight={"bold"}>{task.title}</Text>
+                        <ActionIcon
+                          onClick={() => {}}
+                          color={"red"}
+                          variant={"transparent"}
+                        >
+                          <Trash />
+                        </ActionIcon>
+                      </Group>
+                      <Text color={"dimmed"} size={"md"} mt={"sm"}>
+                        {task.summary
+                          ? task.summary
+                          : "No summary was provided for this task"}
+                      </Text>
+                    </Card>
+                  );
+                }
+              })
+            ) : (
+              <Text size={"lg"} mt={"md"} color={"dimmed"}>
+                You have no tasks
+              </Text>
+            )}
+            <Button
+              variant="gradient"
+              gradient={{ from: "#D00062", to: "indigo" }}
+              onClick={() => {
+                setOpened(true);
+              }}
+              fullWidth
+              mt={"md"}
+            >
+              Ajouter une Tache
+            </Button>
+          </Container>
+        </div>
+      </MantineProvider>
+    </ColorSchemeProvider>
+  );
 }

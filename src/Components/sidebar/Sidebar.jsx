@@ -10,6 +10,7 @@ import logoIcon from "../../../src/images/logoIcon.png";
 import "./Sidebar.css";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import FolderOpenIcon from "@mui/icons-material/FolderOpen";
+import LeadIcon from "@mui/icons-material/TableChart";
 import SettingsIcon from "@mui/icons-material/Settings";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
@@ -134,7 +135,7 @@ const Sidebar = () => {
 
               <ListItem disablePadding>
                 <Button
-                  startIcon={<FolderOpenIcon style={{ fontSize: 30 }} />}
+                  startIcon={<LeadIcon style={{ fontSize: 30 }} />}
                   fullWidth
                   variant="contained"
                   style={{
@@ -161,6 +162,39 @@ const Sidebar = () => {
                     style={{ textDecoration: "none", color: "white" }}
                   >
                     Leads
+                  </NavLink>
+                </Button>
+              </ListItem>
+
+              <ListItem disablePadding>
+                <Button
+                  startIcon={<FolderOpenIcon style={{ fontSize: 30 }} />}
+                  fullWidth
+                  variant="contained"
+                  style={{
+                    textTransform: "capitalize",
+                    borderRadius: 15,
+                    backgroundColor:
+                      auth.path !== "/files" ? "#2d2d2d" : "#D00062",
+                    fontSize: "18px",
+                  }}
+                  sx={{
+                    border: auth.path !== "/files" ? 0 : 3,
+                    borderColor: "#202020",
+                    boxShadow: 0,
+                    width: "100%",
+
+                    "& .MuiButton-startIcon": {
+                      position: "absolute",
+                      left: "2rem",
+                    },
+                  }}
+                >
+                  <NavLink
+                    to="/files"
+                    style={{ textDecoration: "none", color: "white" }}
+                  >
+                    Dossier
                   </NavLink>
                 </Button>
               </ListItem>

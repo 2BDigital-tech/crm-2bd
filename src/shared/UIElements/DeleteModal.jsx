@@ -88,7 +88,7 @@ const DeleteModal = (props) => {
           textAlign={"center"}
           style={{ padding: "50px", color: "white" }}
         >
-          Êtes vous sur de vouloir supprimer ce client ?
+          Êtes vous sur de vouloir supprimer cette utilisateur ?
         </Typography>
         <div>
           <Stack

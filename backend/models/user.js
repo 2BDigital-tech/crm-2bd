@@ -10,6 +10,7 @@ const userSchema = new Schema({
   role: { type: String, required: true },
   customerName: { type: String, required: true },
   creationDate: { type: String, required: true },
+  tasks: [{ type: mongoose.Types.ObjectId, required: false, ref: "Task" }],
 });
 
 userSchema.plugin(uniqueValidator);

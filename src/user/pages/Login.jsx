@@ -81,7 +81,8 @@ const Login = () => {
         auth.login(
           responseData.token,
           responseData.userName,
-          responseData.role
+          responseData.role,
+          responseData.userId
         );
         // localStorage.setItem("username", responseData.userName);
       }

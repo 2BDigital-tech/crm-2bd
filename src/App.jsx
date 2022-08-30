@@ -13,6 +13,7 @@ const App = () => {
   const [token, setToken] = useState();
   const [path, setPath] = useState("");
   const [username, setUsername] = useState("");
+  const [userId, setUserId] = useState();
   const location = useLocation();
   let navigate = useNavigate();
   // {console.log("/"+link.href.toString().split("/")[3])})
@@ -22,11 +23,12 @@ const App = () => {
     setPath(location.pathname);
   }, [location]);
 
-  const login = useCallback((token, username, role) => {
+  const login = useCallback((token, username, role, id) => {
     setToken(token);
     localStorage.setItem("token", JSON.stringify({ token: token }));
     localStorage.setItem("username", username);
     localStorage.setItem("user_role", role);
+    setUserId(id);
     setUsername(localStorage.getItem("username"));
   }, []);
 
@@ -61,6 +63,7 @@ const App = () => {
         <Route path="/users" element={<Clients />} />
         <Route path="/leads" element={<Leads />} />
         <Route path="/data" element={null} />
+        <Route path="/files" element={null} />
         <Route path="/" element={<Navigate replace to="/login" />} />
         <Route path="/login" element={<Login />} />
       </Routes>
@@ -74,6 +77,7 @@ const App = () => {
         token: token,
         userName: username,
         path: path,
+        userId: userId,
         login: login,
         logout: logout,
       }}
