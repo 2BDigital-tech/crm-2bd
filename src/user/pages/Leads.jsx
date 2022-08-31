@@ -1,5 +1,6 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
+import { Typography, Stack } from "@mui/material";
 import {
   DataGrid,
   GridToolbarContainer,
@@ -133,38 +134,49 @@ export default function Leads() {
   }, []);
 
   return (
-    <div style={styles.paperContainer}>
-      <div style={styles.formContainer}>
-        {isLoading && <LoadingSpinner asOverlay />}
-        <Box
-          sx={{
-            height: 800,
-            marginLeft: "300px",
-          }}
-        >
-          <DataGrid
-            style={{
-              width: "100%",
-              display: "flex",
-              backgroundColor: "#2d2d2d",
-              borderRadius: "10px",
-              padding: 35,
-              color: "white",
-              backgroundColor: "#393939",
-              height: 850,
+    <React.Fragment>
+      <div style={styles.paperContainer}>
+        <div style={styles.formContainer}>
+          <Stack ml={{ xl: "290px", md: "300px" }}>
+            <Typography
+              variant="h4"
+              sx={{ mb: "4%", ml: "2%" }}
+              color="#ffff"
+              fontWeight={"bold"}
+            >
+              Leads
+            </Typography>{" "}
+          </Stack>
+          <Box
+            sx={{
+              height: 800,
+              marginLeft: "300px",
             }}
-            rows={quotationData}
-            columns={columns}
-            pageSize={11}
-            rowsPerPageOptions={[10]}
-            //   checkboxSelection
-            getRowId={(row) => row.quotationId}
-            disableSelectionOnClick
-            components={{ Toolbar: CustomToolbar }}
-            experimentalFeatures={{ newEditingApi: true }}
-          />
-        </Box>
+          >
+            <DataGrid
+              style={{
+                width: "100%",
+                display: "flex",
+                backgroundColor: "#2d2d2d",
+                borderRadius: "10px",
+                padding: 35,
+                color: "white",
+                backgroundColor: "#393939",
+                height: 850,
+              }}
+              rows={quotationData}
+              columns={columns}
+              pageSize={11}
+              rowsPerPageOptions={[10]}
+              //   checkboxSelection
+              getRowId={(row) => row.quotationId}
+              disableSelectionOnClick
+              components={{ Toolbar: CustomToolbar }}
+              experimentalFeatures={{ newEditingApi: true }}
+            />
+          </Box>
+        </div>
       </div>
-    </div>
+    </React.Fragment>
   );
 }
