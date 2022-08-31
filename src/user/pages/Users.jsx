@@ -38,7 +38,7 @@ const styles = {
   },
 };
 
-const Clients = () => {
+const Users = () => {
   const [users, setUsers] = useState();
   const [open, setOpen] = useState(false);
   const [userId, setUserId] = useState("");
@@ -398,4 +398,4 @@ const Clients = () => {
   );
 };
 
-export default Clients;
+export default Users;

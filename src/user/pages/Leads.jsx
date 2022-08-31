@@ -153,6 +153,7 @@ export default function Leads() {
               marginLeft: "300px",
             }}
           >
+            {isLoading && <LoadingSpinner />}
             <DataGrid
               style={{
                 width: "100%",

@@ -4,7 +4,7 @@ import { AuthContext } from "./shared/context/auth-context";
 import Login from "./user/pages/Login";
 import Dashboard from "./user/pages/Dashboard";
 import Sidebar from "./Components/sidebar/Sidebar";
-import Clients from "./user/pages/Clients";
+import Users from "./user/pages/Users";
 import SearchAppBar from "./Components/TopNav/TopNav";
 import { useNavigate } from "react-router-dom";
 import Leads from "./user/pages/Leads";
@@ -62,7 +62,7 @@ const App = () => {
     routes = (
       <Routes>
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/users" element={<Clients />} />
+        <Route path="/users" element={<Users />} />
         <Route path="/leads" element={<Leads />} />
         <Route path="/data" element={null} />
         <Route path="/files" element={null} />

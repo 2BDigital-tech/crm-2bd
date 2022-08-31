@@ -16,13 +16,13 @@ import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import { Stack } from "@mui/material";
 import { useEffect } from "react";
 import { useHttpClient } from "../../hooks/http-hook";
+import Todo from "../../shared/UIElements/Todo";
 
 // import TopNav from "../../Components/TopNav/TopNav"
 // import ChartKpi from "../../Components/ChartKpi/ChartKpi"
 import { Chart } from "react-google-charts";
 // import CheckboxList from "../../Components/CheckboxList/CheckboxList";
 import { useState } from "react";
-import Todo from "../../Components/Todo/Todo";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#2D2D2D" : "#2D2D2D",
