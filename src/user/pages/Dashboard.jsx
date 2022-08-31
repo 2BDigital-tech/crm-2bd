@@ -91,7 +91,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await sendRequest("http://localhost:5002/api/users");
+        const response = await sendRequest("http://localhost:80/api/users");
         setNumOfUsers(response.users.length);
       } catch (err) {
         console.log(err);

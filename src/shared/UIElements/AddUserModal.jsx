@@ -35,7 +35,7 @@ const AddUserModal = (props) => {
     event.preventDefault();
     try {
       const responseData = await sendRequest(
-        "http://localhost:5002/api/users/addUser",
+        "http://localhost:80/api/users/addUser",
         "POST",
         JSON.stringify({
           name: name,

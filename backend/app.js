@@ -39,10 +39,10 @@ app.use((error, req, res, next) => {
   res.json({ message: error.message || "something went wrong" });
 });
 
-mongoose
-  .connect(process.env.MONGODB_URI)
-  .then(() => app.listen(5002))
-  .catch((err) => console.log(err));
+mongoose.connect(process.env.MONGODB_URI);
 
-// const port = process.env.PORT || 80;
-// app.listen(port, console.log(`Listening on port ${port} ...`));
+// .then(() => app.listen(80))
+// .catch((err) => console.log(err));
+
+const port = process.env.PORT || 80;
+app.listen(port, console.log(`Listening on port ${port} ...`));

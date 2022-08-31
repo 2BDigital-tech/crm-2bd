@@ -103,7 +103,7 @@ export default function Leads() {
   useEffect(() => {
     const fetchQuotations = async () => {
       try {
-        const response = await sendRequest("http://localhost:5002/api/data");
+        const response = await sendRequest("http://localhost:80/api/data");
         // setQuotationData(response);
         console.log(response[3]);
         let arr = [];

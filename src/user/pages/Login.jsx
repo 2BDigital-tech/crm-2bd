@@ -68,7 +68,7 @@ const Login = () => {
     event.preventDefault();
     try {
       const responseData = await sendRequest(
-        "http://localhost:5002/api/users/login",
+        "http://localhost:80/api/users/login",
         "POST",
         JSON.stringify({
           email: email,

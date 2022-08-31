@@ -35,7 +35,7 @@ export default function Todo() {
     const fetchTasks = async () => {
       try {
         const response = await sendRequest(
-          `http://localhost:5002/api/tasks/${localStorage.getItem("userId")}`
+          `http://localhost:80/api/tasks/${localStorage.getItem("userId")}`
         );
         setTasks(response.tasks);
       } catch (err) {
@@ -68,7 +68,7 @@ export default function Todo() {
   const deleteTask = async (taskId) => {
     try {
       const responseData = await sendRequest(
-        `http://localhost:5002/api/tasks/deleteTask/${taskId}`,
+        `http://localhost:80/api/tasks/deleteTask/${taskId}`,
         "DELETE"
       );
       if (responseData) {
@@ -83,7 +83,7 @@ export default function Todo() {
     event.preventDefault();
     try {
       const responseData = await sendRequest(
-        "http://localhost:5002/api/tasks/addTask",
+        "http://localhost:80/api/tasks/addTask",
         "POST",
         JSON.stringify({
           title: taskTitle,
