@@ -194,7 +194,7 @@ const Sidebar = () => {
                     to="/files"
                     style={{ textDecoration: "none", color: "white" }}
                   >
-                    Dossier
+                    Affaires
                   </NavLink>
                 </Button>
               </ListItem>

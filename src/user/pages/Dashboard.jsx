@@ -17,6 +17,7 @@ import { Stack } from "@mui/material";
 import { useEffect } from "react";
 import { useHttpClient } from "../../hooks/http-hook";
 import Todo from "../../shared/UIElements/Todo";
+import FilterForm from "../../shared/UIElements/FilterForm";
 
 // import TopNav from "../../Components/TopNav/TopNav"
 // import ChartKpi from "../../Components/ChartKpi/ChartKpi"
@@ -135,6 +136,18 @@ const Dashboard = () => {
     <React.Fragment>
       <div style={styles.paperContainer}>
         <div style={styles.formContainer}>
+          <Box
+            display={{ xl: "flex", sm: "none" }}
+            marginBottom={8}
+            // height={250}
+            sx={{ borderRadius: "1%" }}
+            marginLeft="15%"
+          >
+            <Grid container spacing={2}>
+              <FilterForm />
+            </Grid>
+          </Box>
+
           <Stack ml={{ xl: "290px", md: "290px" }}>
             <Typography
               variant="h5"

@@ -8,7 +8,7 @@ const getTasks = async (req, res, next) => {
   const uid = req.params.uid;
   let tasksList;
   try {
-    tasksList = await User.findById(uid).populate("tasks"); // get all users without the password field
+    tasksList = await User.findById(uid).populate("tasks"); // find the user by id and get also the tasks of this user, this method returns the user document and the tasks document associated to the user
   } catch (err) {
     const error = new HttpError(
       "Une erreur est survenue, veuillez reessayer",
@@ -16,7 +16,7 @@ const getTasks = async (req, res, next) => {
     );
     return next(error);
   }
-  res.status(200).json({ message: "All Tasks", tasks: tasksList.tasks });
+  res.status(200).json({ message: "All Tasks", tasks: tasksList.tasks }); //extract the tasks array from "tasksList" and return it
 };
 
 const addTask = async (req, res, next) => {
@@ -36,6 +36,7 @@ const addTask = async (req, res, next) => {
     summary,
     creator,
   });
+  //save the task in the tasks collection
   try {
     await createdTask.save();
   } catch (err) {
@@ -57,7 +58,7 @@ const addTask = async (req, res, next) => {
     const error = new HttpError("creating task failed, please try again", 500);
     return next(error);
   }
-
+  // save the task in the tasks array of the specific user that created the task (the id is saved and with that we can access the object)
   try {
     const sess = await mongoose.startSession();
     sess.startTransaction();
@@ -84,7 +85,6 @@ const deleteTask = async (req, res, next) => {
   let task;
   try {
     task = await Task.findById(taskId).populate("creator");
-    console.log(task);
   } catch (err) {
     const error = new HttpError("Could not find task", 500);
     return next(error);
