@@ -16,6 +16,7 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Avatar from "@mui/material/Avatar";
 import Logo from "../../images/ico/logo_small.jpeg";
+import FilterForm from "../../shared/UIElements/FilterForm";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -92,6 +93,7 @@ export default function SearchAppBar() {
             elevation={0}
           >
             <Toolbar sx={{ mt: 7 }}>
+               
               <MenuIcon
                 sx={{
                   display: { sm: "flex", xl: "none" },
@@ -129,36 +131,24 @@ export default function SearchAppBar() {
                 src={Logo}
               /> */}
 
-                  
-          
 
               <Avatar
                 sx={{
+                  height: '50px', width: '50px',
                   display: { xs: "none", sm: "flex" },
                   mr: -1,
-                  bgcolor: "#D00062",
+                  background: "linear-gradient(to right bottom, #C30772, #615EE0)",
+                  color:"#BBBBBB",
+                  fontSize :"23px"
                 }}
                 onClick={handleClick}
               >
                 <Typography variant="h6" color="white" fontWeight={"bold"}>
-                  {initials.charAt(0)}
+                  {initials}
                 </Typography>
               </Avatar>
 
-              {initials.length == 2  ?  
-         
-              <Avatar
-                sx={{
-                  display: { xs: "none", sm: "flex" },
-                  mr: 0,
-                  bgcolor: "#1F7196",
-                }}
-                onClick={handleClick}
-              >
-                <Typography variant="h6" color="white" fontWeight={"bold"} >
-                  {initials.charAt(1)}
-                </Typography>
-              </Avatar> : <p></p>}
+          
 
               <Typography
                 sx={{ flexGrow: 0.03, display: { xs: "none", sm: "block" } ,ml:3}}

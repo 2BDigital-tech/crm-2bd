@@ -13,22 +13,23 @@ const connect = async (req, res, next) => {
   try {
     // Connect to the MongoDB cluster
     await client.connect();
-    response = await getQuotationData(client);
+    response = await getBookingData(client);
   } catch (err) {
     console.log(err);
   }
   res.status(200).json(response);
 };
 
-async function getQuotationData(client) {
+async function getBookingData(client) {
   let docs = [];
   const result = await client
     .db("quick-immo-dev")
-    .collection("quotations")
-    .find()
+    .collection("bookings")
+    .find({})
     .toArray();
 
   return result;
 }
+
 
 exports.connect = connect;

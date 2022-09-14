@@ -29,7 +29,7 @@ const styles = {
   paperContainer: {
     backgroundSize: "cover",
     backgroundColor: "#202020",
-    minHeight: 2200,
+    minHeight: 1300,
   },
   formContainer: {
     padding: "30px",
@@ -87,15 +87,15 @@ const Users = () => {
     <React.Fragment>
       <div style={styles.paperContainer}>
         <div style={styles.formContainer}>
-          <Stack ml={{ xl: "290px", md: "290px" }}>
+          <Stack ml={{ xl: "290px", md: "290px" }}  sx={{ mt: "-5%" }}>
             <Typography
-              variant="h4"
-              sx={{ mb: "4%", ml: "2%" }}
-              color="#ffff"
+              variant="h5"
+              sx={{ mb: "7%" }}
               fontWeight={"bold"}
+              color="#BBBBBB"
             >
               Utilisateurs
-            </Typography>{" "}
+            </Typography>
             <Box
               display={{ xl: "flex", sm: "none" }}
               bgcolor="#2D2D2D"
@@ -110,7 +110,7 @@ const Users = () => {
                     variant="contained"
                     style={{
                       margin: "30px",
-                      backgroundColor: "#D00062",
+                      background:"linear-gradient(to right bottom, #C30772, #615EE0)",
                     }}
                     onClick={handleOpen}
                   >
@@ -156,7 +156,7 @@ const Users = () => {
                   style={{
                     borderRadius: "10px",
                     marginTop: "1rem",
-                    backgroundColor: "#D00062",
+                    background:"linear-gradient(to right bottom, #C30772, #615EE0)",
                   }}
                   onClick={handleOpen}
                 >
