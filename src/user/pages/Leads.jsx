@@ -9,7 +9,7 @@ import {
 import { useHttpClient } from "../../hooks/http-hook";
 import { useEffect, useState } from "react";
 import LoadingSpinner from "../../shared/UIElements/LoadingSpinner";
-import { Switch } from '@mantine/core';
+import { Switch } from "@mantine/core";
 import HorsZone from "../../Components/HorsZone/HorsZone";
 
 const columns = [
@@ -107,7 +107,10 @@ export default function Leads() {
   useEffect(() => {
     const fetchQuotations = async () => {
       try {
-        const response = await sendRequest("http://localhost:80/api/data");
+        const response = await sendRequest(
+          "http://localhost:80/api/data",
+          "POST"
+        );
         // setQuotationData(response);
         console.log(response[3]);
         let arr = [];
@@ -140,9 +143,7 @@ export default function Leads() {
     <React.Fragment>
       <div style={styles.paperContainer}>
         <div style={styles.formContainer}>
-    
-        <Stack ml={{ xl: "290px", md: "290px" }}  sx={{ mt: "-8%" }}>
-        
+          <Stack ml={{ xl: "290px", md: "290px" }} sx={{ mt: "-8%" }}>
             <Typography
               variant="h5"
               sx={{ mb: "1%" }}
@@ -151,53 +152,52 @@ export default function Leads() {
             >
               Leads
             </Typography>
-            
 
             <Switch
-            checked={checked} onChange={(event) => setChecked(event.currentTarget.checked)}
-            mb= "3%" 
-            onLabel={"HZ"}
-            offLabel={"Lead"}
-            size="xl"
-            radius="md"
-            color="violet"
-            margin="md"
-    />
-      <Box
-            sx={{
-              height: 800,
-            }}
-          >
-            {isLoading && <LoadingSpinner />}
+              checked={checked}
+              onChange={(event) => setChecked(event.currentTarget.checked)}
+              mb="3%"
+              onLabel={"HZ"}
+              offLabel={"Lead"}
+              size="xl"
+              radius="md"
+              color="violet"
+              margin="md"
+            />
+            <Box
+              sx={{
+                height: 800,
+              }}
+            >
+              {isLoading && <LoadingSpinner />}
 
-            {checked ? (
-            <DataGrid
-            style={{
-              width: "100%",
-              display: "flex",
-              backgroundColor: "#2d2d2d",
-              borderRadius: "10px",
-              padding: 35,
-              color: "white",
-              backgroundColor: "#393939",
-              height: 850,
-            }}
-            rows={quotationData}
-            columns={columns}
-            pageSize={11}
-            rowsPerPageOptions={[10]}
-            //   checkboxSelection
-            getRowId={(row) => row.quotationId}
-            disableSelectionOnClick
-            components={{ Toolbar: CustomToolbar }}
-            experimentalFeatures={{ newEditingApi: true }}
-          />
-        ) :     <HorsZone/> }
-
-          
-          </Box>
+              {checked ? (
+                <DataGrid
+                  style={{
+                    width: "100%",
+                    display: "flex",
+                    backgroundColor: "#2d2d2d",
+                    borderRadius: "10px",
+                    padding: 35,
+                    color: "white",
+                    backgroundColor: "#393939",
+                    height: 850,
+                  }}
+                  rows={quotationData}
+                  columns={columns}
+                  pageSize={11}
+                  rowsPerPageOptions={[10]}
+                  //   checkboxSelection
+                  getRowId={(row) => row.quotationId}
+                  disableSelectionOnClick
+                  components={{ Toolbar: CustomToolbar }}
+                  experimentalFeatures={{ newEditingApi: true }}
+                />
+              ) : (
+                <HorsZone />
+              )}
+            </Box>
           </Stack>
-        
         </div>
       </div>
     </React.Fragment>

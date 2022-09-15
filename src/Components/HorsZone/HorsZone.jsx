@@ -1,7 +1,7 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import { Title } from "@mantine/core";
-import moment from 'moment';
+import moment from "moment";
 import { Typography, Stack } from "@mui/material";
 import {
   DataGrid,
@@ -14,27 +14,32 @@ import LoadingSpinner from "../../shared/UIElements/LoadingSpinner";
 import { PartyModeSharp } from "@mui/icons-material";
 import { Button } from "@mantine/core";
 function CustomToolbar() {
-    return (
-      <GridToolbarContainer>
-        <GridToolbarExport />
-      </GridToolbarContainer>
-    );
-  }
-  const handleClick = (cell) => {
-    alert(cell);
-    console.log(cell);
-  }
+  return (
+    <GridToolbarContainer>
+      <GridToolbarExport />
+    </GridToolbarContainer>
+  );
+}
+const handleClick = (cell) => {
+  alert(cell);
+  console.log(cell);
+};
 const columns = [
-  { field: "quotationId", headerName: "ID",width: 125, minWidth: 150, maxWidth: 300 },
+  {
+    field: "quotationId",
+    headerName: "ID",
+    width: 125,
+    minWidth: 150,
+    maxWidth: 300,
+  },
   {
     field: "_createdAt",
     headerName: "Date",
     width: 120,
     editable: true,
-    valueFormatter: params => 
-    moment(params?.value).format("DD/MM/YYYY"),
+    valueFormatter: (params) => moment(params?.value).format("DD/MM/YYYY"),
   },
-  
+
   {
     field: "email",
     headerName: "E-mail",
@@ -48,7 +53,6 @@ const columns = [
     editable: true,
   },
 
-
   {
     field: "address",
     headerName: "Adress",
@@ -59,40 +63,39 @@ const columns = [
     width: 115,
     renderCell: (cellValues) => {
       return (
-          <Button
-           variant="gradient"
-           gradient={{ from: "#D00062", to: "indigo" }}
-           onClick={(event) => {
+        <Button
+          variant="gradient"
+          gradient={{ from: "#D00062", to: "indigo" }}
+          onClick={(event) => {
             // handleClick(cellValues);
             alert();
           }}
-         >
-           Voir  
-         </Button>
+        >
+          Voir
+        </Button>
       );
-    }
-  }
-//     {
-//     field: "address",
-//     headerName: "Code Postal",
-//     width: 140,
-//     editable: true,
-//     valueFormatter: params => 
-//      params?.value.split(' ').pop(),
-//   },
-
-
+    },
+  },
+  //     {
+  //     field: "address",
+  //     headerName: "Code Postal",
+  //     width: 140,
+  //     editable: true,
+  //     valueFormatter: params =>
+  //      params?.value.split(' ').pop(),
+  //   },
 ];
 function HorsZone() {
-  
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const [quotationData, setQuotationData] = useState([]);
-
 
   useEffect(() => {
     const fetchQuotations = async () => {
       try {
-        const response = await sendRequest("http://localhost:80/api/data");
+        const response = await sendRequest(
+          "http://localhost:80/api/data",
+          "POST"
+        );
         // setQuotationData(response);
         console.log(response[3]);
         let arr = [];
@@ -101,7 +104,8 @@ function HorsZone() {
           response.forEach((element) => {
             if (
               element.contact !== undefined &&
-              element.quotation !== undefined && element.contact.project=="HZ"
+              element.quotation !== undefined &&
+              element.contact.project == "HZ"
             ) {
               let info = {
                 ...element,
@@ -122,52 +126,45 @@ function HorsZone() {
   }, []);
   return (
     <React.Fragment>
-   
-        <Box
-          sx={{
-            height: 510,
-            padding:3,
-          }}
-        >
-              <Title
-                variant="h5"
-                color="#BBBBBB"
-                fontWeight={"bold"}
-                mb="lg"
-              >
-                Hors Zones{" "}
-              </Title>
-          {isLoading && <LoadingSpinner />}
-          <div style={{ display: 'flex', height: '100%' }}>
-  <div style={{ flexGrow: 1 }}>
-
-          <DataGrid
-            style={{
-              width: "100%",
-              display: "flex",
-              backgroundColor: "#25262B",
-              borderRadius: "10px",
-              padding: 35,
-              color: "white",
-              backgroundColor: "#25262B",
-              border: 'none',
-              height: 419,
-            }}
-            rows={quotationData}
-            columns={columns}
-            pageSize={11}
-            rowsPerPageOptions={[10]}
-            //   checkboxSelection
-            getRowId={(row) => row.quotationId}
-            disableSelectionOnClick
-            components={{ Toolbar: CustomToolbar }}
-            experimentalFeatures={{ newEditingApi: true }}
-          />
+      <Box
+        sx={{
+          height: 510,
+          padding: 3,
+        }}
+      >
+        <Title variant="h5" color="#BBBBBB" fontWeight={"bold"} mb="lg">
+          Hors Zones{" "}
+        </Title>
+        {isLoading && <LoadingSpinner />}
+        <div style={{ display: "flex", height: "100%" }}>
+          <div style={{ flexGrow: 1 }}>
+            <DataGrid
+              style={{
+                width: "100%",
+                display: "flex",
+                backgroundColor: "#25262B",
+                borderRadius: "10px",
+                padding: 35,
+                color: "white",
+                backgroundColor: "#25262B",
+                border: "none",
+                height: 419,
+              }}
+              rows={quotationData}
+              columns={columns}
+              pageSize={11}
+              rowsPerPageOptions={[10]}
+              //   checkboxSelection
+              getRowId={(row) => row.quotationId}
+              disableSelectionOnClick
+              components={{ Toolbar: CustomToolbar }}
+              experimentalFeatures={{ newEditingApi: true }}
+            />
+          </div>
         </div>
-  </div>
-        </Box>
-  </React.Fragment>
-  )
+      </Box>
+    </React.Fragment>
+  );
 }
 
-export default HorsZone
+export default HorsZone;
