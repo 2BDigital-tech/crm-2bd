@@ -8,6 +8,7 @@ const connect = async (req, res, next) => {
    */
   const uri = process.env.MONGODB_NILLAETBEN;
   const client = new MongoClient(uri);
+  const filterParams = req.body;
 
   let response;
   try {

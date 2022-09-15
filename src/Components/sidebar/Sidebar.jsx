@@ -27,7 +27,17 @@ const Sidebar = () => {
   const auth = useContext(AuthContext);
 
   return (
-    <Box sx={{ display: { base: "none", sm: "none", xl: "flex", xs: "none", md: "flex" } }}>
+    <Box
+      sx={{
+        display: {
+          base: "none",
+          sm: "none",
+          xl: "flex",
+          xs: "none",
+          md: "flex",
+        },
+      }}
+    >
       <CssBaseline />
       {auth.path !== "/login" && (
         <Drawer
@@ -50,7 +60,9 @@ const Sidebar = () => {
         >
           {/* <CloseIcon  sx={{ color: "white" , }} style={{AlignItems: 'right'}}/> */}
 
-          <img className="sidelogo" alt="Crm" src={logoIcon} width="200px" />
+          <a href="dashboard">
+            <img className="sidelogo" alt="Crm" src={logoIcon} width="200px" />
+          </a>
 
           <Toolbar />
 
@@ -66,15 +78,17 @@ const Sidebar = () => {
                     borderRadius: 15,
                     // backgroundColor:
                     //   auth.path !== "/dashboard" ? "#2d2d2d" : "#D00062",
-                    background: 
-                    auth.path !== "/dashboard" ? "#2d2d2d" : "linear-gradient(to right bottom, #C30772, #615EE0)",
+                    background:
+                      auth.path !== "/dashboard"
+                        ? "#2d2d2d"
+                        : "linear-gradient(to right bottom, #C30772, #615EE0)",
                     fontSize: "18px",
                   }}
                   sx={{
                     border: auth.path !== "/dashboard" ? 0 : 3,
                     borderColor: "#202020",
                     boxShadow: 10,
-                    mb:1,
+                    mb: 1,
                     width: "100%",
                     height: 70,
                     "& .MuiButton-startIcon": {
@@ -101,16 +115,18 @@ const Sidebar = () => {
                     style={{
                       textTransform: "capitalize",
                       borderRadius: 15,
-                      background: 
-                      auth.path !== "/users" ? "#2d2d2d" : "linear-gradient(to right bottom, #C30772, #615EE0)",
+                      background:
+                        auth.path !== "/users"
+                          ? "#2d2d2d"
+                          : "linear-gradient(to right bottom, #C30772, #615EE0)",
                       fontSize: "18px",
                     }}
                     sx={{
                       border: auth.path !== "/users" ? 0 : 3,
                       borderColor: "#202020",
                       boxShadow: 0,
-                    mb:1,
-                    height: 70,
+                      mb: 1,
+                      height: 70,
 
                       width: "100%",
 
@@ -147,17 +163,19 @@ const Sidebar = () => {
                   style={{
                     textTransform: "capitalize",
                     borderRadius: 15,
-                    background: 
-                    auth.path !== "/leads" ? "#2d2d2d" : "linear-gradient(to right bottom, #C30772, #615EE0)",
+                    background:
+                      auth.path !== "/leads"
+                        ? "#2d2d2d"
+                        : "linear-gradient(to right bottom, #C30772, #615EE0)",
                     fontSize: "18px",
                   }}
                   sx={{
                     border: auth.path !== "/leads" ? 0 : 3,
                     borderColor: "#202020",
                     boxShadow: 0,
-                    mb:1,
+                    mb: 1,
                     height: 70,
-                    
+
                     width: "100%",
 
                     "& .MuiButton-startIcon": {
@@ -183,8 +201,10 @@ const Sidebar = () => {
                   style={{
                     textTransform: "capitalize",
                     borderRadius: 15,
-                    background: 
-                    auth.path !== "/files" ? "#2d2d2d" : "linear-gradient(to right bottom, #C30772, #615EE0)",
+                    background:
+                      auth.path !== "/files"
+                        ? "#2d2d2d"
+                        : "linear-gradient(to right bottom, #C30772, #615EE0)",
                     fontSize: "18px",
                   }}
                   sx={{
@@ -193,7 +213,7 @@ const Sidebar = () => {
                     height: 70,
                     boxShadow: 0,
                     width: "100%",
-                    mb:1,
+                    mb: 1,
 
                     "& .MuiButton-startIcon": {
                       position: "absolute",
@@ -218,8 +238,10 @@ const Sidebar = () => {
                   style={{
                     textTransform: "capitalize",
                     borderRadius: 15,
-                    background: 
-                    auth.path !== "/data" ? "#2d2d2d" : "linear-gradient(to right bottom, #C30772, #615EE0)",
+                    background:
+                      auth.path !== "/data"
+                        ? "#2d2d2d"
+                        : "linear-gradient(to right bottom, #C30772, #615EE0)",
                     fontSize: "18px",
                   }}
                   sx={{

@@ -19,13 +19,13 @@ import { useHttpClient } from "../../hooks/http-hook";
 import Todo from "../../shared/UIElements/Todo";
 import FilterForm from "../../shared/UIElements/FilterForm";
 
-import SignalCellularAltIcon from '@mui/icons-material/SignalCellularAlt';
-import DoneAllIcon from '@mui/icons-material/DoneAll';
-import EventNoteIcon from '@mui/icons-material/EventNote';
-import FacebookIcon from '@mui/icons-material/Facebook';
-import GoogleIcon from '@mui/icons-material/Google';
-import WebIcon from '@mui/icons-material/Web';
-import TabIcon from '@mui/icons-material/Tab';
+import SignalCellularAltIcon from "@mui/icons-material/SignalCellularAlt";
+import DoneAllIcon from "@mui/icons-material/DoneAll";
+import EventNoteIcon from "@mui/icons-material/EventNote";
+import FacebookIcon from "@mui/icons-material/Facebook";
+import GoogleIcon from "@mui/icons-material/Google";
+import WebIcon from "@mui/icons-material/Web";
+import TabIcon from "@mui/icons-material/Tab";
 // import TopNav from "../../Components/TopNav/TopNav"
 // import ChartKpi from "../../Components/ChartKpi/ChartKpi"
 import { Chart } from "react-google-charts";
@@ -43,7 +43,7 @@ const Item = styled(Paper)(({ theme }) => ({
   textAlign: "center",
   boxShadow: "2px 2px #3D3C3C",
   "&:hover": {
-    background:"linear-gradient(to right bottom, #C30772, #615EE0)",
+    background: "linear-gradient(to right bottom, #C30772, #615EE0)",
     transform: `scale(1.08)`,
   },
   color: "#ffffff",
@@ -52,7 +52,7 @@ export const data = [
   ["Ville", "Lead", "Verifié", "RDV"],
   ["Hors Zones", 45, 0, 0],
   ["", 0, 0, 0],
-  ["Paris", 40, 30,20],
+  ["Paris", 40, 30, 20],
   ["", 0, 0, 0],
   ["Metz", 23, 40, 25],
   ["", 0, 0, 0],
@@ -108,7 +108,6 @@ const Item3 = styled(Paper)(({ theme }) => ({
   boxShadow: "2px 2px #3D3C3C",
 }));
 
-
 const Dashboard = () => {
   const [numOfUsers, setNumOfUsers] = useState();
   const { sendRequest } = useHttpClient();
@@ -130,26 +129,35 @@ const Dashboard = () => {
   const [bookingData, setbookingData] = useState([]);
   const [verify, setVerify] = useState([]);
   const [fb, setfb] = useState([]);
+  const [filter, setFilter] = useState();
   // const [lignes, setlignes] = useState([]);
+
+  const fetchFilter = (info) => {
+    setFilter(info);
+  };
 
   useEffect(() => {
     const fetchQuotations = async () => {
       try {
-        const response = await sendRequest("http://localhost:80/api/data");
+        const response = await sendRequest(
+          "http://localhost:80/api/data",
+          "POST",
+          filter
+        );
         // setQuotationData(response);
         console.log(response[3]);
         let arr = [];
         console.log(response[0]);
-        let countverify= 0;
-        let fb= 0;
-        console.log(countverify)
+        let countverify = 0;
+        let fb = 0;
+        console.log(countverify);
         if (response) {
           response.forEach((element) => {
             if (
               element.contact !== undefined &&
-              element.quotation !== undefined 
+              element.quotation !== undefined
             ) {
-              if(element.estimation !== undefined ){
+              if (element.estimation !== undefined) {
                 countverify++;
               }
               let info = {
@@ -161,17 +169,16 @@ const Dashboard = () => {
             }
           });
         }
-        console.log(countverify)
-        setVerify(countverify)
-        setfb(fb)
+        console.log(countverify);
+        setVerify(countverify);
+        setfb(fb);
         setQuotationData(arr);
       } catch (err) {
         console.log(err);
       }
     };
     fetchQuotations();
-  }, []);
-
+  }, [filter]);
 
   useEffect(() => {
     const fetchBookings = async () => {
@@ -180,9 +187,7 @@ const Dashboard = () => {
         let arr = [];
         if (response) {
           response.forEach((element) => {
-            if (
-              element!== undefined 
-            ) {
+            if (element !== undefined) {
               let info = {
                 ...element,
               };
@@ -197,9 +202,6 @@ const Dashboard = () => {
     };
     fetchBookings();
   }, []);
-
-
-
 
   const customTheme = createMuiTheme({
     palette: {
@@ -247,21 +249,27 @@ const Dashboard = () => {
             </Grid> */}
           </Box>
 
-          <Stack ml={{ xl: "290px", md: "290px" }}   sx={{ mt: "-9%" }}>
+          <Stack ml={{ xl: "290px", md: "290px" }} sx={{ mt: "-9%" }}>
             <Typography
               variant="h5"
               sx={{ mb: "1%" }}
               fontWeight={"bold"}
-              color="#BBBBBB">
+              color="#BBBBBB"
+            >
               Dashboard
             </Typography>
-          <FilterForm />
+            <FilterForm filterInfo={(obj) => fetchFilter(obj)} />
 
-            <Box sx={{ flexGrow: 1 ,mt:"3%" }}>
-      <Grid container spacing={{ xs: 3, md: 4 }} columns={{ xs: 2, sm: 4, md: 10 }}  sx={{ mb: "3%"}} >
-          <Grid item xs={2} sm={4} md={2} >
-            <Item>  
-              <Typography
+            <Box sx={{ flexGrow: 1, mt: "3%" }}>
+              <Grid
+                container
+                spacing={{ xs: 3, md: 4 }}
+                columns={{ xs: 2, sm: 4, md: 10 }}
+                sx={{ mb: "3%" }}
+              >
+                <Grid item xs={2} sm={4} md={2}>
+                  <Item>
+                    <Typography
                       sx={{ mb: "2%" }}
                       variant="h5"
                       color="#BBBBBB"
@@ -270,126 +278,182 @@ const Dashboard = () => {
                     >
                       Lead{" "}
                     </Typography>
-                    <SignalCellularAltIcon sx={{ fontSize: "40px", color:"#BBBBBB",position:"absolute",mt:0,ml:{ sm: 25, md: 10 }}}/>
-                    <Typography
-                      variant="h4"
-                      color="#BBBBBB"
-                      fontWeight={"bold"}
-                      align={"left"}
-                    >
-                    {quotationData.length}
-                    </Typography>
-                    </Item>
-          </Grid>
-          <Grid item xs={2} sm={4} md={2} >
-            <Item>
-            <Typography
-                      sx={{ mb: "2%" }}
-                      variant="h5"
-                      color="#BBBBBB"
-                      fontWeight={"bold"}
-                      align={"left"}
-
-                    >
-                      Verifié{" "}
-                    </Typography>
-                    <DoneAllIcon sx={{ fontSize: "40px", color:"#BBBBBB",position:"absolute",mt:0,ml:{ sm: 25, md: 6 }}}
+                    <SignalCellularAltIcon
+                      sx={{
+                        fontSize: "40px",
+                        color: "#BBBBBB",
+                        position: "absolute",
+                        mt: 0,
+                        ml: { sm: 25, md: 10 },
+                      }}
                     />
                     <Typography
                       variant="h4"
                       color="#BBBBBB"
                       fontWeight={"bold"}
                       align={"left"}
-
                     >
-                      
-                      {(verify)}
+                      {quotationData.length}
                     </Typography>
-                    </Item>
-          </Grid>
-          <Grid item xs={2} sm={4} md={2} >
-            <Item>   <Typography
+                  </Item>
+                </Grid>
+                <Grid item xs={2} sm={4} md={2}>
+                  <Item>
+                    <Typography
                       sx={{ mb: "2%" }}
                       variant="h5"
                       color="#BBBBBB"
                       fontWeight={"bold"}
-                      align={'left'}
+                      align={"left"}
                     >
-                      RDV {" "}
+                      Verifié{" "}
                     </Typography>
-                    <EventNoteIcon sx={{ fontSize: "40px", color:"#BBBBBB",position:"absolute",mt:1,ml:{ sm: 25, md: 6 }}}/>
+                    <DoneAllIcon
+                      sx={{
+                        fontSize: "40px",
+                        color: "#BBBBBB",
+                        position: "absolute",
+                        mt: 0,
+                        ml: { sm: 25, md: 6 },
+                      }}
+                    />
                     <Typography
                       variant="h4"
                       color="#BBBBBB"
-                      align={'left'}
+                      fontWeight={"bold"}
+                      align={"left"}
+                    >
+                      {verify}
+                    </Typography>
+                  </Item>
+                </Grid>
+                <Grid item xs={2} sm={4} md={2}>
+                  <Item>
+                    {" "}
+                    <Typography
+                      sx={{ mb: "2%" }}
+                      variant="h5"
+                      color="#BBBBBB"
+                      fontWeight={"bold"}
+                      align={"left"}
+                    >
+                      RDV{" "}
+                    </Typography>
+                    <EventNoteIcon
+                      sx={{
+                        fontSize: "40px",
+                        color: "#BBBBBB",
+                        position: "absolute",
+                        mt: 1,
+                        ml: { sm: 25, md: 6 },
+                      }}
+                    />
+                    <Typography
+                      variant="h4"
+                      color="#BBBBBB"
+                      align={"left"}
                       fontWeight={"bold"}
                     >
                       {bookingData.length}
-                    </Typography></Item>
-          </Grid>
-          <Grid item xs={2} sm={4} md={2} >
-            <Item>   <Typography
+                    </Typography>
+                  </Item>
+                </Grid>
+                <Grid item xs={2} sm={4} md={2}>
+                  <Item>
+                    {" "}
+                    <Typography
                       sx={{ mb: "2%" }}
                       variant="h5"
                       color="#BBBBBB"
                       fontWeight={"bold"}
-                      align={'left'}
+                      align={"left"}
                     >
                       Facebook{" "}
                     </Typography>
-                    <FacebookIcon sx={{ fontSize: "40px", color:"#BBBBBB",position:"absolute",mt:0,ml:{ sm: 25, md: 6 }}}/>
+                    <FacebookIcon
+                      sx={{
+                        fontSize: "40px",
+                        color: "#BBBBBB",
+                        position: "absolute",
+                        mt: 0,
+                        ml: { sm: 25, md: 6 },
+                      }}
+                    />
                     <Typography
                       variant="h4"
-                      align={'left'}
+                      align={"left"}
                       color="#BBBBBB"
                       fontWeight={"bold"}
                     >
                       {fb}
-                    </Typography></Item>
-          </Grid>
-          <Grid item xs={2} sm={4} md={2} >
-            <Item>   <Typography
+                    </Typography>
+                  </Item>
+                </Grid>
+                <Grid item xs={2} sm={4} md={2}>
+                  <Item>
+                    {" "}
+                    <Typography
                       sx={{ mb: "2%" }}
                       variant="h5"
                       color="#BBBBBB"
                       fontWeight={"bold"}
-                      align={'left'}
+                      align={"left"}
                     >
                       Google{" "}
                     </Typography>
-                    <GoogleIcon sx={{ fontSize: "40px", color:"#BBBBBB",position:"absolute",mt:0,ml:{ sm: 25, md: 6 }}}/>
+                    <GoogleIcon
+                      sx={{
+                        fontSize: "40px",
+                        color: "#BBBBBB",
+                        position: "absolute",
+                        mt: 0,
+                        ml: { sm: 25, md: 6 },
+                      }}
+                    />
                     <Typography
                       variant="h4"
                       color="#BBBBBB"
                       fontWeight={"bold"}
-                      align={'left'}
+                      align={"left"}
                     >
                       0
-                    </Typography></Item>
-          </Grid>
-          <Grid item xs={2} sm={4} md={2} >
-            <Item>   <Typography
+                    </Typography>
+                  </Item>
+                </Grid>
+                <Grid item xs={2} sm={4} md={2}>
+                  <Item>
+                    {" "}
+                    <Typography
                       sx={{ mb: "2%" }}
                       variant="h5"
                       color="#BBBBBB"
                       fontWeight={"bold"}
-                      align={'left'}
+                      align={"left"}
                     >
-                      Site {" "}
+                      Site{" "}
                     </Typography>
-                    <WebIcon sx={{ fontSize: "40px", color:"#BBBBBB",position:"absolute",mt:0,ml:{ sm: 25, md: 6 }}}/>
+                    <WebIcon
+                      sx={{
+                        fontSize: "40px",
+                        color: "#BBBBBB",
+                        position: "absolute",
+                        mt: 0,
+                        ml: { sm: 25, md: 6 },
+                      }}
+                    />
                     <Typography
                       variant="h4"
                       color="#BBBBBB"
                       fontWeight={"bold"}
-                      align={'left'}
+                      align={"left"}
                     >
                       0
-                    </Typography></Item>
-          </Grid>
-          <Grid item xs={2} sm={4} md={2} >
-            <Item>  
-              <Typography
+                    </Typography>
+                  </Item>
+                </Grid>
+                <Grid item xs={2} sm={4} md={2}>
+                  <Item>
+                    <Typography
                       sx={{ mb: "2%" }}
                       variant="h5"
                       color="#BBBBBB"
@@ -398,20 +462,28 @@ const Dashboard = () => {
                     >
                       LBC{" "}
                     </Typography>
-                    <TabIcon sx={{ fontSize: "40px", color:"#BBBBBB",position:"absolute",mt:0,ml:{ sm: 25, md: 10 }}}/>
+                    <TabIcon
+                      sx={{
+                        fontSize: "40px",
+                        color: "#BBBBBB",
+                        position: "absolute",
+                        mt: 0,
+                        ml: { sm: 25, md: 10 },
+                      }}
+                    />
                     <Typography
                       variant="h4"
                       color="#BBBBBB"
                       fontWeight={"bold"}
                       align={"left"}
                     >
-                    0
+                      0
                     </Typography>
-                    </Item>
-          </Grid>
-          <Grid item xs={2} sm={4} md={2} >
-            <Item>  
-              <Typography
+                  </Item>
+                </Grid>
+                <Grid item xs={2} sm={4} md={2}>
+                  <Item>
+                    <Typography
                       sx={{ mb: "2%" }}
                       variant="h5"
                       color="#BBBBBB"
@@ -420,20 +492,28 @@ const Dashboard = () => {
                     >
                       LRL{" "}
                     </Typography>
-                    <SignalCellularAltIcon sx={{ fontSize: "40px", color:"#BBBBBB",position:"absolute",mt:0,ml:{ sm: 25, md: 10 }}}/>
+                    <SignalCellularAltIcon
+                      sx={{
+                        fontSize: "40px",
+                        color: "#BBBBBB",
+                        position: "absolute",
+                        mt: 0,
+                        ml: { sm: 25, md: 10 },
+                      }}
+                    />
                     <Typography
                       variant="h4"
                       color="#BBBBBB"
                       fontWeight={"bold"}
                       align={"left"}
                     >
-                   0
+                      0
                     </Typography>
-                    </Item>
-          </Grid>
-          <Grid item xs={2} sm={4} md={2} >
-            <Item>  
-              <Typography
+                  </Item>
+                </Grid>
+                <Grid item xs={2} sm={4} md={2}>
+                  <Item>
+                    <Typography
                       sx={{ mb: "2%" }}
                       variant="h5"
                       color="#BBBBBB"
@@ -442,20 +522,28 @@ const Dashboard = () => {
                     >
                       MA{" "}
                     </Typography>
-                    <SignalCellularAltIcon sx={{ fontSize: "40px", color:"#BBBBBB",position:"absolute",mt:0,ml:{ sm: 25, md: 10 }}}/>
+                    <SignalCellularAltIcon
+                      sx={{
+                        fontSize: "40px",
+                        color: "#BBBBBB",
+                        position: "absolute",
+                        mt: 0,
+                        ml: { sm: 25, md: 10 },
+                      }}
+                    />
                     <Typography
                       variant="h4"
                       color="#BBBBBB"
                       fontWeight={"bold"}
                       align={"left"}
                     >
-                    0
+                      0
                     </Typography>
-                    </Item>
-          </Grid>
-          <Grid item xs={2} sm={4} md={2} >
-            <Item>  
-              <Typography
+                  </Item>
+                </Grid>
+                <Grid item xs={2} sm={4} md={2}>
+                  <Item>
+                    <Typography
                       sx={{ mb: "2%" }}
                       variant="h5"
                       color="#BBBBBB"
@@ -464,21 +552,28 @@ const Dashboard = () => {
                     >
                       Autres{" "}
                     </Typography>
-                    <SignalCellularAltIcon sx={{ fontSize: "40px", color:"#BBBBBB",position:"absolute",mt:0,ml:{ sm: 25, md: 10 }}}/>
+                    <SignalCellularAltIcon
+                      sx={{
+                        fontSize: "40px",
+                        color: "#BBBBBB",
+                        position: "absolute",
+                        mt: 0,
+                        ml: { sm: 25, md: 10 },
+                      }}
+                    />
                     <Typography
                       variant="h4"
                       color="#BBBBBB"
                       fontWeight={"bold"}
                       align={"left"}
                     >
-                    0
+                      0
                     </Typography>
-                    </Item>
-          </Grid>
-      
-      </Grid>
-    </Box>
-{/* 
+                  </Item>
+                </Grid>
+              </Grid>
+            </Box>
+            {/* 
                   <Item2>
                     <Chart
                       chartType="BarChart"
@@ -515,31 +610,35 @@ const Dashboard = () => {
                       }}
                     /> */}
 
-
-                    {/* <Chart
+            {/* <Chart
                             series={chartOptions.series}
                             type='line'
                             height='100%'
                         /> */}
-                  {/* </Item2> */}
-          
+            {/* </Item2> */}
 
-            <Grid container spacing={{ xs: 3, md: 7 }} columns={{ xs: 2, sm: 2, md: 12 }}  >
+            <Grid
+              container
+              spacing={{ xs: 3, md: 7 }}
+              columns={{ xs: 2, sm: 2, md: 12 }}
+            >
               <Grid item xs={4}>
                 <Item3>
                   <Todo />
                 </Item3>
               </Grid>
               <Grid item xs={8}>
-                <Item3>         
-                <br></br>
-                <Title
-                   variant="h5"
-                   ml={30}
-                   color="#BBBBBB"
-                   fontWeight={"bold"}
-                   >Charts</Title>
-                 {/* <Chart
+                <Item3>
+                  <br></br>
+                  <Title
+                    variant="h5"
+                    ml={30}
+                    color="#BBBBBB"
+                    fontWeight={"bold"}
+                  >
+                    Charts
+                  </Title>
+                  {/* <Chart
                       chartType="BarChart"
                       width="100%"
                       borderRadius="20px"
@@ -576,43 +675,43 @@ const Dashboard = () => {
                     <br></br>
                     <br></br>
                     <br></br> */}
-                    <Chart
-                      chartType="BarChart"
-                      width="100%"
-                      borderRadius="20px"
-                      data={data}
-                      lloader={<div>Loading Chart</div>}
-                      options={{
-                        'height':450,
-                        spacing:23,
-                        legendTextStyle: { color: "#FFF" },
-                        titleTextStyle: { color: "#FFF" },
-                        isStacked:false,
-                        bar: {groupWidth: '100%'},
-                        vAxis: {
-                          textStyle: { color: "#FFF" },
-                        },
-                        hAxis: {
-                          textStyle: { color: "#FFF" },
-                        },
-                        chartArea: {
-                          title: "Data",
-                        },
+                  <Chart
+                    chartType="BarChart"
+                    width="100%"
+                    borderRadius="20px"
+                    data={data}
+                    lloader={<div>Loading Chart</div>}
+                    options={{
+                      height: 450,
+                      spacing: 23,
+                      legendTextStyle: { color: "#FFF" },
+                      titleTextStyle: { color: "#FFF" },
+                      isStacked: false,
+                      bar: { groupWidth: "100%" },
+                      vAxis: {
+                        textStyle: { color: "#FFF" },
+                      },
+                      hAxis: {
+                        textStyle: { color: "#FFF" },
+                      },
+                      chartArea: {
+                        title: "Data",
+                      },
+                      backgroundColor: {
+                        fill: "transparent",
+                      },
+                      chart: {
                         backgroundColor: {
                           fill: "transparent",
                         },
-                        chart: {
-                          backgroundColor: {
-                            fill: "transparent",
-                          },
-                          title: "Data",
-                          fill: "#0000000",
-                        },
-                        colors: ["#1F7196", "#D00062", "#4991B9"],
-                      }}
-                    />
-              </Item3>
-              {/* <Item3>             
+                        title: "Data",
+                        fill: "#0000000",
+                      },
+                      colors: ["#1F7196", "#D00062", "#4991B9"],
+                    }}
+                  />
+                </Item3>
+                {/* <Item3>             
                 <Chart
                       chartType="BarChart"
                       width="100%"

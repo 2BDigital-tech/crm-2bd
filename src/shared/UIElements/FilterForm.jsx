@@ -1,8 +1,9 @@
 import * as React from "react";
+import { useState } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
-import {Button} from "@mantine/core";
+import { Button } from "@mantine/core";
 import { months } from "../../constants/filter_constants";
 import { years } from "../../constants/filter_constants";
 import { cities } from "../../constants/filter_constants";
@@ -22,14 +23,15 @@ monthsMap.set("Octobre", "10");
 monthsMap.set("Novembre", "11");
 monthsMap.set("Décembre", "12");
 
-export default function FilterForm() {
+export default function FilterForm(props) {
   const [city, setCity] = React.useState("");
   const [month, setMonth] = React.useState("");
   const [year, setYear] = React.useState("");
   const [monthNum, setMonthNum] = React.useState("");
 
   const submitFilter = () => {
-    console.log({ city, monthNum, year });
+    const obj = JSON.stringify({ city, monthNum, year });
+    props.filterInfo(obj);
   };
 
   const handleChangeCity = (event) => {
@@ -47,24 +49,23 @@ export default function FilterForm() {
 
   const styles = {
     floatingLabelFocusStyle: {
-        color: "somecolor"
-    }
-}
+      color: "somecolor",
+    },
+  };
 
   return (
     <Box
       component="form"
       sx={{
-        "& .MuiTextField-root": { m: 3, width: "25ch" ,ml:0 ,mt:3},
-        
+        "& .MuiTextField-root": { m: 3, width: "25ch", ml: 0, mt: 3 },
       }}
       noValidate
       autoComplete="off"
     >
       <div>
         <TextField
-           InputLabelProps={{
-            style: { color: '#fff' },
+          InputLabelProps={{
+            style: { color: "#fff" },
           }}
           id="outlined-select-city"
           select
@@ -73,17 +74,17 @@ export default function FilterForm() {
           onChange={handleChangeCity}
           SelectProps={{
             icon: {
-              color: 'white',
+              color: "white",
             },
           }}
           helperText="Ville"
-          style={{ backgroundColor: "#3D3C3C",
-          width: "150px",
-          borderRadius: "10px",
-          height: "55px",
-          color:"white"
-        
-        }}
+          style={{
+            backgroundColor: "#3D3C3C",
+            width: "150px",
+            borderRadius: "10px",
+            height: "55px",
+            color: "white",
+          }}
         >
           {cities.map((option) => (
             <MenuItem key={option.value} value={option.value}>
@@ -93,8 +94,8 @@ export default function FilterForm() {
         </TextField>
 
         <TextField
-           InputLabelProps={{
-            style: { color: 'white' },
+          InputLabelProps={{
+            style: { color: "white" },
           }}
           id="outlined-select-month"
           select
@@ -104,17 +105,17 @@ export default function FilterForm() {
           SelectProps={{
             native: true,
             icon: {
-              color: 'white',
+              color: "white",
             },
           }}
           helperText="Mois"
-          style={{ backgroundColor: "#3D3C3C", 
-          width: "150px",
-          height: "55px",
-          borderRadius: "10px",
-          color:"white"
-        }}
-    
+          style={{
+            backgroundColor: "#3D3C3C",
+            width: "150px",
+            height: "55px",
+            borderRadius: "10px",
+            color: "white",
+          }}
         >
           {months.map((option) => (
             <option key={option.value} value={option.value}>
@@ -123,8 +124,8 @@ export default function FilterForm() {
           ))}
         </TextField>
         <TextField
-           InputLabelProps={{
-            style: { color: '#fff' },
+          InputLabelProps={{
+            style: { color: "#fff" },
           }}
           id="outlined-select-year"
           select
@@ -135,15 +136,13 @@ export default function FilterForm() {
             native: true,
           }}
           helperText="Année"
-          style={{ backgroundColor: "#3D3C3C", 
-          color:"white",
-          width: "150px",
-          borderRadius: "10px",
-          height: "55px",
-        
-        }}
-
-       
+          style={{
+            backgroundColor: "#3D3C3C",
+            color: "white",
+            width: "150px",
+            borderRadius: "10px",
+            height: "55px",
+          }}
         >
           {years.map((option) => (
             <option key={option.value} value={option.value}>
@@ -152,16 +151,16 @@ export default function FilterForm() {
           ))}
         </TextField>
         <Button
-              variant="gradient"
-              gradient={{ from: "#D00062", to: "indigo" }}
-              onClick={submitFilter}
-              height={"100px"}
-              mt={"xl"}
-              size="lg"
-              radius={"md"}
-            >
-              Filtrer  
-            </Button>
+          variant="gradient"
+          gradient={{ from: "#D00062", to: "indigo" }}
+          onClick={submitFilter}
+          height={"100px"}
+          mt={"xl"}
+          size="lg"
+          radius={"md"}
+        >
+          Filtrer
+        </Button>
       </div>
     </Box>
   );
