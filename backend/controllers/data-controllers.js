@@ -28,6 +28,7 @@ const connect = async (req, res, next) => {
   res.status(200).json(response);
 };
 
+
 async function getQuotationData(client, city = "", month = "", year = "") {
   let docs = [];
   let result = await client

@@ -73,6 +73,7 @@ const dataUtmFilter = (state, action) => {
     lrl: action.lrl,
     ma: action.ma,
     other: action.other,
+    booked: action.booked,
   };
 };
 
@@ -143,15 +144,7 @@ const Dashboard = () => {
   const [verify, setVerify] = useState(0);
   const [fb, setfb] = useState([]);
   const [filter, setFilter] = useState();
-  // const [dataUtm, setDataUtm] = useState({
-  //   facebook: "",
-  //   google: "",
-  //   website: "",
-  //   lbc: "",
-  //   lrl: "",
-  //   ma: "",
-  //   other: "",
-  // });
+
   const [dataUtm, dispatch] = useReducer(dataUtmFilter, {
     facebook: [],
     google: [],
@@ -160,8 +153,9 @@ const Dashboard = () => {
     lrl: [],
     ma: [],
     other: [],
+    booked: [],
   });
-  // const [lignes, setlignes] = useState([]);
+
 
   const fetchFilter = (info) => {
     setFilter(info);
@@ -204,6 +198,11 @@ const Dashboard = () => {
         let otherUtm = response.filter(
           (item) => !item.quotation.dataUtm?.utm_source
         );
+
+        let booked = response.filter(
+          (item) => bookingData.includes(item._id)
+        );
+      
         dispatch({
           facebook: facebookUtm,
           google: googleUtm,
@@ -212,13 +211,14 @@ const Dashboard = () => {
           lrl: lrlUtm,
           ma: maUtm,
           other: otherUtm,
+          booked :booked,
         });
-        console.log(response[3]);
+        // console.log("TTKTKTKTKT 3"+response[3]._id);
         let arr = [];
-        console.log(response[0]);
+        // console.log(response[0]);
         let countverify = 0;
         let fb = 0;
-        console.log(countverify);
+        // console.log(countverify);
         if (response) {
           response.forEach((element) => {
             if (
@@ -237,7 +237,7 @@ const Dashboard = () => {
             }
           });
         }
-        console.log(countverify);
+        // console.log(countverify);
         setVerify(countverify);
         // setQuotationData(arr);
       } catch (err) {
@@ -258,7 +258,7 @@ const Dashboard = () => {
               let info = {
                 ...element,
               };
-              arr.push(info);
+              arr.push(info.quotationId);
             }
           });
         }
@@ -269,6 +269,8 @@ const Dashboard = () => {
     };
     fetchBookings();
   }, []);
+  
+console.log(bookingData)
 
   const customTheme = createMuiTheme({
     palette: {
@@ -421,7 +423,7 @@ const Dashboard = () => {
                       align={"left"}
                       fontWeight={"bold"}
                     >
-                      {bookingData.length}
+                      {dataUtm.booked.length}
                     </Typography>
                   </Item>
                 </Grid>
