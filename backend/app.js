@@ -8,6 +8,12 @@ const HttpError = require("./models/error");
 const mongoose = require("mongoose");
 require("dotenv").config();
 const app = express();
+var mongoUtil = require("./connection/mongoUtil");
+
+mongoUtil.connectToServer(function (err, client) {
+  if (err) console.log(err);
+  // start the rest of your app here
+});
 
 app.use(bodyParser.json());
 

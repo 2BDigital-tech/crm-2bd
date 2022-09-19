@@ -7,46 +7,44 @@ const {
   NANCY_ZIPCODES,
   ZIP_STRASBOURG,
 } = require("../constants/zipcodes");
+var mongoUtil = require("../connection/mongoUtil");
 
-const connect = async (req, res, next) => {
+const getQuotationData = async (req, res, next) => {
   /**
    * Connection URI. Update <username>, <password>, and <your-cluster-url> to reflect your cluster.
    * See https://docs.mongodb.com/ecosystem/drivers/node/ for more details
    */
-  const uri = process.env.MONGODB_NILLAETBEN;
-  const client = new MongoClient(uri);
   const { city, monthNum, year } = req.body;
 
-  let response;
   try {
     // Connect to the MongoDB cluster
-    await client.connect();
-    response = await getQuotationData(client, city, monthNum, year);
+    var db = mongoUtil.getDb();
   } catch (err) {
     console.log(err);
   }
-  res.status(200).json(response);
-};
-
-
-async function getQuotationData(client, city = "", month = "", year = "") {
-  let docs = [];
-  let result = await client
-    .db("quick-immo")
-    .collection("quotations")
-    .find()
-    .toArray();
+  let result = await db.collection("quotations").find().toArray();
+  let booking_data = await db.collection("bookings").find({}).toArray();
+  let arr2 = [];
+  booking_data.forEach((element) => {
+    if (element !== undefined) {
+      let info = {
+        ...element,
+      };
+      arr2.push(info.quotationId);
+    }
+  });
+  booking_data = arr2;
 
   // console.log(result.slice(-50));
-  let filter_date = year + "-" + month;
+  let filter_date = year + "-" + monthNum;
   let filtered_res;
-  let res;
+  let resp;
   switch (city) {
     case "Metz":
       filtered_res = result.filter((item) =>
         ZIP_METZ.includes(item.quotation.address.split(",").pop().trim())
       );
-      res = filtered_res.filter(
+      resp = filtered_res.filter(
         (item) => item._createdAt.toISOString().substring(0, 7) === filter_date
       );
       break;
@@ -54,7 +52,7 @@ async function getQuotationData(client, city = "", month = "", year = "") {
       filtered_res = result.filter((item) =>
         NANCY_ZIPCODES.includes(item.quotation.address.split(",").pop().trim())
       );
-      res = filtered_res.filter(
+      resp = filtered_res.filter(
         (item) => item._createdAt.toISOString().substring(0, 7) === filter_date
       );
       break;
@@ -62,7 +60,7 @@ async function getQuotationData(client, city = "", month = "", year = "") {
       filtered_res = result.filter((item) =>
         ZIP_STRASBOURG.includes(item.quotation.address.split(",").pop().trim())
       );
-      res = filtered_res.filter(
+      resp = filtered_res.filter(
         (item) => item._createdAt.toISOString().substring(0, 7) === filter_date
       );
       break;
@@ -70,7 +68,7 @@ async function getQuotationData(client, city = "", month = "", year = "") {
       filtered_res = result.filter((item) =>
         ZIP_TOULON.includes(item.quotation.address.split(",").pop().trim())
       );
-      res = filtered_res.filter(
+      resp = filtered_res.filter(
         (item) => item._createdAt.toISOString().substring(0, 7) === filter_date
       );
       break;
@@ -78,15 +76,30 @@ async function getQuotationData(client, city = "", month = "", year = "") {
       filtered_res = result.filter((item) =>
         ZIP_PARIS.includes(item.quotation.address.split(",").pop().trim())
       );
-      res = filtered_res.filter(
+      resp = filtered_res.filter(
         (item) => item._createdAt.toISOString().substring(0, 7) === filter_date
       );
       break;
     default:
-      res = result;
+      resp = result;
   }
 
-  return res;
+  res.status(200).json({ quotation_data: resp, book_data: booking_data });
+};
+
+async function getLeads(client) {
+  let docs = [];
+  let db;
+  try {
+    // Connect to the MongoDB cluster
+    db = mongoUtil.getDb();
+  } catch (err) {
+    console.log(err);
+  }
+  const result = await db.collection("quotations").find({}).toArray();
+
+  return result;
 }
 
-exports.connect = connect;
+exports.getQuotationData = getQuotationData;
+exports.getLeads = getLeads;

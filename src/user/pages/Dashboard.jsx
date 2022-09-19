@@ -156,7 +156,6 @@ const Dashboard = () => {
     booked: [],
   });
 
-
   const fetchFilter = (info) => {
     setFilter(info);
   };
@@ -169,23 +168,25 @@ const Dashboard = () => {
           "POST",
           filter
         );
-        setQuotationData(response);
-        let facebookUtm = response.filter(
+
+        setQuotationData(response.quotation_data);
+
+        let facebookUtm = response.quotation_data.filter(
           (item) => item.quotation.dataUtm.utm_source === "facebook"
         );
-        let googleUtm = response.filter(
+        let googleUtm = response.quotation_data.filter(
           (item) => item.quotation.dataUtm.utm_source === "google"
         );
-        let websiteUtm = response.filter(
+        let websiteUtm = response.quotation_data.filter(
           (item) => item.quotation.dataUtm.utm_source === "sitweb"
         );
-        let lbcUtm = response.filter(
+        let lbcUtm = response.quotation_data.filter(
           (item) => item.quotation.dataUtm.utm_source === "LBC"
         );
-        let lrlUtm = response.filter(
+        let lrlUtm = response.quotation_data.filter(
           (item) => item.quotation.dataUtm.utm_medium === "LRL"
         );
-        let maUtm = response.filter(
+        let maUtm = response.quotation_data.filter(
           (item) =>
             item.quotation.dataUtm.utm_source === "activecampaign" ||
             item.quotation.dataUtm.utm_source === "sendinblue" ||
@@ -195,14 +196,16 @@ const Dashboard = () => {
               "Rappel Mail non-vérifié2" ||
             item.quotation.dataUtm.utm_campaign === "Rappel Mail non-vérifié3"
         );
-        let otherUtm = response.filter(
+        let otherUtm = response.quotation_data.filter(
           (item) => !item.quotation.dataUtm?.utm_source
         );
 
-        let booked = response.filter(
-          (item) => bookingData.includes(item._id)
+        let bookedUtm = response.quotation_data.filter((item) =>
+          response.book_data.includes(item._id)
         );
-      
+
+        console.log("booked :", bookedUtm);
+
         dispatch({
           facebook: facebookUtm,
           google: googleUtm,
@@ -211,16 +214,17 @@ const Dashboard = () => {
           lrl: lrlUtm,
           ma: maUtm,
           other: otherUtm,
-          booked :booked,
+          booked: bookedUtm,
         });
         // console.log("TTKTKTKTKT 3"+response[3]._id);
         let arr = [];
+
         // console.log(response[0]);
         let countverify = 0;
         let fb = 0;
         // console.log(countverify);
-        if (response) {
-          response.forEach((element) => {
+        if (response.quotation_data) {
+          response.quotation_data.forEach((element) => {
             if (
               element.contact !== undefined &&
               element.quotation !== undefined
@@ -237,6 +241,7 @@ const Dashboard = () => {
             }
           });
         }
+
         // console.log(countverify);
         setVerify(countverify);
         // setQuotationData(arr);
@@ -247,30 +252,33 @@ const Dashboard = () => {
     fetchQuotations();
   }, [filter]);
 
-  useEffect(() => {
-    const fetchBookings = async () => {
-      try {
-        const response = await sendRequest("http://localhost:80/api/booking");
-        let arr = [];
-        if (response) {
-          response.forEach((element) => {
-            if (element !== undefined) {
-              let info = {
-                ...element,
-              };
-              arr.push(info.quotationId);
-            }
-          });
-        }
-        setbookingData(arr);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    fetchBookings();
-  }, []);
-  
-console.log(bookingData)
+  // useEffect(() => {
+  //   const fetchBookings = async () => {
+  //     try {
+  //       const response = await sendRequest(
+  //         "http://localhost:80/api/booking",
+  //         "GET"
+  //       );
+  //       let arr = [];
+  //       if (response) {
+  //   response.forEach((element) => {
+  //     if (element !== undefined) {
+  //       let info = {
+  //         ...element,
+  //       };
+  //       arr.push(info.quotationId);
+  //     }
+  //   });
+  // }
+  // setbookingData(arr);
+  //     } catch (err) {
+  //       console.log(err);
+  //     }
+  //   };
+  //   fetchBookings();
+  // }, []);
+
+  console.log(bookingData);
 
   const customTheme = createMuiTheme({
     palette: {

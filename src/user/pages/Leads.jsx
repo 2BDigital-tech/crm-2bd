@@ -109,7 +109,7 @@ export default function Leads() {
       try {
         const response = await sendRequest(
           "http://localhost:80/api/data",
-          "POST"
+          "GET"
         );
         // setQuotationData(response);
         console.log(response[3]);
