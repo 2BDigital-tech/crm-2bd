@@ -94,14 +94,14 @@ function HorsZone() {
       try {
         const response = await sendRequest(
           "http://localhost:80/api/data",
-          "POST"
+          "GET"
         );
         // setQuotationData(response);
         console.log(response[3]);
         let arr = [];
         console.log(response[0]);
         if (response) {
-          response.forEach((element) => {
+          response.result.forEach((element) => {
             if (
               element.contact !== undefined &&
               element.quotation !== undefined &&

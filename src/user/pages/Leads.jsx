@@ -116,7 +116,7 @@ export default function Leads() {
         let arr = [];
         console.log(response[0]);
         if (response) {
-          response.forEach((element) => {
+          response.result.forEach((element) => {
             if (
               element.contact !== undefined &&
               element.quotation !== undefined

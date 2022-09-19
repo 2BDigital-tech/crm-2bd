@@ -87,7 +87,7 @@ const getQuotationData = async (req, res, next) => {
   res.status(200).json({ quotation_data: resp, book_data: booking_data });
 };
 
-async function getLeads(client) {
+const getLeads = async (req, res, next) => {
   let docs = [];
   let db;
   try {
@@ -98,8 +98,8 @@ async function getLeads(client) {
   }
   const result = await db.collection("quotations").find({}).toArray();
 
-  return result;
-}
+  res.status(200).json({ result });
+};
 
 exports.getQuotationData = getQuotationData;
 exports.getLeads = getLeads;
