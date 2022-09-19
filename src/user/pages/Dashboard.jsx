@@ -70,6 +70,9 @@ const dataUtmFilter = (state, action) => {
     google: action.google,
     website: action.website,
     lbc: action.lbc,
+    lrl: action.lrl,
+    ma: action.ma,
+    other: action.other,
   };
 };
 
@@ -137,7 +140,7 @@ const Dashboard = () => {
   const { isLoading, error, sendRequests, clearError } = useHttpClient();
   const [quotationData, setQuotationData] = useState([]);
   const [bookingData, setbookingData] = useState([]);
-  const [verify, setVerify] = useState([]);
+  const [verify, setVerify] = useState(0);
   const [fb, setfb] = useState([]);
   const [filter, setFilter] = useState();
   // const [dataUtm, setDataUtm] = useState({
@@ -150,13 +153,13 @@ const Dashboard = () => {
   //   other: "",
   // });
   const [dataUtm, dispatch] = useReducer(dataUtmFilter, {
-    facebook: 0,
-    google: 0,
-    website: 0,
-    lbc: 0,
-    lrl: 0,
-    ma: 0,
-    other: 0,
+    facebook: [],
+    google: [],
+    website: [],
+    lbc: [],
+    lrl: [],
+    ma: [],
+    other: [],
   });
   // const [lignes, setlignes] = useState([]);
 
@@ -175,21 +178,40 @@ const Dashboard = () => {
         setQuotationData(response);
         let facebookUtm = response.filter(
           (item) => item.quotation.dataUtm.utm_source === "facebook"
-        ).length;
+        );
         let googleUtm = response.filter(
           (item) => item.quotation.dataUtm.utm_source === "google"
-        ).length;
+        );
         let websiteUtm = response.filter(
           (item) => item.quotation.dataUtm.utm_source === "sitweb"
-        ).length;
+        );
         let lbcUtm = response.filter(
           (item) => item.quotation.dataUtm.utm_source === "LBC"
-        ).length;
+        );
+        let lrlUtm = response.filter(
+          (item) => item.quotation.dataUtm.utm_medium === "LRL"
+        );
+        let maUtm = response.filter(
+          (item) =>
+            item.quotation.dataUtm.utm_source === "activecampaign" ||
+            item.quotation.dataUtm.utm_source === "sendinblue" ||
+            item.quotation.dataUtm.utm_campaign ===
+              "Rappel Mail non-vérifié1" ||
+            item.quotation.dataUtm.utm_campaign ===
+              "Rappel Mail non-vérifié2" ||
+            item.quotation.dataUtm.utm_campaign === "Rappel Mail non-vérifié3"
+        );
+        let otherUtm = response.filter(
+          (item) => !item.quotation.dataUtm?.utm_source
+        );
         dispatch({
           facebook: facebookUtm,
           google: googleUtm,
           website: websiteUtm,
           lbc: lbcUtm,
+          lrl: lrlUtm,
+          ma: maUtm,
+          other: otherUtm,
         });
         console.log(response[3]);
         let arr = [];
@@ -430,7 +452,7 @@ const Dashboard = () => {
                       color="#BBBBBB"
                       fontWeight={"bold"}
                     >
-                      {dataUtm.facebook}
+                      {dataUtm.facebook.length}
                     </Typography>
                   </Item>
                 </Grid>
@@ -461,7 +483,7 @@ const Dashboard = () => {
                       fontWeight={"bold"}
                       align={"left"}
                     >
-                      {dataUtm.google}
+                      {dataUtm.google.length}
                     </Typography>
                   </Item>
                 </Grid>
@@ -492,7 +514,7 @@ const Dashboard = () => {
                       fontWeight={"bold"}
                       align={"left"}
                     >
-                      {dataUtm.website}
+                      {dataUtm.website.length}
                     </Typography>
                   </Item>
                 </Grid>
@@ -522,7 +544,7 @@ const Dashboard = () => {
                       fontWeight={"bold"}
                       align={"left"}
                     >
-                      {dataUtm.lbc}
+                      {dataUtm.lbc.length}
                     </Typography>
                   </Item>
                 </Grid>
@@ -552,7 +574,7 @@ const Dashboard = () => {
                       fontWeight={"bold"}
                       align={"left"}
                     >
-                      0
+                      {dataUtm.lrl.length}
                     </Typography>
                   </Item>
                 </Grid>
@@ -582,7 +604,7 @@ const Dashboard = () => {
                       fontWeight={"bold"}
                       align={"left"}
                     >
-                      0
+                      {dataUtm.ma.length}
                     </Typography>
                   </Item>
                 </Grid>
@@ -612,7 +634,7 @@ const Dashboard = () => {
                       fontWeight={"bold"}
                       align={"left"}
                     >
-                      0
+                      {dataUtm.other.length}
                     </Typography>
                   </Item>
                 </Grid>

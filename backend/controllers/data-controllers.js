@@ -28,7 +28,7 @@ const connect = async (req, res, next) => {
   res.status(200).json(response);
 };
 
-async function getQuotationData(client, city, month, year) {
+async function getQuotationData(client, city = "", month = "", year = "") {
   let docs = [];
   let result = await client
     .db("quick-immo")
@@ -81,6 +81,8 @@ async function getQuotationData(client, city, month, year) {
         (item) => item._createdAt.toISOString().substring(0, 7) === filter_date
       );
       break;
+    default:
+      res = result;
   }
 
   return res;

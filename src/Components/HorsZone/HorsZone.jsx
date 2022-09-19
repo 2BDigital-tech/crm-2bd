@@ -105,7 +105,7 @@ function HorsZone() {
             if (
               element.contact !== undefined &&
               element.quotation !== undefined &&
-              element.contact.project == "HZ"
+              element.contact.project == "Hors Zone"
             ) {
               let info = {
                 ...element,
