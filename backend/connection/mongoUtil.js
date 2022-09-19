@@ -5,11 +5,9 @@ const uri = process.env.MONGODB_NILLAETBEN;
 var _db;
 
 module.exports = {
-  connectToServer: function (callback) {
-    MongoClient.connect(uri, { useNewUrlParser: true }, function (err, client) {
-      _db = client.db("quick-immo");
-      return callback(err);
-    });
+  connectToServer: function () {
+    const client = new MongoClient(uri);
+    _db = client.db("quick-immo");
   },
 
   getDb: function () {

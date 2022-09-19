@@ -9,10 +9,7 @@ require("dotenv").config();
 const app = express();
 var mongoUtil = require("./connection/mongoUtil");
 
-mongoUtil.connectToServer(function (err, client) {
-  if (err) console.log(err);
-  // start the rest of your app here
-});
+mongoUtil.connectToServer();
 
 app.use(bodyParser.json());
 
