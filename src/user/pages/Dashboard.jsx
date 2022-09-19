@@ -14,7 +14,7 @@ import "./Dashboard.css";
 import { Divider } from "@mui/material";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import { Stack } from "@mui/material";
-import { useEffect } from "react";
+import { useEffect, useReducer } from "react";
 import { useHttpClient } from "../../hooks/http-hook";
 import Todo from "../../shared/UIElements/Todo";
 import FilterForm from "../../shared/UIElements/FilterForm";
@@ -62,6 +62,16 @@ export const data = [
   ["", 0, 0, 0],
   ["Toulon", 15, 10, 35],
 ];
+
+const dataUtmFilter = (state, action) => {
+  return {
+    ...state,
+    facebook: action.facebook,
+    google: action.google,
+    website: action.website,
+    lbc: action.lbc,
+  };
+};
 
 // export const data = [
 //   ["Ville", "Lead", "Verifié", "RDV"],
@@ -130,6 +140,24 @@ const Dashboard = () => {
   const [verify, setVerify] = useState([]);
   const [fb, setfb] = useState([]);
   const [filter, setFilter] = useState();
+  // const [dataUtm, setDataUtm] = useState({
+  //   facebook: "",
+  //   google: "",
+  //   website: "",
+  //   lbc: "",
+  //   lrl: "",
+  //   ma: "",
+  //   other: "",
+  // });
+  const [dataUtm, dispatch] = useReducer(dataUtmFilter, {
+    facebook: 0,
+    google: 0,
+    website: 0,
+    lbc: 0,
+    lrl: 0,
+    ma: 0,
+    other: 0,
+  });
   // const [lignes, setlignes] = useState([]);
 
   const fetchFilter = (info) => {
@@ -144,7 +172,25 @@ const Dashboard = () => {
           "POST",
           filter
         );
-        // setQuotationData(response);
+        setQuotationData(response);
+        let facebookUtm = response.filter(
+          (item) => item.quotation.dataUtm.utm_source === "facebook"
+        ).length;
+        let googleUtm = response.filter(
+          (item) => item.quotation.dataUtm.utm_source === "google"
+        ).length;
+        let websiteUtm = response.filter(
+          (item) => item.quotation.dataUtm.utm_source === "sitweb"
+        ).length;
+        let lbcUtm = response.filter(
+          (item) => item.quotation.dataUtm.utm_source === "LBC"
+        ).length;
+        dispatch({
+          facebook: facebookUtm,
+          google: googleUtm,
+          website: websiteUtm,
+          lbc: lbcUtm,
+        });
         console.log(response[3]);
         let arr = [];
         console.log(response[0]);
@@ -171,8 +217,7 @@ const Dashboard = () => {
         }
         console.log(countverify);
         setVerify(countverify);
-        setfb(fb);
-        setQuotationData(arr);
+        // setQuotationData(arr);
       } catch (err) {
         console.log(err);
       }
@@ -385,7 +430,7 @@ const Dashboard = () => {
                       color="#BBBBBB"
                       fontWeight={"bold"}
                     >
-                      {fb}
+                      {dataUtm.facebook}
                     </Typography>
                   </Item>
                 </Grid>
@@ -416,7 +461,7 @@ const Dashboard = () => {
                       fontWeight={"bold"}
                       align={"left"}
                     >
-                      0
+                      {dataUtm.google}
                     </Typography>
                   </Item>
                 </Grid>
@@ -447,7 +492,7 @@ const Dashboard = () => {
                       fontWeight={"bold"}
                       align={"left"}
                     >
-                      0
+                      {dataUtm.website}
                     </Typography>
                   </Item>
                 </Grid>
@@ -477,7 +522,7 @@ const Dashboard = () => {
                       fontWeight={"bold"}
                       align={"left"}
                     >
-                      0
+                      {dataUtm.lbc}
                     </Typography>
                   </Item>
                 </Grid>

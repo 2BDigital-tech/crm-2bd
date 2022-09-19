@@ -32,8 +32,8 @@ export const months = [
     label: "Août",
   },
   {
-    value: "Septembre",
-    label: "Septembre",
+    value: "Séptembre",
+    label: "Séptembre",
   },
   {
     value: "Octobre",
@@ -44,8 +44,8 @@ export const months = [
     label: "Novembre",
   },
   {
-    value: "Decembre",
-    label: "Decembre",
+    value: "Décembre",
+    label: "Décembre",
   },
 ];
 

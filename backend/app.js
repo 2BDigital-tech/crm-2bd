@@ -42,7 +42,7 @@ app.use((error, req, res, next) => {
 });
 
 mongoose.connect(process.env.MONGODB_URI);
-
+// mongoose.createConnection(process.env.MONGODB_NILLAETBEN);
 // .then(() => app.listen(80))
 // .catch((err) => console.log(err));
 

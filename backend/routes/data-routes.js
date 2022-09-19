@@ -4,5 +4,6 @@ const dataControllers = require("../controllers/data-controllers");
 const router = express.Router();
 
 router.post("/", dataControllers.connect);
+// router.get("/", dataControllers.getAllLeads);
 
 module.exports = router;
