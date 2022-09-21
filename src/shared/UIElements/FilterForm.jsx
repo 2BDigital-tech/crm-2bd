@@ -58,7 +58,7 @@ export default function FilterForm(props) {
     <Box
       component="form"
       sx={{
-        "& .MuiTextField-root": { m: -6, width: "25ch", ml: 0, mt: 3 },
+        "& .MuiTextField-root": { m: -5.4, width: "25ch", ml: 0, mt: 3 },
      
       }}
       noValidate
@@ -173,7 +173,7 @@ export default function FilterForm(props) {
           //   borderColor: 'white'}}
           style={{
             marginTop:"24px",
-            marginLeft:"-20px",
+            marginLeft:"-26px",
             height:"55px",
             width:"86px",
             alignContent:"auto",
