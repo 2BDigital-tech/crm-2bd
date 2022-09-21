@@ -123,7 +123,6 @@ export default function FilterForm(props) {
             backgroundColor: "#9D9D9D",
             width: "150px",
             height: "55px",
-            borderRadius: "10px",
             color: "white",
           }}
         >
@@ -153,7 +152,6 @@ export default function FilterForm(props) {
             backgroundColor: "#9D9D9D",
             color: "white",
             width: "150px",
-            borderRadius: "10px",
             height: "55px",
           }}
         >

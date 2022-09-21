@@ -1,9 +1,7 @@
 /* eslint-disable no-unused-vars */
 import * as React from "react";
 import CssBaseline from "@mui/material/CssBaseline";
-import logoIcon from "../../../src/images/logoIcon.png";
 import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
 import { createMuiTheme } from "@mui/material/styles";
 import Footer from "../../Components/Footer";
 import Grid from "@mui/material/Grid";
@@ -11,14 +9,11 @@ import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import "./Dashboard.css";
-import { Divider } from "@mui/material";
-import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import { Stack } from "@mui/material";
 import { useEffect, useReducer } from "react";
 import { useHttpClient } from "../../hooks/http-hook";
 import Todo from "../../shared/UIElements/Todo";
 import FilterForm from "../../shared/UIElements/FilterForm";
-import { Bar } from 'react-chartjs-2';
 import SignalCellularAltIcon from "@mui/icons-material/SignalCellularAlt";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
 import EventNoteIcon from "@mui/icons-material/EventNote";
@@ -28,8 +23,6 @@ import WebIcon from "@mui/icons-material/Web";
 import TabIcon from "@mui/icons-material/Tab";
 import ChartData from "../../Components/ChartData/ChartData";
 import { useState } from "react";
-import HorsZone from "../../Components/HorsZone/HorsZone";
-import { IceCream } from "tabler-icons-react";
 import { Title } from "@mantine/core";
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -61,7 +54,7 @@ const dataUtmFilter = (state, action) => {
 };
 
 const Item4 = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === "dark" ? "#D00062" : "#D00062",
+  backgroundColor:"#2D2D2D",
   ...theme.typography.body2,
   padding: theme.spacing(3),
   borderRadius: "20px",
@@ -75,7 +68,7 @@ const Item4 = styled(Paper)(({ theme }) => ({
 }));
 
 const Item2 = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === "dark" ? "#2D2D2D" : "#2D2D2D",
+  backgroundColor:"#2D2D2D",
   ...theme.typography.body2,
   padding: theme.spacing(5),
   borderRadius: "20px",
@@ -85,7 +78,7 @@ const Item2 = styled(Paper)(({ theme }) => ({
 }));
 
 const Item3 = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === "dark" ? "#2D2D2D" : "#2D2D2D",
+  backgroundColor:"#2D2D2D",
   ...theme.typography.body2,
   padding: theme.spacing(1),
   borderRadius: "20px",
@@ -614,7 +607,7 @@ const Dashboard = () => {
                     color="#BBBBBB"
                     fontWeight={"bold"}
                   >
-                    Charts
+                  Chart
                   </Title>
                   <ChartData />
                 </Item3>

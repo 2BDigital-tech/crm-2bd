@@ -1,5 +1,6 @@
 import React from 'react'
 import { Chart } from "react-google-charts";
+import LoadingSpinner from "../../shared/UIElements/LoadingSpinner";
 
 export const data = [
     ["Ville", "Lead", "Verifié", "RDV"],
@@ -23,9 +24,10 @@ function ChartData() {
     width="100%"
     borderRadius="20px"
     data={data}
-    lloader={<div>Loading Chart</div>}
+    lloader={<LoadingSpinner/>}
     options={{
       height: 450,
+      // width:1200,
       spacing: 23,
       legendTextStyle: { color: "#FFF" },
       titleTextStyle: { color: "#FFF" },
