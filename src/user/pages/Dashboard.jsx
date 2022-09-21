@@ -26,10 +26,7 @@ import FacebookIcon from "@mui/icons-material/Facebook";
 import GoogleIcon from "@mui/icons-material/Google";
 import WebIcon from "@mui/icons-material/Web";
 import TabIcon from "@mui/icons-material/Tab";
-// import TopNav from "../../Components/TopNav/TopNav"
-// import ChartKpi from "../../Components/ChartKpi/ChartKpi"
-import { Chart } from "react-google-charts";
-// import CheckboxList from "../../Components/CheckboxList/CheckboxList";
+import ChartData from "../../Components/ChartData/ChartData";
 import { useState } from "react";
 import HorsZone from "../../Components/HorsZone/HorsZone";
 import { IceCream } from "tabler-icons-react";
@@ -48,20 +45,6 @@ const Item = styled(Paper)(({ theme }) => ({
   },
   color: "#ffffff",
 }));
-export const data = [
-  ["Ville", "Lead", "Verifié", "RDV"],
-  ["Hors Zones", 45, 23, 32],
-  ["",0, 0, 0],
-  ["Paris", 40, 30, 20],
-  ["",0, 0, 0],
-  ["Metz", 43, 30, 25],
-  ["",0, 0, 0],
-  ["Nancy", 47, 43, 29],
-  ["",0, 0, 0],
-  ["Strasbourg", 45, 10, 3],
-  ["",0, 0, 0],
-  ["Toulon", 25, 10, 5],
-];
 
 const dataUtmFilter = (state, action) => {
   return {
@@ -76,16 +59,6 @@ const dataUtmFilter = (state, action) => {
     booked: action.booked,
   };
 };
-
-// export const data = [
-//   ["Ville", "Lead", "Verifié", "RDV"],
-//   ["Hors Zones", 45, 0, 0],
-//   ["Paris", 100, 90,80],
-//   ["Metz", 23, 40, 25],
-//   ["Nancy", 33, 45, 29,]
-//   ["Strasbourg", 45, 10, 35],
-//   ["Toulon", 100, 50, 35],
-// ];
 
 const Item4 = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#D00062" : "#D00062",
@@ -121,6 +94,8 @@ const Item3 = styled(Paper)(({ theme }) => ({
   color: "#ffffff",
   boxShadow: "2px 2px #3D3C3C",
 }));
+
+
 
 const Dashboard = () => {
   const [numOfUsers, setNumOfUsers] = useState();
@@ -216,13 +191,10 @@ const Dashboard = () => {
           other: otherUtm,
           booked: bookedUtm,
         });
-        // console.log("TTKTKTKTKT 3"+response[3]._id);
         let arr = [];
 
-        // console.log(response[0]);
         let countverify = 0;
         let fb = 0;
-        // console.log(countverify);
         if (response.quotation_data) {
           response.quotation_data.forEach((element) => {
             if (
@@ -242,41 +214,13 @@ const Dashboard = () => {
           });
         }
 
-        // console.log(countverify);
         setVerify(countverify);
-        // setQuotationData(arr);
       } catch (err) {
         console.log(err);
       }
     };
     fetchQuotations();
   }, [filter]);
-
-  // useEffect(() => {
-  //   const fetchBookings = async () => {
-  //     try {
-  //       const response = await sendRequest(
-  //         "http://localhost:80/api/booking",
-  //         "GET"
-  //       );
-  //       let arr = [];
-  //       if (response) {
-  //   response.forEach((element) => {
-  //     if (element !== undefined) {
-  //       let info = {
-  //         ...element,
-  //       };
-  //       arr.push(info.quotationId);
-  //     }
-  //   });
-  // }
-  // setbookingData(arr);
-  //     } catch (err) {
-  //       console.log(err);
-  //     }
-  //   };
-  //   fetchBookings();
-  // }, []);
 
   console.log(bookingData);
 
@@ -651,50 +595,6 @@ const Dashboard = () => {
                 </Grid>
               </Grid>
             </Box>
-            {/* 
-                  <Item2>
-                    <Chart
-                      chartType="BarChart"
-                      width="100%"
-                      borderRadius="20px"
-                      height="100%"
-                      data={data}
-                      lloader={<div>Loading Chart</div>}
-                      options={{
-                        legendTextStyle: { color: "#FFF" },
-                        titleTextStyle: { color: "#FFF" },
-
-                        vAxis: {
-                          textStyle: { color: "#FFF" },
-                        },
-                        hAxis: {
-                          textStyle: { color: "#FFF" },
-                        },
-
-                        chartArea: {
-                          title: "Data",
-                        },
-                        backgroundColor: {
-                          fill: "transparent",
-                        },
-                        chart: {
-                          backgroundColor: {
-                            fill: "transparent",
-                          },
-                          title: "Data",
-                          fill: "#0000000",
-                        },
-                        colors: ["#1F7196", "#D00062", "#4991B9"],
-                      }}
-                    /> */}
-
-            {/* <Chart
-                            series={chartOptions.series}
-                            type='line'
-                            height='100%'
-                        /> */}
-            {/* </Item2> */}
-
             <Grid
               container
               spacing={{ xs: 3, md: 7 }}
@@ -716,116 +616,8 @@ const Dashboard = () => {
                   >
                     Charts
                   </Title>
-                  {/* <Chart
-                      chartType="BarChart"
-                      width="100%"
-                      borderRadius="20px"
-                      height="100%"
-                      data={data}
-                      lloader={<div>Loading Chart</div>}
-                      options={{
-                        legendTextStyle: { color: "#FFF" },
-                        titleTextStyle: { color: "#FFF" },
-
-                        vAxis: {
-                          textStyle: { color: "#FFF" },
-                        },
-                        hAxis: {
-                          textStyle: { color: "#FFF" },
-                        },
-
-                        chartArea: {
-                          title: "Data",
-                        },
-                        backgroundColor: {
-                          fill: "transparent",
-                        },
-                        chart: {
-                          backgroundColor: {
-                            fill: "transparent",
-                          },
-                          title: "Data",
-                          fill: "#0000000",
-                        },
-                        colors: ["#1F7196", "#D00062", "#4991B9"],
-                      }}
-                    />
-                    <br></br>
-                    <br></br>
-                    <br></br> */}
-                  <Chart
-                    chartType="ColumnChart"
-                    width="100%"
-                    borderRadius="20px"
-                    data={data}
-                    lloader={<div>Loading Chart</div>}
-                    options={{
-                      height: 450,
-                      spacing: 23,
-                      legendTextStyle: { color: "#FFF" },
-                      titleTextStyle: { color: "#FFF" },
-                      isStacked: false,
-                      bar: { groupWidth: "100%" },
-                      vAxis: {
-                        textStyle: { color: "#FFF" },
-                      },
-                      hAxis: {
-                        textStyle: { color: "#FFF" },
-                      },
-                      chartArea: {
-                        title: "Data",
-                      },
-                      backgroundColor: {
-                        fill: "transparent",
-                      },
-                      chart: {
-                        backgroundColor: {
-                          fill: "transparent",
-                        },
-                        title: "Data",
-                        fill: "#0000000",
-                      },
-                      colors: ["#1F7196", "#D00062", "#4991B9"],
-                    }}
-                  />
+                  <ChartData />
                 </Item3>
-                {/* <Item3>             
-                <Chart
-                      chartType="BarChart"
-                      width="100%"
-                      borderRadius="20px"
-                      height="100%"
-                      data={data}
-                      lloader={<div>Loading Chart</div>}
-                      options={{
-                        legendTextStyle: { color: "#FFF" },
-                        titleTextStyle: { color: "#FFF" },
-
-                        vAxis: {
-                          textStyle: { color: "#FFF" },
-                        },
-                        hAxis: {
-                          textStyle: { color: "#FFF" },
-                        },
-
-                        chartArea: {
-                          title: "Data",
-                        },
-                        backgroundColor: {
-                          fill: "transparent",
-                        },
-                        chart: {
-                          backgroundColor: {
-                            fill: "transparent",
-                          },
-                          title: "Data",
-                          fill: "#0000000",
-                        },
-                        colors: ["#1F7196", "#D00062", "#4991B9"],
-                      }}
-                    />
-                    
-              </Item3> */}
               </Grid>
             </Grid>
             <CssBaseline />

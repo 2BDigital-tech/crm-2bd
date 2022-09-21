@@ -176,7 +176,7 @@ export default function FilterForm(props) {
           style={{
             marginTop:"24px",
             marginLeft:"-20px",
-            height:"56px",
+            height:"55px",
             width:"86px",
             alignContent:"auto",
             textTransform: "capitalize",
