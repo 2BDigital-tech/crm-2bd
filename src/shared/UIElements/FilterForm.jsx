@@ -59,9 +59,11 @@ export default function FilterForm(props) {
       component="form"
       sx={{
         "& .MuiTextField-root": { m: -6, width: "25ch", ml: 0, mt: 3 },
+     
       }}
       noValidate
       autoComplete="off"
+
     >
       <div>
         <TextField
@@ -75,18 +77,21 @@ export default function FilterForm(props) {
           variant="filled"
           value={city}
           onChange={handleChangeCity}
+          // sx={{       borderTop :4, borderLeft :4,   borderBottom :4,   
+          //   borderColor: 'white'}}
           SelectProps={{
             icon: {
               color: "#828182",
             },
           }}
-          helperText="Ville"
+          // helperText="Ville"
           style={{
             backgroundColor: "#9D9D9D",
             width: "150px",
             borderRadius: "10px",
             height: "55px",
             color: "#9D9D9D",
+     
           }}
         >
           {cities.map((option) => (
@@ -103,6 +108,8 @@ export default function FilterForm(props) {
           select
           variant="filled"
           label="Mois"
+          // sx={{       borderTop :4, borderBottom :4, 
+          //   borderColor: 'white'}}
           value={month}
           onChange={handleChangeMonth}
           SelectProps={{
@@ -111,7 +118,7 @@ export default function FilterForm(props) {
               color: "black",
             },
           }}
-          helperText="Mois"
+          // helperText="Mois"
           style={{
             backgroundColor: "#9D9D9D",
             width: "150px",
@@ -132,6 +139,8 @@ export default function FilterForm(props) {
           }}
           id="outlined-select-year"
           select
+          // sx={{       borderTop :4, borderBottom :4, 
+          //   borderColor: 'white'}}
           variant="filled"
           label="Annee"
           value={year}
@@ -139,7 +148,7 @@ export default function FilterForm(props) {
           SelectProps={{
             native: true,
           }}
-          helperText="Année"
+          // helperText="Année"
           style={{
             backgroundColor: "#9D9D9D",
             color: "white",
@@ -162,6 +171,8 @@ export default function FilterForm(props) {
           // height={"100px"}
           // mt={"xl"}
           // size="lg"
+          // sx={{       borderTop :4, borderBottom :4, borderRight:4,
+          //   borderColor: 'white'}}
           style={{
             marginTop:"24px",
             marginLeft:"-20px",

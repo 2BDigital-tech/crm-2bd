@@ -16,6 +16,7 @@
     "@testing-library/user-event": "^13.5.0",
     "apexcharts": "^3.35.4",
     "bootstrap": "^3.4.1",
+    "chart.js": "^3.9.1",
     "framer-motion": "^7.1.0",
     "material-ui-search-bar": "^1.0.0",
     "moment": "^2.29.4",

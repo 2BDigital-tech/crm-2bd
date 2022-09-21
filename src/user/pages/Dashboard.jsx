@@ -18,7 +18,7 @@ import { useEffect, useReducer } from "react";
 import { useHttpClient } from "../../hooks/http-hook";
 import Todo from "../../shared/UIElements/Todo";
 import FilterForm from "../../shared/UIElements/FilterForm";
-
+import { Bar } from 'react-chartjs-2';
 import SignalCellularAltIcon from "@mui/icons-material/SignalCellularAlt";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
 import EventNoteIcon from "@mui/icons-material/EventNote";
@@ -50,17 +50,17 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 export const data = [
   ["Ville", "Lead", "Verifié", "RDV"],
-  ["Hors Zones", 45, 0, 0],
-  ["", 0, 0, 0],
+  ["Hors Zones", 45, 23, 32],
+  ["",0, 0, 0],
   ["Paris", 40, 30, 20],
-  ["", 0, 0, 0],
-  ["Metz", 23, 40, 25],
-  ["", 0, 0, 0],
-  ["Nancy", 33, 45, 29],
-  ["", 0, 0, 0],
-  ["Strasbourg", 45, 10, 35],
-  ["", 0, 0, 0],
-  ["Toulon", 15, 10, 35],
+  ["",0, 0, 0],
+  ["Metz", 43, 30, 25],
+  ["",0, 0, 0],
+  ["Nancy", 47, 43, 29],
+  ["",0, 0, 0],
+  ["Strasbourg", 45, 10, 3],
+  ["",0, 0, 0],
+  ["Toulon", 25, 10, 5],
 ];
 
 const dataUtmFilter = (state, action) => {
@@ -326,7 +326,7 @@ const Dashboard = () => {
             </Grid> */}
           </Box>
 
-          <Stack ml={{ xl: "290px", md: "290px" }} sx={{ mt: "-9%" }}>
+          <Stack ml={{ xl: "290px", md: "290px" }} sx={{ mt: "-9%" }} >
             <Typography
               variant="h5"
               sx={{ mb: "1%" }}
@@ -335,6 +335,7 @@ const Dashboard = () => {
             >
               Dashboard
             </Typography>
+
             <FilterForm filterInfo={(obj) => fetchFilter(obj)} />
 
             <Box sx={{ flexGrow: 1, mt: "3%" }}>
@@ -753,7 +754,7 @@ const Dashboard = () => {
                     <br></br>
                     <br></br> */}
                   <Chart
-                    chartType="BarChart"
+                    chartType="ColumnChart"
                     width="100%"
                     borderRadius="20px"
                     data={data}
