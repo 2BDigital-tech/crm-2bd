@@ -3,11 +3,12 @@ import { useState } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
-import { Button } from "@mantine/core";
+// import { Button } from "@mantine/core";
 import { months } from "../../constants/filter_constants";
 import { years } from "../../constants/filter_constants";
 import { cities } from "../../constants/filter_constants";
 import { withTheme } from "@emotion/react";
+import { Button } from "@mui/material";
 
 const monthsMap = new Map();
 monthsMap.set("Janvier", "01");
@@ -57,7 +58,7 @@ export default function FilterForm(props) {
     <Box
       component="form"
       sx={{
-        "& .MuiTextField-root": { m: 3, width: "25ch", ml: 0, mt: 3 },
+        "& .MuiTextField-root": { m: -6, width: "25ch", ml: 0, mt: 3 },
       }}
       noValidate
       autoComplete="off"
@@ -65,25 +66,27 @@ export default function FilterForm(props) {
       <div>
         <TextField
           InputLabelProps={{
-            style: { color: "#fff" },
+            style: { color: "#202020" },
           }}
           id="outlined-select-city"
           select
           label="Ville"
+          defaultValue={"Ville"}
+          variant="filled"
           value={city}
           onChange={handleChangeCity}
           SelectProps={{
             icon: {
-              color: "white",
+              color: "#828182",
             },
           }}
           helperText="Ville"
           style={{
-            backgroundColor: "#3D3C3C",
+            backgroundColor: "#9D9D9D",
             width: "150px",
             borderRadius: "10px",
             height: "55px",
-            color: "white",
+            color: "#9D9D9D",
           }}
         >
           {cities.map((option) => (
@@ -92,25 +95,25 @@ export default function FilterForm(props) {
             </MenuItem>
           ))}
         </TextField>
-
         <TextField
           InputLabelProps={{
-            style: { color: "white" },
+            style: { color: "#202020" },
           }}
           id="outlined-select-month"
           select
+          variant="filled"
           label="Mois"
           value={month}
           onChange={handleChangeMonth}
           SelectProps={{
             native: true,
             icon: {
-              color: "white",
+              color: "black",
             },
           }}
           helperText="Mois"
           style={{
-            backgroundColor: "#3D3C3C",
+            backgroundColor: "#9D9D9D",
             width: "150px",
             height: "55px",
             borderRadius: "10px",
@@ -125,10 +128,11 @@ export default function FilterForm(props) {
         </TextField>
         <TextField
           InputLabelProps={{
-            style: { color: "#fff" },
+            style: { color: "#202020" },
           }}
           id="outlined-select-year"
           select
+          variant="filled"
           label="Annee"
           value={year}
           onChange={handleChangeYear}
@@ -137,7 +141,7 @@ export default function FilterForm(props) {
           }}
           helperText="Année"
           style={{
-            backgroundColor: "#3D3C3C",
+            backgroundColor: "#9D9D9D",
             color: "white",
             width: "150px",
             borderRadius: "10px",
@@ -151,13 +155,25 @@ export default function FilterForm(props) {
           ))}
         </TextField>
         <Button
-          variant="gradient"
-          gradient={{ from: "#D00062", to: "indigo" }}
+          // variant="gradient"
+          variant="contained"
+          // gradient={{ from: "#D00062", to: "indigo" }}
           onClick={submitFilter}
-          height={"100px"}
-          mt={"xl"}
-          size="lg"
-          radius={"md"}
+          // height={"100px"}
+          // mt={"xl"}
+          // size="lg"
+          style={{
+            marginTop:"24px",
+            marginLeft:"-20px",
+            height:"56px",
+            width:"86px",
+            alignContent:"auto",
+            textTransform: "capitalize",
+            borderRadius: 10,
+            background: "linear-gradient(to right bottom, #C30772, #615EE0)",
+            fontSize: "15px",
+          }}
+          // radius={"md"}
         >
           Filtrer
         </Button>
