@@ -8,20 +8,24 @@ import { useHttpClient } from "../../hooks/http-hook";
 import Container from "@mui/material/Container";
 import LoadingSpinner from "./LoadingSpinner";
 import { useEffect } from "react";
+import { roles, cities } from "../../constants/user_constants";
 
 const EditUserModal = (props) => {
   const [formIsValid, setFormIsValid] = useState(false);
   const [role, setRole] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [city, setCity] = useState("");
   const [customerName, setCustomerName] = useState("");
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
   useEffect(() => {
+    console.log(props.infos);
     setRole(props.infos.role);
     setEmail(props.infos.email);
     setName(props.infos.name);
     setCustomerName(props.infos.customerName);
+    setCity(props.infos.city);
   }, []);
 
   var today = new Date();
@@ -37,7 +41,6 @@ const EditUserModal = (props) => {
       minHeight: 600,
     },
   };
-  const roles = [{ value: "Client" }, { value: "Administrateur" }];
   function createData(name, calories, fat, carbs) {
     return { name, calories, fat, carbs };
   }
@@ -53,6 +56,7 @@ const EditUserModal = (props) => {
           email: email,
           customerName: customerName,
           role: role,
+          city: city,
         }),
         { Authorization: "application/json" }
       );
@@ -79,6 +83,10 @@ const EditUserModal = (props) => {
 
   const customerNameHandler = (event) => {
     setCustomerName(event.target.value);
+  };
+
+  const cityHandler = (event) => {
+    setCity(event.target.value);
   };
 
   const handleClose = () => {
@@ -147,6 +155,27 @@ const EditUserModal = (props) => {
                 }}
                 onChange={customerNameHandler}
               />
+            )}
+            {role === "Expert" && (
+              <TextField
+                id="company-name"
+                label="Ville*"
+                placeholder="Ville*"
+                select
+                value={city}
+                style={{
+                  width: "500px",
+                  backgroundColor: "white",
+                  borderRadius: "10px",
+                }}
+                onChange={cityHandler}
+              >
+                {cities.map((option) => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.value}
+                  </MenuItem>
+                ))}
+              </TextField>
             )}
             <TextField
               id="name"

@@ -11,72 +11,8 @@ import { useEffect, useState } from "react";
 import LoadingSpinner from "../../shared/UIElements/LoadingSpinner";
 import { Switch } from "@mantine/core";
 import HorsZone from "../../Components/HorsZone/HorsZone";
-
-const columns = [
-  { field: "quotationId", headerName: "ID", width: 90 },
-  {
-    field: "firstname",
-    headerName: "First name",
-    width: 150,
-    editable: false,
-  },
-  {
-    field: "lastname",
-    headerName: "Last name",
-    width: 150,
-    editable: false,
-  },
-  {
-    field: "email",
-    headerName: "E-mail",
-    width: 250,
-    editable: true,
-  },
-  {
-    field: "phone",
-    headerName: "Phone",
-    width: 180,
-    editable: true,
-  },
-  {
-    field: "address",
-    headerName: "Addresse",
-    width: 300,
-    editable: true,
-  },
-  {
-    field: "surface",
-    headerName: "Surface",
-    width: 150,
-    editable: true,
-  },
-  {
-    field: "typology",
-    headerName: "Typology",
-    width: 80,
-  },
-  {
-    field: "price",
-    headerName: "Estimation",
-    width: 150,
-    type: "number",
-    valueFormatter: ({ value }) =>
-      value ? parseInt(value) : "Pas d'estimation",
-    editable: true,
-  },
-];
-
-// const rows = [
-//   { id: 1, lastName: "Snow", firstName: "Jon", age: 35 },
-//   { id: 2, lastName: "Lannister", firstName: "Cersei", age: 42 },
-//   { id: 3, lastName: "Lannister", firstName: "Jaime", age: 45 },
-//   { id: 4, lastName: "Stark", firstName: "Arya", age: 16 },
-//   { id: 5, lastName: "Targaryen", firstName: "Daenerys", age: null },
-//   { id: 6, lastName: "Melisandre", firstName: null, age: 150 },
-//   { id: 7, lastName: "Clifford", firstName: "Ferrara", age: 44 },
-//   { id: 8, lastName: "Frances", firstName: "Rossini", age: 36 },
-//   { id: 9, lastName: "Roxie", firstName: "Harvey", age: 65 },
-// ];
+import { columns } from "../../constants/leads_constants";
+import { useLocation } from "react-router-dom";
 
 function CustomToolbar() {
   return (
@@ -84,6 +20,27 @@ function CustomToolbar() {
       <GridToolbarExport />
     </GridToolbarContainer>
   );
+}
+
+function formatData(data) {
+  let arr = [];
+  data.forEach((element) => {
+    if (element.contact !== undefined && element.quotation !== undefined) {
+      const date = element._createdAt.substring(0, 10);
+      let info = {
+        ...element.contact,
+        ...element.quotation,
+        ...element.estimation,
+        date,
+      };
+      // console.log(info);
+      arr.push(info);
+    }
+  });
+  arr.forEach(function (item, i) {
+    item.quotationId = i + 1;
+  });
+  return arr;
 }
 
 export default function Leads() {
@@ -108,36 +65,59 @@ export default function Leads() {
     const fetchQuotations = async () => {
       try {
         const response = await sendRequest(
-          "http://localhost:80/api/data",
+          "http://localhost:80/api/data/getLeads",
           "GET"
         );
         // setQuotationData(response);
-        console.log(response[3]);
-        let arr = [];
-        console.log(response[0]);
-        if (response) {
-          response.result.forEach((element) => {
-            if (
-              element.contact !== undefined &&
-              element.quotation !== undefined
-            ) {
-              let info = {
-                ...element.contact,
-                ...element.quotation,
-                ...element.estimation,
-              };
-              // console.log(info);
-              arr.push(info);
-            }
-          });
-        }
-        setQuotationData(arr);
+        console.log(response.result[0]);
+        setQuotationData(formatData(response.result));
       } catch (err) {
         console.log(err);
       }
     };
     fetchQuotations();
   }, []);
+
+  const { state } = useLocation();
+  let utmSource = [];
+
+  if (state) {
+    console.log("source", state.dataSource);
+
+    switch (state.source) {
+      case "leads":
+        utmSource = formatData(state.dataSource);
+        break;
+      case "facebook":
+        utmSource = formatData(state.dataSource.facebook);
+        break;
+      case "google":
+        utmSource = formatData(state.dataSource.google);
+        break;
+      case "website":
+        utmSource = formatData(state.dataSource.website);
+        break;
+      case "lbc":
+        utmSource = formatData(state.dataSource.lbc);
+        break;
+      case "lrl":
+        utmSource = formatData(state.dataSource.lrl);
+        break;
+      case "ma":
+        utmSource = formatData(state.dataSource.ma);
+        break;
+      case "other":
+        utmSource = formatData(state.dataSource.other);
+        break;
+      case "booked":
+        utmSource = formatData(state.dataSource.booked);
+        break;
+
+      // default:
+      //   utmSource = formatData(state.dataSource);
+      //   break;
+    }
+  }
 
   return (
     <React.Fragment>
@@ -183,7 +163,7 @@ export default function Leads() {
                     backgroundColor: "#393939",
                     height: 850,
                   }}
-                  rows={quotationData}
+                  rows={utmSource.length !== 0 ? utmSource : quotationData}
                   columns={columns}
                   pageSize={11}
                   rowsPerPageOptions={[10]}

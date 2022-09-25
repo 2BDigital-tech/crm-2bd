@@ -9,6 +9,7 @@ const userSchema = new Schema({
   password: { type: String, required: false },
   role: { type: String, required: true },
   customerName: { type: String, required: true },
+  city: { type: String, required: false },
   creationDate: { type: String, required: true },
   tasks: [{ type: mongoose.Types.ObjectId, required: false, ref: "Task" }],
 });

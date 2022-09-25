@@ -50,7 +50,7 @@ const addUser = async (req, res, next) => {
     );
     return next(error);
   }
-  const { name, email, role, creationDate, customerName } = req.body;
+  const { name, email, role, creationDate, customerName, city } = req.body;
   if (await userExists(email)) {
     const error = new HttpError(
       "Cette adresse e-mail est déjà utilisée par un utilisateur",
@@ -78,6 +78,7 @@ const addUser = async (req, res, next) => {
     role,
     customerName: customerName,
     creationDate,
+    city,
   });
   try {
     await createdUser.save();
@@ -229,7 +230,7 @@ const deleteUser = async (req, res, next) => {
 };
 
 const updateUser = async (req, res, next) => {
-  const { name, email, role, customerName } = req.body;
+  const { name, email, role, customerName, city } = req.body;
   const userId = req.params.uid;
   let user;
   try {
@@ -248,6 +249,7 @@ const updateUser = async (req, res, next) => {
     user.email = email;
     user.role = role;
     user.customerName = customerName;
+    user.city = city;
   }
 
   try {

@@ -88,7 +88,6 @@ const getQuotationData = async (req, res, next) => {
 };
 
 const getLeads = async (req, res, next) => {
-  let docs = [];
   let db;
   try {
     // Connect to the MongoDB cluster

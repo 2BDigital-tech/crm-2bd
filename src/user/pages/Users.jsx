@@ -87,7 +87,7 @@ const Users = () => {
     <React.Fragment>
       <div style={styles.paperContainer}>
         <div style={styles.formContainer}>
-          <Stack ml={{ xl: "290px", md: "290px" }}  sx={{ mt: "-5%" }}>
+          <Stack ml={{ xl: "290px", md: "290px" }} sx={{ mt: "-5%" }}>
             <Typography
               variant="h5"
               sx={{ mb: "7%" }}
@@ -110,7 +110,8 @@ const Users = () => {
                     variant="contained"
                     style={{
                       margin: "30px",
-                      background:"linear-gradient(to right bottom, #C30772, #615EE0)",
+                      background:
+                        "linear-gradient(to right bottom, #C30772, #615EE0)",
                     }}
                     onClick={handleOpen}
                   >
@@ -156,7 +157,8 @@ const Users = () => {
                   style={{
                     borderRadius: "10px",
                     marginTop: "1rem",
-                    background:"linear-gradient(to right bottom, #C30772, #615EE0)",
+                    background:
+                      "linear-gradient(to right bottom, #C30772, #615EE0)",
                   }}
                   onClick={handleOpen}
                 >
@@ -294,6 +296,8 @@ const Users = () => {
                               {row.customerName !== undefined &&
                               row.customerName !== "null"
                                 ? "(" + row.customerName + ")"
+                                : row.city !== undefined && row.city !== "null"
+                                ? "(" + row.city + ")"
                                 : ""}
                             </Typography>{" "}
                           </TableCell>
@@ -324,6 +328,7 @@ const Users = () => {
                                     name: row.name,
                                     email: row.email,
                                     customerName: row.customerName,
+                                    city: row.city,
                                   },
                                   "edit"
                                 )

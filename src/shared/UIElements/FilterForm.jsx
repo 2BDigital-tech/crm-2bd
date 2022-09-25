@@ -3,32 +3,25 @@ import { useState } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
-import { months } from "../../constants/filter_constants";
-import { years } from "../../constants/filter_constants";
+import { months, years, monthsMap } from "../../constants/filter_constants";
 import { cities } from "../../constants/filter_constants";
 import { withTheme } from "@emotion/react";
 import { Button } from "@mui/material";
-import TuneIcon from '@mui/icons-material/Tune';
+import TuneIcon from "@mui/icons-material/Tune";
 
-const monthsMap = new Map();
-monthsMap.set("Janvier", "01");
-monthsMap.set("Février", "02");
-monthsMap.set("Mars", "03");
-monthsMap.set("Avril", "04");
-monthsMap.set("Mai", "05");
-monthsMap.set("Juin", "06");
-monthsMap.set("Juillet", "07");
-monthsMap.set("Août", "08");
-monthsMap.set("Séptembre", "09");
-monthsMap.set("Octobre", "10");
-monthsMap.set("Novembre", "11");
-monthsMap.set("Décembre", "12");
+function getMonthName(map, searchValue) {
+  for (let [key, value] of map.entries()) {
+    if (value === searchValue) return key;
+  }
+}
 
 export default function FilterForm(props) {
   const [city, setCity] = React.useState("");
-  const [month, setMonth] = React.useState("");
-  const [year, setYear] = React.useState("");
-  const [monthNum, setMonthNum] = React.useState("");
+  let curr_month = new Date().getMonth() + 1;
+  curr_month = curr_month > 9 ? curr_month : "0" + curr_month;
+  const [month, setMonth] = React.useState(getMonthName(monthsMap, curr_month));
+  const [year, setYear] = React.useState(new Date().getFullYear());
+  const [monthNum, setMonthNum] = React.useState(monthsMap.get(month));
 
   const submitFilter = () => {
     const obj = JSON.stringify({ city, monthNum, year });
@@ -59,11 +52,9 @@ export default function FilterForm(props) {
       component="form"
       sx={{
         "& .MuiTextField-root": { m: -5.4, width: "25ch", ml: 0, mt: 3 },
-     
       }}
       noValidate
       autoComplete="off"
-
     >
       <div>
         <TextField
@@ -88,7 +79,6 @@ export default function FilterForm(props) {
             borderRadius: "10px",
             height: "55px",
             color: "#9D9D9D",
-     
           }}
         >
           {cities.map((option) => (
@@ -156,17 +146,17 @@ export default function FilterForm(props) {
           variant="contained"
           onClick={submitFilter}
           style={{
-            marginTop:"24px",
-            marginLeft:"-20px",
-            height:"55px",
-            width:"105px",
-            alignContent:"auto",
+            marginTop: "24px",
+            marginLeft: "-20px",
+            height: "55px",
+            width: "105px",
+            alignContent: "auto",
             textTransform: "capitalize",
             borderRadius: 10,
             background: "linear-gradient(to right bottom, #C30772, #615EE0)",
             fontSize: "15px",
           }}
-          endIcon={<TuneIcon/>}
+          endIcon={<TuneIcon />}
         >
           Filtrer
         </Button>

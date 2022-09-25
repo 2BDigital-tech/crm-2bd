@@ -21,9 +21,10 @@ import FacebookIcon from "@mui/icons-material/Facebook";
 import GoogleIcon from "@mui/icons-material/Google";
 import WebIcon from "@mui/icons-material/Web";
 import TabIcon from "@mui/icons-material/Tab";
-import ChartData from "../../Components/ChartData/ChartData";
+import ChartData, { data } from "../../Components/ChartData/ChartData";
 import { useState } from "react";
 import { Title } from "@mantine/core";
+import { useNavigate } from "react-router-dom";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#2D2D2D" : "#2D2D2D",
@@ -54,7 +55,7 @@ const dataUtmFilter = (state, action) => {
 };
 
 const Item4 = styled(Paper)(({ theme }) => ({
-  backgroundColor:"#2D2D2D",
+  backgroundColor: "#2D2D2D",
   ...theme.typography.body2,
   padding: theme.spacing(3),
   borderRadius: "20px",
@@ -68,7 +69,7 @@ const Item4 = styled(Paper)(({ theme }) => ({
 }));
 
 const Item2 = styled(Paper)(({ theme }) => ({
-  backgroundColor:"#2D2D2D",
+  backgroundColor: "#2D2D2D",
   ...theme.typography.body2,
   padding: theme.spacing(5),
   borderRadius: "20px",
@@ -78,7 +79,7 @@ const Item2 = styled(Paper)(({ theme }) => ({
 }));
 
 const Item3 = styled(Paper)(({ theme }) => ({
-  backgroundColor:"#2D2D2D",
+  backgroundColor: "#2D2D2D",
   ...theme.typography.body2,
   padding: theme.spacing(1),
   borderRadius: "20px",
@@ -88,11 +89,10 @@ const Item3 = styled(Paper)(({ theme }) => ({
   boxShadow: "2px 2px #3D3C3C",
 }));
 
-
-
 const Dashboard = () => {
   const [numOfUsers, setNumOfUsers] = useState();
   const { sendRequest } = useHttpClient();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -132,7 +132,7 @@ const Dashboard = () => {
     const fetchQuotations = async () => {
       try {
         const response = await sendRequest(
-          "http://localhost:80/api/data",
+          "http://localhost:80/api/data/getQuotations",
           "POST",
           filter
         );
@@ -215,7 +215,20 @@ const Dashboard = () => {
     fetchQuotations();
   }, [filter]);
 
-  console.log(bookingData);
+  const openLead = (source) => {
+    let dataSource = [];
+    if (source === "leads") {
+      dataSource = quotationData;
+    } else {
+      dataSource = dataUtm;
+    }
+    navigate("/leads", {
+      state: {
+        dataSource,
+        source,
+      },
+    });
+  };
 
   const customTheme = createMuiTheme({
     palette: {
@@ -263,7 +276,7 @@ const Dashboard = () => {
             </Grid> */}
           </Box>
 
-          <Stack ml={{ xl: "290px", md: "290px" }} sx={{ mt: "-9%" }} >
+          <Stack ml={{ xl: "290px", md: "290px" }} sx={{ mt: "-9%" }}>
             <Typography
               variant="h5"
               sx={{ mb: "1%" }}
@@ -283,7 +296,7 @@ const Dashboard = () => {
                 sx={{ mb: "3%" }}
               >
                 <Grid item xs={2} sm={4} md={2}>
-                  <Item>
+                  <Item onClick={() => openLead("leads")}>
                     <Typography
                       sx={{ mb: "2%" }}
                       variant="h5"
@@ -313,7 +326,7 @@ const Dashboard = () => {
                   </Item>
                 </Grid>
                 <Grid item xs={2} sm={4} md={2}>
-                  <Item>
+                  <Item onClick={() => openLead("verify")}>
                     <Typography
                       sx={{ mb: "2%" }}
                       variant="h5"
@@ -343,7 +356,7 @@ const Dashboard = () => {
                   </Item>
                 </Grid>
                 <Grid item xs={2} sm={4} md={2}>
-                  <Item>
+                  <Item onClick={() => openLead("booked")}>
                     {" "}
                     <Typography
                       sx={{ mb: "2%" }}
@@ -374,7 +387,7 @@ const Dashboard = () => {
                   </Item>
                 </Grid>
                 <Grid item xs={2} sm={4} md={2}>
-                  <Item>
+                  <Item onClick={() => openLead("facebook")}>
                     {" "}
                     <Typography
                       sx={{ mb: "2%" }}
@@ -405,7 +418,7 @@ const Dashboard = () => {
                   </Item>
                 </Grid>
                 <Grid item xs={2} sm={4} md={2}>
-                  <Item>
+                  <Item onClick={() => openLead("google")}>
                     {" "}
                     <Typography
                       sx={{ mb: "2%" }}
@@ -436,7 +449,7 @@ const Dashboard = () => {
                   </Item>
                 </Grid>
                 <Grid item xs={2} sm={4} md={2}>
-                  <Item>
+                  <Item onClick={() => openLead("website")}>
                     {" "}
                     <Typography
                       sx={{ mb: "2%" }}
@@ -467,7 +480,7 @@ const Dashboard = () => {
                   </Item>
                 </Grid>
                 <Grid item xs={2} sm={4} md={2}>
-                  <Item>
+                  <Item onClick={() => openLead("lbc")}>
                     <Typography
                       sx={{ mb: "2%" }}
                       variant="h5"
@@ -497,7 +510,7 @@ const Dashboard = () => {
                   </Item>
                 </Grid>
                 <Grid item xs={2} sm={4} md={2}>
-                  <Item>
+                  <Item onClick={() => openLead("lrl")}>
                     <Typography
                       sx={{ mb: "2%" }}
                       variant="h5"
@@ -527,7 +540,7 @@ const Dashboard = () => {
                   </Item>
                 </Grid>
                 <Grid item xs={2} sm={4} md={2}>
-                  <Item>
+                  <Item onClick={() => openLead("ma")}>
                     <Typography
                       sx={{ mb: "2%" }}
                       variant="h5"
@@ -557,7 +570,7 @@ const Dashboard = () => {
                   </Item>
                 </Grid>
                 <Grid item xs={2} sm={4} md={2}>
-                  <Item>
+                  <Item onClick={() => openLead("other")}>
                     <Typography
                       sx={{ mb: "2%" }}
                       variant="h5"
@@ -607,7 +620,7 @@ const Dashboard = () => {
                     color="#BBBBBB"
                     fontWeight={"bold"}
                   >
-                  Chart
+                    Chart
                   </Title>
                   <ChartData />
                 </Item3>

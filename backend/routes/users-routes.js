@@ -30,6 +30,7 @@ router.patch(
   check("email").normalizeEmail().isEmail(),
   check("name").isString(),
   check("role").isString(),
+  check("city").isString(),
   userControllers.updateUser
 );
 

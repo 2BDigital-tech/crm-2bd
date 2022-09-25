@@ -7,12 +7,14 @@ import CloseIcon from "@mui/icons-material/Close";
 import { useHttpClient } from "../../hooks/http-hook";
 import Container from "@mui/material/Container";
 import LoadingSpinner from "./LoadingSpinner";
+import { roles, cities } from "../../constants/user_constants";
 
 const AddUserModal = (props) => {
   const [formIsValid, setFormIsValid] = useState(false);
   const [role, setRole] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [city, setCity] = useState("");
   const [customerName, setCustomerName] = useState("");
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
@@ -21,7 +23,7 @@ const AddUserModal = (props) => {
     today.getDate() + "-" + (today.getMonth() + 1) + "-" + today.getFullYear();
   const style_form = {
     paperContainer: {
-      marginTop: "10%",
+      marginTop: "3%",
       borderRadius: "25px",
       boxShadow: "9px 9px 9px 3px #202020",
       backgroundColor: "#2D2D2D",
@@ -29,7 +31,6 @@ const AddUserModal = (props) => {
       minHeight: 600,
     },
   };
-  const roles = [{ value: "Client" }, { value: "Administrateur" }];
 
   const submitHandler = async (event) => {
     event.preventDefault();
@@ -42,6 +43,7 @@ const AddUserModal = (props) => {
           email: email,
           role: role,
           customerName: customerName ? customerName : "null", // insert null as customer name if admin user is created
+          city: city ? city : "null",
           creationDate: date,
         }),
         false
@@ -69,6 +71,10 @@ const AddUserModal = (props) => {
 
   const customerNameHandler = (event) => {
     setCustomerName(event.target.value);
+  };
+
+  const cityHandler = (event) => {
+    setCity(event.target.value);
   };
 
   const handleClose = () => {
@@ -136,6 +142,26 @@ const AddUserModal = (props) => {
                 }}
                 onChange={customerNameHandler}
               />
+            )}
+            {role === "Expert" && (
+              <TextField
+                id="company-name"
+                label="Ville*"
+                placeholder="Ville*"
+                select
+                style={{
+                  width: "500px",
+                  backgroundColor: "white",
+                  borderRadius: "10px",
+                }}
+                onChange={cityHandler}
+              >
+                {cities.map((option) => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.value}
+                  </MenuItem>
+                ))}
+              </TextField>
             )}
             <TextField
               id="name"
