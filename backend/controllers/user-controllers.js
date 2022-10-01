@@ -182,6 +182,7 @@ const login = async (req, res, next) => {
     token: token,
     userId: existingUser.id,
     role: existingUser.role,
+    city: existingUser.city,
   });
 };
 

@@ -8,6 +8,8 @@ import Users from "./user/pages/Users";
 import SearchAppBar from "./Components/TopNav/TopNav";
 import { useNavigate } from "react-router-dom";
 import Leads from "./user/pages/Leads";
+import { LocalSeeOutlined } from "@mui/icons-material";
+import DashboardExpert from "./user/pages/DashboardExpert";
 
 const App = () => {
   const [token, setToken] = useState();
@@ -23,12 +25,13 @@ const App = () => {
     setPath(location.pathname);
   }, [location]);
 
-  const login = useCallback((token, username, role, id) => {
+  const login = useCallback((token, username, role, id, city) => {
     setToken(token);
     localStorage.setItem("token", JSON.stringify({ token: token }));
     localStorage.setItem("username", username);
     localStorage.setItem("user_role", role);
     localStorage.setItem("userId", id);
+    localStorage.setItem("expert_city", city);
     setUserId(id);
     setUsername(localStorage.getItem("username"));
   }, []);
@@ -39,6 +42,7 @@ const App = () => {
     localStorage.setItem("token", "");
     localStorage.setItem("username", "");
     localStorage.setItem("userId", "");
+    localStorage.setItem("expert_city", "");
     setUsername("");
     navigate("/login");
   }, []);
@@ -61,7 +65,16 @@ const App = () => {
   } else {
     routes = (
       <Routes>
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route
+          path="/dashboard"
+          element={
+            localStorage.getItem("expert_city") ? (
+              <DashboardExpert />
+            ) : (
+              <Dashboard />
+            )
+          }
+        />
         <Route path="/users" element={<Users />} />
         <Route path="/leads" element={<Leads />} />
         <Route path="/data" element={null} />

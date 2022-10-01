@@ -5,6 +5,7 @@ const router = express.Router();
 
 router.get("/getLeads", dataControllers.getLeads);
 router.post("/getQuotations", dataControllers.getQuotationData);
+router.post("/getLeadsExperts", dataControllers.getLeadsExperts);
 
 // router.get("/", dataControllers.getAllLeads);
 

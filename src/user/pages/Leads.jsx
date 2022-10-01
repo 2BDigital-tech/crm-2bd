@@ -63,14 +63,25 @@ export default function Leads() {
 
   useEffect(() => {
     const fetchQuotations = async () => {
+      let response;
       try {
-        const response = await sendRequest(
-          "http://localhost:80/api/data/getLeads",
-          "GET"
-        );
+        let expert_city = localStorage.getItem("expert_city");
+        if (expert_city) {
+          response = await sendRequest(
+            "http://localhost:80/api/data/getLeadsExperts",
+            "POST",
+            JSON.stringify({ expert_city })
+          );
+        } else {
+          response = await sendRequest(
+            "http://localhost:80/api/data/getLeads",
+            "GET"
+          );
+        }
+
         // setQuotationData(response);
-        console.log(response.result[0]);
-        setQuotationData(formatData(response.result));
+        console.log(response.quotation_data);
+        setQuotationData(formatData(response.quotation_data));
       } catch (err) {
         console.log(err);
       }

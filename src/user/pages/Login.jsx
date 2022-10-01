@@ -82,7 +82,8 @@ const Login = () => {
           responseData.token,
           responseData.userName,
           responseData.role,
-          responseData.userId
+          responseData.userId,
+          responseData.city
         );
         // localStorage.setItem("username", responseData.userName);
       }

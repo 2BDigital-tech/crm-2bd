@@ -18,10 +18,15 @@ function getMonthName(map, searchValue) {
 export default function FilterForm(props) {
   const [city, setCity] = React.useState("");
   let curr_month = new Date().getMonth() + 1;
-  curr_month = curr_month > 9 ? curr_month : "0" + curr_month;
+  curr_month = curr_month > 9 ? curr_month.toString() : "0" + curr_month;
   const [month, setMonth] = React.useState(getMonthName(monthsMap, curr_month));
   const [year, setYear] = React.useState(new Date().getFullYear());
   const [monthNum, setMonthNum] = React.useState(monthsMap.get(month));
+
+  React.useEffect(() => {
+    const expert_city = localStorage.getItem("expert_city");
+    setCity(expert_city);
+  }, []);
 
   const submitFilter = () => {
     const obj = JSON.stringify({ city, monthNum, year });
@@ -81,11 +86,19 @@ export default function FilterForm(props) {
             color: "#9D9D9D",
           }}
         >
-          {cities.map((option) => (
-            <MenuItem key={option.value} value={option.value}>
-              {option.label}
-            </MenuItem>
-          ))}
+          {localStorage.getItem("expert_city")
+            ? cities
+                .filter((filterCity) => filterCity.label === city)
+                .map((option) => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                  </MenuItem>
+                ))
+            : cities.map((option) => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
         </TextField>
         <TextField
           InputLabelProps={{
