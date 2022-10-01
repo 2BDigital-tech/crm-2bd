@@ -10,6 +10,37 @@ const filterDate = (items, date) => {
   return ans;
 };
 
+const filterDataExpert = (result, expert_city, filter, filter_date) => {
+  let filterExpertCity; // filters the leads based only on the expert city
+  let filterParams; // if the expert is filtering on a specifing month and year, this array filters the data according to the parameters of the filters passed in the request
+  filterExpertCity = result.filter((item) =>
+    zipMap
+      .get(expert_city)
+      .includes(item.quotation.address.split(",").pop().trim())
+  );
+  if (Object.keys(filter).length !== 0) {
+    filterParams = filterDate(filterExpertCity, filter_date);
+    return filterParams;
+  }
+  return filterExpertCity;
+};
+
+const filterDataAdmin = (result, city, filter_date) => {
+  if (city) {
+    let filterExpertCity;
+    let filterParams;
+    filterExpertCity = result.filter((item) =>
+      zipMap.get(city).includes(item.quotation.address.split(",").pop().trim())
+    );
+    filterParams = filterExpertCity.filter(
+      (item) => item._createdAt.toISOString().substring(0, 7) === filter_date
+    );
+    return filterParams;
+  } else {
+    return result;
+  }
+};
+
 const getQuotationData = async (req, res, next) => {
   /**
    * Connection URI. Update <username>, <password>, and <your-cluster-url> to reflect your cluster.
@@ -36,68 +67,10 @@ const getQuotationData = async (req, res, next) => {
   });
   booking_data = arr2;
 
-  // console.log(result.slice(-50));
   let filter_date = year + "-" + monthNum;
-  let filterExpertCity;
-  let filterParams;
-  switch (city) {
-    case "Metz":
-      filterExpertCity = result.filter((item) =>
-        zipMap
-          .get(city)
-          .includes(item.quotation.address.split(",").pop().trim())
-      );
-      filterParams = filterExpertCity.filter(
-        (item) => item._createdAt.toISOString().substring(0, 7) === filter_date
-      );
-      break;
-    case "Nancy":
-      filterExpertCity = result.filter((item) =>
-        zipMap
-          .get(city)
-          .includes(item.quotation.address.split(",").pop().trim())
-      );
-      filterParams = filterExpertCity.filter(
-        (item) => item._createdAt.toISOString().substring(0, 7) === filter_date
-      );
-      break;
-    case "Strasbourg":
-      filterExpertCity = result.filter((item) =>
-        zipMap
-          .get(city)
-          .includes(item.quotation.address.split(",").pop().trim())
-      );
-      filterParams = filterExpertCity.filter(
-        (item) => item._createdAt.toISOString().substring(0, 7) === filter_date
-      );
-      break;
-    case "Toulon":
-      filterExpertCity = result.filter((item) =>
-        zipMap
-          .get(city)
-          .includes(item.quotation.address.split(",").pop().trim())
-      );
-      filterParams = filterExpertCity.filter(
-        (item) => item._createdAt.toISOString().substring(0, 7) === filter_date
-      );
-      break;
-    case "Paris":
-      filterExpertCity = result.filter((item) =>
-        zipMap
-          .get(city)
-          .includes(item.quotation.address.split(",").pop().trim())
-      );
-      filterParams = filterExpertCity.filter(
-        (item) => item._createdAt.toISOString().substring(0, 7) === filter_date
-      );
-      break;
-    default:
-      filterParams = result;
-  }
+  result = filterDataAdmin(result, city, filter_date);
 
-  res
-    .status(200)
-    .json({ quotation_data: filterParams, book_data: booking_data });
+  res.status(200).json({ quotation_data: result, book_data: booking_data });
 };
 
 const getLeads = async (req, res, next) => {
@@ -148,73 +121,8 @@ const getLeadsExperts = async (req, res, next) => {
     filter_date = filterParsed.year + "-" + filterParsed.monthNum;
   }
 
-  let filterExpertCity; // loading the leads based only on the expert city
-  let filterParams; // if the expert is filtering on a specifing month and year, this array filters the data according to the parameters of the filters passed in the request
-  switch (expert_city) {
-    case "Metz":
-      filterExpertCity = result.filter((item) =>
-        zipMap
-          .get(expert_city)
-          .includes(item.quotation.address.split(",").pop().trim())
-      );
-      if (Object.keys(filter).length !== 0) {
-        filterParams = filterDate(filterExpertCity, filter_date);
-      }
-      break;
-    case "Nancy":
-      filterExpertCity = result.filter((item) =>
-        zipMap
-          .get(expert_city)
-          .includes(item.quotation.address.split(",").pop().trim())
-      );
-      if (Object.keys(filter).length !== 0) {
-        filterParams = filterDate(filterExpertCity, filter_date);
-      }
-      break;
-    case "Strasbourg":
-      filterExpertCity = result.filter((item) =>
-        zipMap
-          .get(expert_city)
-          .includes(item.quotation.address.split(",").pop().trim())
-      );
-      if (Object.keys(filter).length !== 0) {
-        filterParams = filterDate(filterExpertCity, filter_date);
-      }
-      break;
-    case "Toulon":
-      filterExpertCity = result.filter((item) =>
-        zipMap
-          .get(expert_city)
-          .includes(item.quotation.address.split(",").pop().trim())
-      );
-      if (filter !== undefined) {
-        if (Object.keys(filter).length !== 0) {
-          filterParams = filterDate(filterExpertCity, filter_date);
-        }
-      }
-      break;
-    case "Paris":
-      filterExpertCity = result.filter((item) =>
-        zipMap
-          .get(expert_city)
-          .includes(item.quotation.address.split(",").pop().trim())
-      );
-      if (filter !== undefined) {
-        if (Object.keys(filter).length !== 0) {
-          filterParams = filterDate(filterExpertCity, filter_date);
-        }
-      }
-      break;
-  }
-  if (filter !== undefined) {
-    if (Object.keys(filter).length !== 0) {
-      result = filterParams;
-    } else {
-      result = filterExpertCity;
-    }
-  } else {
-    result = filterExpertCity;
-  }
+  result = filterDataExpert(result, expert_city, filter, filter_date);
+
   res.status(200).json({ quotation_data: result, book_data: booking_data });
 };
 
