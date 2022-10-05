@@ -10,8 +10,8 @@ const filterDate = (items, date) => {
   return ans;
 };
 
-const filterDataExpert = (result, expert_city, filter, filter_date) => {
-  let filterExpertCity; // filters the leads based only on the expert city
+const filterDataExpert = (result, expert_city, filter = {}, filter_date) => {
+  let filterExpertCity; // filters the leads based only on the expert city -- when loading the dashboard after first connexion
   let filterParams; // if the expert is filtering on a specifing month and year, this array filters the data according to the parameters of the filters passed in the request
   filterExpertCity = result.filter((item) =>
     zipMap
