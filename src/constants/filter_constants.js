@@ -74,12 +74,16 @@ export const cities = [
     label: "Nancy",
   },
   {
+    value: "Toulon",
+    label: "Toulon",
+  },
+  {
     value: "Strasbourg",
     label: "Strasbourg",
   },
   {
-    value: "Toulon",
-    label: "Toulon",
+    value: "All",
+    label: "Tout",
   },
 ];
 

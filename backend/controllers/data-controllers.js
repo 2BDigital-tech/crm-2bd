@@ -29,6 +29,12 @@ const filterDataAdmin = (result, city, filter_date) => {
   if (city) {
     let filterExpertCity;
     let filterParams;
+    if (city === "All") {
+      filterParams = result.filter(
+        (item) => item._createdAt.toISOString().substring(0, 7) === filter_date
+      );
+      return filterParams;
+    }
     filterExpertCity = result.filter((item) =>
       zipMap.get(city).includes(item.quotation.address.split(",").pop().trim())
     );
