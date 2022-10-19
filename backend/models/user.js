@@ -12,6 +12,7 @@ const userSchema = new Schema({
   city: { type: String, required: false },
   creationDate: { type: String, required: true },
   tasks: [{ type: mongoose.Types.ObjectId, required: false, ref: "Task" }],
+  folders: [{ type: mongoose.Types.ObjectId, required: false, ref: "Folder" }],
 });
 
 userSchema.plugin(uniqueValidator);

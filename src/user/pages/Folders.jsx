@@ -14,7 +14,7 @@ import AddIcon from "@mui/icons-material/Add";
 import { TableHead, TableRow, TableCell, TableBody } from "@mui/material";
 import { useState } from "react";
 import Modal from "@mui/material/Modal";
-import AddUserModal from "../../shared/UIElements/AddUserModal";
+import AddFo from "../../shared/UIElements/AddUserModal";
 import SearchBar from "../../shared/UIElements/SearchBar";
 import { useHttpClient } from "../../hooks/http-hook";
 import LoadingSpinner from "../../shared/UIElements/LoadingSpinner";
@@ -24,6 +24,7 @@ import DeleteModal from "../../shared/UIElements/DeleteModal";
 import { Center } from "@chakra-ui/react";
 import EditUserModal from "../../shared/UIElements/EditUserModal";
 import { AuthContext } from "../../shared/context/auth-context";
+import AddFolder from "../../shared/UIElements/AddFolder";
 
 const styles = {
   paperContainer: {
@@ -38,8 +39,8 @@ const styles = {
   },
 };
 
-const Users = () => {
-  const [users, setUsers] = useState();
+const Folders = () => {
+  const [folders, setFolders] = useState();
   const [open, setOpen] = useState(false);
   const [userId, setUserId] = useState("");
   const [openSideModals, setOpenSideModals] = useState(false);
@@ -50,16 +51,42 @@ const Users = () => {
   const auth = useContext(AuthContext);
 
   useEffect(() => {
-    const fetchUsers = async () => {
+    const fetchFolders = async () => {
       try {
-        const response = await sendRequest("http://localhost:80/api/users");
-        setUsers(response.users);
+        const response = await sendRequest(
+          "http://localhost:80/api/folders/getFolders"
+        );
+        setFolders(response.foldersList);
+        console.log(response);
       } catch (err) {
         console.log(err);
       }
     };
-    fetchUsers();
+    fetchFolders();
   }, []);
+
+  let folderArr = [];
+  if (folders) {
+    for (var i = 0; i < folders.length; i++) {
+      let readers = folders[i].readers;
+      let folderObj = { name: folders[i].name, readers_names: "" };
+      for (var j = 0; j < readers.length; j++) {
+        if (j === readers.length - 1) {
+          folderObj.readers_names += readers[j].userName;
+        } else {
+          folderObj.readers_names += readers[j].userName + ",";
+        }
+      }
+      folderArr.push(folderObj);
+    }
+  }
+
+  console.log(folderArr);
+  // console.log("folders :", folders);
+
+  // folderReaderObj.push({ name: folderName, readers: userString });
+
+  // console.log(folderReaderObj);
 
   //handle add User Modal opening and closing
   const handleOpen = () => {
@@ -94,7 +121,7 @@ const Users = () => {
               fontWeight={"bold"}
               color="#BBBBBB"
             >
-              Utilisateurs
+              AFFAIRES / DOSSIERS
             </Typography>
             <Box
               display={{ xl: "flex", sm: "none" }}
@@ -121,7 +148,7 @@ const Users = () => {
                   </Button>{" "}
                 </Grid>
                 <Grid item xs={8}>
-                  <SearchBar searchUser={setUserSearch} />
+                  <SearchBar searchUser={setUserSearch} bgColor="#404040" />
                 </Grid>
                 <Grid item xs={2}>
                   <Typography
@@ -129,9 +156,7 @@ const Users = () => {
                     color="#ffff"
                     fontWeight={"bold"}
                     style={{ margin: "40px", marginLeft: "10%" }}
-                  >
-                    {users?.length} Lignes
-                  </Typography>{" "}
+                  ></Typography>{" "}
                 </Grid>
               </Grid>
             </Box>
@@ -142,15 +167,7 @@ const Users = () => {
               display={{ xl: "none", sm: "block" }}
             >
               <Stack padding={4} sx={{ borderRadius: "5%" }}>
-                <Typography
-                  variant="h6"
-                  color="#ffff"
-                  fontWeight={"bold"}
-                  style={{ textAlign: "center" }}
-                >
-                  {users?.length} Lignes
-                </Typography>{" "}
-                {/* <SearchBar /> */}
+                <SearchBar />
                 <Button
                   startIcon={<AddIcon />}
                   variant="contained"
@@ -200,29 +217,10 @@ const Users = () => {
                         color="#ffff"
                         fontWeight={"bold"}
                       >
-                        EMAIL
+                        LECTEURS
                       </Typography>{" "}
                     </TableCell>
-                    <TableCell align="left" style={{ color: "white" }}>
-                      <Typography
-                        variant={{ xl: "h6", sm: "h8" }}
-                        sx={{ mb: "4%" }}
-                        color="#ffff"
-                        fontWeight={"bold"}
-                      >
-                        RÔLE
-                      </Typography>{" "}
-                    </TableCell>
-                    <TableCell align="right" style={{ color: "white" }}>
-                      <Typography
-                        variant={{ xl: "h6", sm: "h8" }}
-                        sx={{ mb: "4%" }}
-                        color="#ffff"
-                        fontWeight={"bold"}
-                      >
-                        DATE DE CRÉATION
-                      </Typography>{" "}
-                    </TableCell>
+
                     <TableCell align="right" style={{ color: "white" }}>
                       <Typography
                         variant={{ xl: "h6", sm: "h8" }}
@@ -236,116 +234,77 @@ const Users = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {!isLoading &&
-                    users &&
-                    users
-                      .filter(
-                        userSearch !== []
-                          ? (user) =>
-                              user.name
-                                .toLowerCase()
-                                .startsWith(userSearch.toLowerCase())
-                          : (user) => user.name
-                      )
-                      .map((row) => (
-                        <TableRow
-                          key={row._id}
-                          sx={{
-                            "&:last-child td, &:last-child th": { border: 0 },
-                          }}
+                  {folderArr?.map((row) => (
+                    <TableRow
+                      key={row._id}
+                      sx={{
+                        "&:last-child td, &:last-child th": { border: 0 },
+                      }}
+                    >
+                      <TableCell
+                        component="th"
+                        scope="row"
+                        style={{ color: "white" }}
+                      >
+                        <Typography
+                          variant="h7"
+                          sx={{ mb: "4%" }}
+                          color="#ffff"
+                          fontWeight={"bold"}
                         >
-                          <TableCell
-                            component="th"
-                            scope="row"
-                            style={{ color: "white" }}
-                          >
-                            <Typography
-                              variant="h7"
-                              sx={{ mb: "4%" }}
-                              color="#ffff"
-                              fontWeight={"bold"}
-                            >
-                              {row.name}
-                            </Typography>{" "}
-                          </TableCell>
-                          <TableCell align="left" style={{ color: "white" }}>
-                            <Typography
-                              variant="h7"
-                              sx={{ mb: "4%" }}
-                              color="#ffff"
-                              fontWeight={"bold"}
-                            >
-                              {row.email}
-                            </Typography>{" "}
-                          </TableCell>
-                          <TableCell align="left" style={{ color: "white" }}>
-                            <Typography
-                              variant="h7"
-                              sx={{ mb: "4%" }}
-                              color="#ffff"
-                              fontWeight={"bold"}
-                            >
-                              {row.role}
-                            </Typography>{" "}
-                            <Typography
-                              variant="h7"
-                              sx={{ mb: "4%" }}
-                              color="#ffff"
-                              fontWeight={"bold"}
-                            >
-                              {row.customerName !== undefined &&
-                              row.customerName !== "null"
-                                ? "(" + row.customerName + ")"
-                                : row.city !== undefined && row.city !== "null"
-                                ? "(" + row.city + ")"
-                                : ""}
-                            </Typography>{" "}
-                          </TableCell>
-                          <TableCell align="right" style={{ color: "white" }}>
-                            <Typography
-                              variant="h7"
-                              sx={{ mb: "4%" }}
-                              color="#ffff"
-                              fontWeight={"bold"}
-                            >
-                              {row.creationDate}
-                            </Typography>{" "}
-                          </TableCell>
-                          <TableCell align="right" style={{ color: "white" }}>
-                            <EditIcon
-                              style={{ marginRight: "25px" }}
-                              sx={{
-                                "&:hover": {
-                                  color: "green",
-                                  cursor: "pointer",
-                                },
-                              }}
-                              onClick={() =>
-                                handleOpenSideModals(
-                                  row._id,
-                                  {
-                                    role: row.role,
-                                    name: row.name,
-                                    email: row.email,
-                                    customerName: row.customerName,
-                                    city: row.city,
-                                  },
-                                  "edit"
-                                )
-                              }
-                            />
-                            <ClearIcon
-                              sx={{
-                                "&:hover": { color: "red", cursor: "pointer" },
-                              }}
-                              style={{ marginRight: "25px" }}
-                              onClick={() =>
-                                handleOpenSideModals(row._id, {}, "clear")
-                              }
-                            />
-                          </TableCell>
-                        </TableRow>
-                      ))}
+                          {row.name}
+                        </Typography>{" "}
+                      </TableCell>
+                      <TableCell
+                        component="th"
+                        scope="row"
+                        style={{ color: "white" }}
+                      >
+                        <Typography
+                          variant="h7"
+                          sx={{ mb: "4%" }}
+                          color="#ffff"
+                          fontWeight={"bold"}
+                        >
+                          {row.readers_names}
+                        </Typography>{" "}
+                      </TableCell>
+
+                      <TableCell align="right" style={{ color: "white" }}>
+                        <EditIcon
+                          style={{ marginRight: "25px" }}
+                          sx={{
+                            "&:hover": {
+                              color: "green",
+                              cursor: "pointer",
+                            },
+                          }}
+                          onClick={() =>
+                            handleOpenSideModals(
+                              row._id,
+                              {
+                                role: row.role,
+                                name: row.name,
+                                email: row.email,
+                                customerName: row.customerName,
+                                city: row.city,
+                              },
+                              "edit"
+                            )
+                          }
+                        />
+                        <ClearIcon
+                          sx={{
+                            "&:hover": { color: "red", cursor: "pointer" },
+                          }}
+                          style={{ marginRight: "25px" }}
+                          onClick={() =>
+                            handleOpenSideModals(row._id, {}, "clear")
+                          }
+                        />
+                      </TableCell>
+                    </TableRow>
+                  ))}
                 </TableBody>
               </Table>
             </TableContainer>
@@ -355,9 +314,9 @@ const Users = () => {
               aria-labelledby="modal-modal-title"
               aria-describedby="modal-modal-description"
             >
-              <AddUserModal closeModal={handleClose} setUserData={setUsers} />
+              <AddFolder closeModal={handleClose} />
             </Modal>
-            <Modal
+            {/* <Modal
               open={openSideModals}
               onClose={handleCloseSideModals}
               aria-labelledby="modal-modal-title"
@@ -375,7 +334,7 @@ const Users = () => {
                   infos={userInfo}
                 />
               )}
-            </Modal>
+            </Modal> */}
             {/* <Modal
               open={openSideModals}
               onClose={handleCloseSideModals}
@@ -403,4 +362,4 @@ const Users = () => {
   );
 };
 
-export default Users;
+export default Folders;

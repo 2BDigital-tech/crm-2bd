@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const usersRoutes = require("./routes/users-routes");
 const dataRoutes = require("./routes/data-routes");
 const tasksRoutes = require("./routes/task-routes");
+const folderRoutes = require("./routes/folder-routes");
 const HttpError = require("./models/error");
 const mongoose = require("mongoose");
 require("dotenv").config();
@@ -27,6 +28,7 @@ app.use((req, res, next) => {
 app.use("/api/users", usersRoutes);
 app.use("/api/data", dataRoutes);
 app.use("/api/tasks", tasksRoutes);
+app.use("/api/folders", folderRoutes);
 
 app.use((req, res, next) => {
   console.log(req);

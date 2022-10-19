@@ -8,6 +8,7 @@ import Users from "./user/pages/Users";
 import SearchAppBar from "./Components/TopNav/TopNav";
 import { useNavigate } from "react-router-dom";
 import Leads from "./user/pages/Leads";
+import Folders from "./user/pages/Folders";
 import { LocalSeeOutlined } from "@mui/icons-material";
 import DashboardExpert from "./user/pages/DashboardExpert";
 
@@ -31,7 +32,9 @@ const App = () => {
     localStorage.setItem("username", username);
     localStorage.setItem("user_role", role);
     localStorage.setItem("userId", id);
-    localStorage.setItem("expert_city", city);
+    role === "Administrateur"
+      ? localStorage.setItem("expert_city", "")
+      : localStorage.setItem("expert_city", city);
     setUserId(id);
     setUsername(localStorage.getItem("username"));
   }, []);
@@ -78,7 +81,7 @@ const App = () => {
         <Route path="/users" element={<Users />} />
         <Route path="/leads" element={<Leads />} />
         <Route path="/data" element={null} />
-        <Route path="/files" element={null} />
+        <Route path="/files" element={<Folders />} />
         <Route path="/" element={<Navigate replace to="/login" />} />
         <Route path="/login" element={<Login />} />
       </Routes>
