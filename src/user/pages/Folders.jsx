@@ -65,7 +65,7 @@ const Folders = () => {
     fetchFolders();
   }, []);
 
-  let folderArr = [];
+  let folderObjects = [];
   if (folders) {
     for (var i = 0; i < folders.length; i++) {
       let readers = folders[i].readers;
@@ -74,14 +74,13 @@ const Folders = () => {
         if (j === readers.length - 1) {
           folderObj.readers_names += readers[j].userName;
         } else {
-          folderObj.readers_names += readers[j].userName + ",";
+          folderObj.readers_names += readers[j].userName + ", ";
         }
       }
-      folderArr.push(folderObj);
+      folderObjects.push(folderObj);
     }
   }
 
-  console.log(folderArr);
   // console.log("folders :", folders);
 
   // folderReaderObj.push({ name: folderName, readers: userString });
@@ -234,7 +233,7 @@ const Folders = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {folderArr?.map((row) => (
+                  {folderObjects?.map((row) => (
                     <TableRow
                       key={row._id}
                       sx={{
