@@ -20,9 +20,7 @@ import { useHttpClient } from "../../hooks/http-hook";
 import LoadingSpinner from "../../shared/UIElements/LoadingSpinner";
 import EditIcon from "@mui/icons-material/Edit";
 import ClearIcon from "@mui/icons-material/Clear";
-import DeleteModal from "../../shared/UIElements/DeleteModal";
-import { Center } from "@chakra-ui/react";
-import EditUserModal from "../../shared/UIElements/EditUserModal";
+
 import { AuthContext } from "../../shared/context/auth-context";
 import AddFolder from "../../shared/UIElements/AddFolder";
 
