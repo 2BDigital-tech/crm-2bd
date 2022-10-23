@@ -19,7 +19,8 @@ import SearchBar from "../../shared/UIElements/SearchBar";
 import { useHttpClient } from "../../hooks/http-hook";
 import LoadingSpinner from "../../shared/UIElements/LoadingSpinner";
 import EditIcon from "@mui/icons-material/Edit";
-import ClearIcon from "@mui/icons-material/Clear";
+import DeleteIcon from "@mui/icons-material/Delete";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 
 import { AuthContext } from "../../shared/context/auth-context";
 import AddFolder from "../../shared/UIElements/AddFolder";
@@ -55,7 +56,6 @@ const Folders = () => {
           "http://localhost:80/api/folders/getFolders"
         );
         setFolders(response.foldersList);
-        console.log(response);
       } catch (err) {
         console.log(err);
       }
@@ -67,8 +67,14 @@ const Folders = () => {
   if (folders) {
     for (var i = 0; i < folders.length; i++) {
       let readers = folders[i].readers;
-      let folderObj = { name: folders[i].name, readers_names: "" };
+      let folderObj = {
+        folderId: folders[i]._id,
+        name: folders[i].name,
+        readers_names: "",
+        readers_id: [],
+      };
       for (var j = 0; j < readers.length; j++) {
+        folderObj.readers_id.push(readers[j].userId);
         if (j === readers.length - 1) {
           folderObj.readers_names += readers[j].userName;
         } else {
@@ -77,13 +83,12 @@ const Folders = () => {
       }
       folderObjects.push(folderObj);
     }
+    if (localStorage.getItem("user_role") !== "Administrateur") {
+      folderObjects = folderObjects.filter((folder) =>
+        folder.readers_id.includes(localStorage.getItem("userId"))
+      );
+    }
   }
-
-  // console.log("folders :", folders);
-
-  // folderReaderObj.push({ name: folderName, readers: userString });
-
-  // console.log(folderReaderObj);
 
   //handle add User Modal opening and closing
   const handleOpen = () => {
@@ -225,7 +230,7 @@ const Folders = () => {
                         color="#ffff"
                         fontWeight={"bold"}
                       >
-                        ÉDITER / SUPPRIMER
+                        VOIR / ÉDITER / SUPPRIMER
                       </Typography>{" "}
                     </TableCell>
                   </TableRow>
@@ -233,7 +238,7 @@ const Folders = () => {
                 <TableBody>
                   {folderObjects?.map((row) => (
                     <TableRow
-                      key={row._id}
+                      key={row.folderId}
                       sx={{
                         "&:last-child td, &:last-child th": { border: 0 },
                       }}
@@ -268,6 +273,15 @@ const Folders = () => {
                       </TableCell>
 
                       <TableCell align="right" style={{ color: "white" }}>
+                        <VisibilityIcon
+                          sx={{
+                            "&:hover": { color: "green", cursor: "pointer" },
+                          }}
+                          style={{ marginRight: "25px" }}
+                          onClick={() =>
+                            handleOpenSideModals(row._id, {}, "clear")
+                          }
+                        />
                         <EditIcon
                           style={{ marginRight: "25px" }}
                           sx={{
@@ -290,7 +304,7 @@ const Folders = () => {
                             )
                           }
                         />
-                        <ClearIcon
+                        <DeleteIcon
                           sx={{
                             "&:hover": { color: "red", cursor: "pointer" },
                           }}

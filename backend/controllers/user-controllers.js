@@ -5,6 +5,10 @@ const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { default: mongoose } = require("mongoose");
+const Task = require("../models/task");
+const Folder = require("../models/folder");
+const { ObjectId } = require("mongodb");
+const task = require("../models/task");
 
 const hasValidationErrors = (errors) => {
   if (!errors.isEmpty()) {
@@ -202,9 +206,13 @@ const getUsers = async (req, res, next) => {
 
 const deleteUser = async (req, res, next) => {
   const { userId } = req.body;
-  let user;
+  let user, tasks, folders;
   try {
     user = await User.findById(userId);
+    // tasks = await Task.find({ creator: userId });
+    // folders = await Folder.find({ "readers.userId": ObjectId(userId) });
+    // console.log(tasks);
+    // console.log(folders);
   } catch (err) {
     console.log(err);
     const error = new HttpError(
@@ -212,6 +220,7 @@ const deleteUser = async (req, res, next) => {
       500
     );
     return next(error);
+    5;
   }
 
   if (!user) {
@@ -222,6 +231,11 @@ const deleteUser = async (req, res, next) => {
     const sess = await mongoose.startSession();
     sess.startTransaction();
     await user.remove({ session: sess });
+    await Task.deleteMany({ creator: userId }).session(sess);
+    await Folder.updateMany({
+      $pull: { readers: { userId: ObjectId(userId) } },
+    }).session(sess); //in the Folder collection, in each Folder, if the in the "readers" array there is a match with the userID, remove the Object from the Array
+    await Folder.deleteMany({ readers: { $size: 0 } }).session(sess); // after removing a reader from the arrau of readers, if one of the documents has an empty array of readers, remove the document
     await sess.commitTransaction();
   } catch (err) {
     const error = new HttpError("Utilisateur incorrect", 404);
