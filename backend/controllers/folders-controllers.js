@@ -87,5 +87,38 @@ const getFolders = async (req, res, next) => {
   res.status(200).json({ message: "Folders", foldersList: foldersList });
 };
 
+const deleteFolder = async (req, res, next) => {
+  let { folderId } = req.body;
+  let folder, readers, uId;
+  try {
+    folder = await Folder.findById(folderId);
+    readers = folder.readers;
+    // console.log(folder);
+  } catch (err) {
+    const error = new HttpError("Could not find folder", 500);
+    return next(error);
+  }
+
+  if (!folder) {
+    const error = new HttpError("Something went wrong", 404);
+    return next(error);
+  }
+  try {
+    const sess = await mongoose.startSession();
+    sess.startTransaction();
+    await folder.remove({ session: sess });
+    await User.updateMany({ $pull: { folders: { $eq: folderId } } }).session(
+      sess
+    );
+    await sess.commitTransaction();
+  } catch (err) {
+    const error = new HttpError("Something went wrong", 404);
+    return next(error);
+  }
+
+  res.status(200).json({ message: "Task deleted successfully" });
+};
+
 exports.addFolder = addFolder;
 exports.getFolders = getFolders;
+exports.deleteFolder = deleteFolder;

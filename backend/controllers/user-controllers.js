@@ -206,13 +206,9 @@ const getUsers = async (req, res, next) => {
 
 const deleteUser = async (req, res, next) => {
   const { userId } = req.body;
-  let user, tasks, folders;
+  let user;
   try {
     user = await User.findById(userId);
-    // tasks = await Task.find({ creator: userId });
-    // folders = await Folder.find({ "readers.userId": ObjectId(userId) });
-    // console.log(tasks);
-    // console.log(folders);
   } catch (err) {
     console.log(err);
     const error = new HttpError(

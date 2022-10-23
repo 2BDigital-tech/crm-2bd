@@ -21,6 +21,8 @@ import LoadingSpinner from "../../shared/UIElements/LoadingSpinner";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+import DeleteFolder from "../../shared/UIElements/DeleteFolder";
+import EditFolder from "../../shared/UIElements/EditFolder";
 
 import { AuthContext } from "../../shared/context/auth-context";
 import AddFolder from "../../shared/UIElements/AddFolder";
@@ -41,7 +43,7 @@ const styles = {
 const Folders = () => {
   const [folders, setFolders] = useState();
   const [open, setOpen] = useState(false);
-  const [userId, setUserId] = useState("");
+  const [folderId, setFolderId] = useState("");
   const [openSideModals, setOpenSideModals] = useState(false);
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const [userInfo, setUserInfo] = useState("");
@@ -100,11 +102,11 @@ const Folders = () => {
   };
 
   //handle Edit and Delete modals opening and closing
-  const handleOpenSideModals = (id, infos = {}, action) => {
-    setUserId(id);
+  const handleOpenSideModals = (folderId, infos = {}, action) => {
+    setFolderId(folderId);
     setOpenSideModals(true);
     setUserInfo(infos);
-    action === "clear" && setOpenDelete(true);
+    action === "delete" && setOpenDelete(true);
     action === "edit" && setOpenDelete(false);
   };
 
@@ -279,7 +281,7 @@ const Folders = () => {
                           }}
                           style={{ marginRight: "25px" }}
                           onClick={() =>
-                            handleOpenSideModals(row._id, {}, "clear")
+                            handleOpenSideModals(row.folderId, {}, "clear")
                           }
                         />
                         <EditIcon
@@ -290,19 +292,6 @@ const Folders = () => {
                               cursor: "pointer",
                             },
                           }}
-                          onClick={() =>
-                            handleOpenSideModals(
-                              row._id,
-                              {
-                                role: row.role,
-                                name: row.name,
-                                email: row.email,
-                                customerName: row.customerName,
-                                city: row.city,
-                              },
-                              "edit"
-                            )
-                          }
                         />
                         <DeleteIcon
                           sx={{
@@ -310,7 +299,7 @@ const Folders = () => {
                           }}
                           style={{ marginRight: "25px" }}
                           onClick={() =>
-                            handleOpenSideModals(row._id, {}, "clear")
+                            handleOpenSideModals(row.folderId, {}, "delete")
                           }
                         />
                       </TableCell>
@@ -327,37 +316,31 @@ const Folders = () => {
             >
               <AddFolder closeModal={handleClose} />
             </Modal>
-            {/* <Modal
+            <Modal
               open={openSideModals}
               onClose={handleCloseSideModals}
               aria-labelledby="modal-modal-title"
               aria-describedby="modal-modal-description"
             >
               {openDelete ? (
-                <DeleteModal
+                <DeleteFolder
                   closeModal={handleCloseSideModals}
-                  userToDelete={userId}
+                  folderToDelete={folderId}
                 />
               ) : (
-                <EditUserModal
+                <EditFolder
                   closeModal={handleCloseSideModals}
-                  userId={userId}
+                  folderId={folderId}
                   infos={userInfo}
                 />
               )}
-            </Modal> */}
+            </Modal>
             {/* <Modal
               open={openSideModals}
               onClose={handleCloseSideModals}
               aria-labelledby="modal-modal-title"
               aria-describedby="modal-modal-description"
-            >
-              <EditUserModal
-                closeModal={handleCloseSideModals}
-                userId={userId}
-                infos={userInfo}
-              />
-            </Modal> */}
+            ></Modal> */}
             {/* <Container
             component="main"
             maxWidth="xs"
