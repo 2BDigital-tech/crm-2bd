@@ -280,9 +280,9 @@ const Folders = () => {
                             "&:hover": { color: "green", cursor: "pointer" },
                           }}
                           style={{ marginRight: "25px" }}
-                          onClick={() =>
-                            handleOpenSideModals(row.folderId, {}, "clear")
-                          }
+                          // onClick={() =>
+                          //   handleOpenSideModals(row.folderId, {}, "clear")
+                          // }
                         />
                         <EditIcon
                           style={{ marginRight: "25px" }}
@@ -292,6 +292,17 @@ const Folders = () => {
                               cursor: "pointer",
                             },
                           }}
+                          onClick={() =>
+                            handleOpenSideModals(
+                              row.folderId,
+                              {
+                                folderId: row.folderId,
+                                folderName: row.name,
+                                readers: row.readers_names,
+                              },
+                              "edit"
+                            )
+                          }
                         />
                         <DeleteIcon
                           sx={{

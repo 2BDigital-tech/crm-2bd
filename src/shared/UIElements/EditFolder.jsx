@@ -8,29 +8,46 @@ import { useHttpClient } from "../../hooks/http-hook";
 import Container from "@mui/material/Container";
 import LoadingSpinner from "./LoadingSpinner";
 import { useEffect } from "react";
-import { roles, cities } from "../../constants/user_constants";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import Select from "@mui/material/Select";
+import Chip from "@mui/material/Chip";
 
 const EditFolder = (props) => {
   const [formIsValid, setFormIsValid] = useState(false);
-  const [role, setRole] = useState("");
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
+  const [folderId, setFolderId] = useState("");
+  const [folderName, setFolderName] = useState("");
+  const [readers, setReaders] = useState([]);
+  const [users, setUsers] = useState([]);
   const [city, setCity] = useState("");
   const [customerName, setCustomerName] = useState("");
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
   useEffect(() => {
     console.log(props.infos);
-    setRole(props.infos.role);
-    setEmail(props.infos.email);
-    setName(props.infos.name);
-    setCustomerName(props.infos.customerName);
-    setCity(props.infos.city);
+    setFolderId(props.infos.folderId);
+    setFolderName(props.infos.folderName);
+    let readers_props = props.infos.readers;
+    setReaders(readers_props.split(",").map((element) => element.trim())); //use trim to remove spaces in strings
   }, []);
 
-  var today = new Date();
-  var date =
-    today.getDate() + "-" + (today.getMonth() + 1) + "-" + today.getFullYear();
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await sendRequest("http://localhost:80/api/users");
+        setUsers(response.users);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchUsers();
+  }, []);
+
+  let usernames = [];
+  users?.forEach((element) => {
+    usernames.push(element.name);
+  });
+
   const style_form = {
     paperContainer: {
       marginTop: "5%",
@@ -41,24 +58,19 @@ const EditFolder = (props) => {
       minHeight: 600,
     },
   };
-  function createData(name, calories, fat, carbs) {
-    return { name, calories, fat, carbs };
-  }
 
   const submitHandler = async (event) => {
     event.preventDefault();
     try {
       const responseData = await sendRequest(
-        `http://localhost:80/api/users/${props.userId}`,
+        "http://localhost:80/api/folders/editFolder",
         "PATCH",
         JSON.stringify({
-          name: name,
-          email: email,
-          customerName: customerName,
-          role: role,
-          city: city,
+          folderId: folderId,
+          folderName: folderName,
+          readers: readers,
         }),
-        { Authorization: "application/json" }
+        false
       );
       console.log(responseData);
       if (responseData) {
@@ -70,23 +82,18 @@ const EditFolder = (props) => {
     }
   };
 
-  const nameHandler = (event) => {
-    setName(event.target.value);
-  };
-  const emailHander = (event) => {
-    setEmail(event.target.value);
+  const folderNameHandler = (event) => {
+    setFolderName(event.target.value);
   };
 
-  const roleHandler = (event) => {
-    setRole(event.target.value);
-  };
-
-  const customerNameHandler = (event) => {
-    setCustomerName(event.target.value);
-  };
-
-  const cityHandler = (event) => {
-    setCity(event.target.value);
+  const handleChange = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setReaders(
+      // On autofill we get a stringified value.
+      typeof value === "string" ? value.split(",") : value
+    );
   };
 
   const handleClose = () => {
@@ -111,7 +118,7 @@ const EditFolder = (props) => {
           fontWeight="bold"
           style={{ padding: "50px", color: "white" }}
         >
-          Modifier l'utilisateur
+          Nouveau dossier
         </Typography>
         <div>
           <Stack
@@ -125,96 +132,50 @@ const EditFolder = (props) => {
             alignItems="center"
           >
             <TextField
-              id="role"
-              label="Role*"
-              select
-              value={role}
-              onChange={roleHandler}
+              id="nom"
+              label="Nom*"
+              onChange={folderNameHandler}
+              value={folderName}
               style={{
                 width: "500px",
                 backgroundColor: "white",
                 borderRadius: "10px",
               }}
-            >
-              {roles.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.value}
-                </MenuItem>
-              ))}
-            </TextField>
-            {role === "Client" && (
-              <TextField
-                id="company-name"
-                label="Nom du client*"
-                value={customerName}
-                placeholder="ex:Entreprise"
+            />
+
+            <FormControl>
+              <InputLabel>Lecteurs*</InputLabel>
+              <Select
+                id="demo-multiple-chip"
+                multiple
+                value={readers}
+                onChange={handleChange}
+                // input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
+                renderValue={(selected) => (
+                  <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                    {selected.map((value) => (
+                      <Chip key={value} label={value} />
+                    ))}
+                  </Box>
+                )}
                 style={{
+                  label: "Lecteurs*",
                   width: "500px",
                   backgroundColor: "white",
                   borderRadius: "10px",
                 }}
-                onChange={customerNameHandler}
-              />
-            )}
-            {role === "Expert" && (
-              <TextField
-                id="company-name"
-                label="Ville*"
-                placeholder="Ville*"
-                select
-                value={city}
-                style={{
-                  width: "500px",
-                  backgroundColor: "white",
-                  borderRadius: "10px",
-                }}
-                onChange={cityHandler}
               >
-                {cities.map((option) => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.value}
+                {usernames?.map((name) => (
+                  <MenuItem
+                    key={name}
+                    value={name}
+                    // style={getStyles(name, readers, theme)}
+                  >
+                    {name}
                   </MenuItem>
                 ))}
-              </TextField>
-            )}
-            <TextField
-              id="name"
-              label="Nom*"
-              value={name}
-              onChange={nameHandler}
-              placeholder="Nom"
-              style={{
-                width: "500px",
-                backgroundColor: "white",
-                borderRadius: "10px",
-              }}
-            />
-            <TextField
-              id="email"
-              label="Email*"
-              value={email}
-              placeholder="email@domain.com"
-              style={{
-                width: "500px",
-                backgroundColor: "white",
-                borderRadius: "10px",
-              }}
-              onChange={emailHander}
-            />
-            {role === "Client" && (
-              <TextField
-                id="folders"
-                label="Dossiers"
-                placeholder="Rechercher un dossier"
-                style={{
-                  width: "500px",
-                  backgroundColor: "white",
-                  borderRadius: "10px",
-                }}
-                // onChange={}
-              />
-            )}
-            {error && <h3 style={{ color: "#ffff" }}>{error}</h3>}
+              </Select>
+            </FormControl>
             <div
               style={{
                 flexDirection: "row",
@@ -236,7 +197,6 @@ const EditFolder = (props) => {
               </Button>
               <Button
                 type="submit"
-                disabled={formIsValid}
                 variant="contained"
                 style={{
                   display: "flex",
@@ -245,7 +205,7 @@ const EditFolder = (props) => {
                 }}
                 onClick={submitHandler}
               >
-                Modifier
+                Enregistrer
               </Button>
               {isLoading && <LoadingSpinner asOverlay />}
             </div>
