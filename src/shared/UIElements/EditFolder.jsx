@@ -118,7 +118,7 @@ const EditFolder = (props) => {
           fontWeight="bold"
           style={{ padding: "50px", color: "white" }}
         >
-          Nouveau dossier
+          Editer le dossier
         </Typography>
         <div>
           <Stack
