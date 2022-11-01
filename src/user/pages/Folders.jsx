@@ -23,6 +23,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import DeleteFolder from "../../shared/UIElements/DeleteFolder";
 import EditFolder from "../../shared/UIElements/EditFolder";
+import { useNavigate } from "react-router-dom";
 
 import { AuthContext } from "../../shared/context/auth-context";
 import AddFolder from "../../shared/UIElements/AddFolder";
@@ -64,6 +65,8 @@ const Folders = () => {
     };
     fetchFolders();
   }, []);
+
+  const navigate = useNavigate();
 
   let folderObjects = [];
   if (folders) {
@@ -252,9 +255,18 @@ const Folders = () => {
                       >
                         <Typography
                           variant="h7"
-                          sx={{ mb: "4%" }}
                           color="#ffff"
                           fontWeight={"bold"}
+                          sx={{
+                            "&:hover": { color: "white", cursor: "pointer" },
+                          }}
+                          onClick={() =>
+                            navigate(`/folders/${row.folderId}`, {
+                              state: {
+                                folderName: row.name,
+                              },
+                            })
+                          }
                         >
                           {row.name}
                         </Typography>{" "}

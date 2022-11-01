@@ -202,13 +202,13 @@ const Sidebar = () => {
                     textTransform: "capitalize",
                     borderRadius: 15,
                     background:
-                      auth.path !== "/files"
+                      auth.path !== "/folders"
                         ? "#2d2d2d"
                         : "linear-gradient(to right bottom, #C30772, #615EE0)",
                     fontSize: "18px",
                   }}
                   sx={{
-                    border: auth.path !== "/files" ? 0 : 3,
+                    border: auth.path !== "/folders" ? 0 : 3,
                     borderColor: "#202020",
                     height: 70,
                     boxShadow: 0,
@@ -222,7 +222,7 @@ const Sidebar = () => {
                   }}
                 >
                   <NavLink
-                    to="/files"
+                    to="/folders"
                     style={{ textDecoration: "none", color: "white" }}
                   >
                     Affaires

@@ -11,6 +11,7 @@ import Leads from "./user/pages/Leads";
 import Folders from "./user/pages/Folders";
 import { LocalSeeOutlined } from "@mui/icons-material";
 import DashboardExpert from "./user/pages/DashboardExpert";
+import FolderView from "./user/pages/FolderView";
 
 const App = () => {
   const [token, setToken] = useState();
@@ -81,9 +82,10 @@ const App = () => {
         <Route path="/users" element={<Users />} />
         <Route path="/leads" element={<Leads />} />
         <Route path="/data" element={null} />
-        <Route path="/files" element={<Folders />} />
+        <Route path="/folders" element={<Folders />} />
         <Route path="/" element={<Navigate replace to="/login" />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/folders/:folderId" element={<FolderView />} />
       </Routes>
     );
   }
