@@ -6,6 +6,7 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { folders } from "../../constants/folder_constants";
+import FolderIcon from "@mui/icons-material/Folder";
 
 const styles = {
   paperContainer: {
@@ -40,8 +41,9 @@ const FolderView = () => {
             <div>
               {folders.map((folder, index) => {
                 return (
-                  <Accordion key={index} style={{ backgroundColor: "#ADB1B5" }}>
+                  <Accordion key={index}>
                     <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                      <FolderIcon />
                       <Typography>
                         {folder.id + "." + folder.subfolder}
                       </Typography>
