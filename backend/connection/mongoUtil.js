@@ -1,6 +1,6 @@
 const MongoClient = require("mongodb").MongoClient;
 require("dotenv").config();
-const uri = process.env.MONGODB_NILLAETBEN;
+const uri = process.env.MONGODB_URI;
 
 var _db;
 
