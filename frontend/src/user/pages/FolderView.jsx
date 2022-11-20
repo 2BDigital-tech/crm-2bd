@@ -1,4 +1,4 @@
-import React from "react";
+import React , {useState} from "react";
 import { useLocation } from "react-router-dom";
 import { Stack, Typography } from "@mui/material";
 import Accordion from "@mui/material/Accordion";
@@ -7,6 +7,8 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { folders } from "../../constants/folder_constants";
 import FolderIcon from "@mui/icons-material/Folder";
+import { FileUploader } from "react-drag-drop-files";
+import PdfIcon from '@mui/icons-material/PictureAsPdfRounded';
 
 const styles = {
   paperContainer: {
@@ -21,8 +23,18 @@ const styles = {
   },
 };
 
+
 const FolderView = () => {
   const { state } = useLocation();
+  const [files,setFiles] = useState([]);
+
+  console.log(files);
+
+  const uploadFile = (file) => {
+    file.push({"hey":1});
+    setFiles([...files,file]);
+  }
+  
 
   return (
     <div>
@@ -48,7 +60,22 @@ const FolderView = () => {
                         {folder.id + "." + folder.subfolder}
                       </Typography>
                     </AccordionSummary>
-                    <AccordionDetails></AccordionDetails>
+                    <AccordionDetails>
+                    <FileUploader 
+                       allowMultipleFiles
+                       handleChange={uploadFile}
+                       label="Cliquez / Déposez ici pour importer des documents"
+                       hoverTitle="Déposez les fichiers ici"
+                    />
+                    {files.map(file => {
+                      return(
+                      <Typography >
+                        <PdfIcon />
+                        {" "+file.name}
+                      </Typography>
+                      )
+                    })}
+                    </AccordionDetails>
                   </Accordion>
                 );
               })}

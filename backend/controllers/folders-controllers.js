@@ -3,8 +3,6 @@ const Folder = require("../models/folder");
 const User = require("../models/user");
 
 const { default: mongoose } = require("mongoose");
-const { Http } = require("@mui/icons-material");
-const { Fold } = require("tabler-icons-react");
 
 const uploadfile = async(req,res,next) => {
   console.log(req.body);
