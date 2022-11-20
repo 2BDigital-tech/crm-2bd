@@ -97,7 +97,7 @@ const DashboardExpert = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await sendRequest("http://localhost:80/api/users");
+        const response = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/api/users`);
         setNumOfUsers(response.users.length);
       } catch (err) {
         console.log(err);
@@ -133,7 +133,7 @@ const DashboardExpert = () => {
       try {
         let expert_city = localStorage.getItem("expert_city");
         const response = await sendRequest(
-          "http://localhost:80/api/data/getLeadsExperts",
+          `${process.env.REACT_APP_BACKEND_URL}/api/data/getLeadsExperts`,
           "POST",
           JSON.stringify({ expert_city, filter })
         );

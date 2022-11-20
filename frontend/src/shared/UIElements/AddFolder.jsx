@@ -56,7 +56,7 @@ const AddFolder = (props) => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await sendRequest("http://localhost:80/api/users");
+        const response = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/api/users`);
         setUsers(response.users);
         console.log(response.users);
       } catch (err) {
@@ -74,7 +74,7 @@ const AddFolder = (props) => {
     event.preventDefault();
     try {
       const responseData = await sendRequest(
-        "http://localhost:80/api/folders/addFolder",
+        `${process.env.REACT_APP_BACKEND_URL}/api/folders/addFolder`,
         "POST",
         JSON.stringify({
           folderName: folderName,

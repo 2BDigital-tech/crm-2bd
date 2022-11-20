@@ -34,7 +34,7 @@ const EditFolder = (props) => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await sendRequest("http://localhost:80/api/users");
+        const response = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/api/users`);
         setUsers(response.users);
       } catch (err) {
         console.log(err);
@@ -63,7 +63,7 @@ const EditFolder = (props) => {
     event.preventDefault();
     try {
       const responseData = await sendRequest(
-        "http://localhost:80/api/folders/editFolder",
+        `${process.env.REACT_APP_BACKEND_URL}/api/folders/editFolder`,
         "PATCH",
         JSON.stringify({
           folderId: folderId,

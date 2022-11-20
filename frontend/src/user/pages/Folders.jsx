@@ -28,6 +28,7 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../shared/context/auth-context";
 import AddFolder from "../../shared/UIElements/AddFolder";
 
+
 const styles = {
   paperContainer: {
     backgroundSize: "cover",
@@ -56,7 +57,7 @@ const Folders = () => {
     const fetchFolders = async () => {
       try {
         const response = await sendRequest(
-          "http://localhost:80/api/folders/getFolders"
+          `${process.env.REACT_APP_BACKEND_URL}/api/folders/getFolders`
         );
         setFolders(response.foldersList);
       } catch (err) {

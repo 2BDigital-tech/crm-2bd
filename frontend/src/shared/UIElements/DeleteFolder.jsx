@@ -33,7 +33,7 @@ const DeleteFolder = (props) => {
     event.preventDefault();
     try {
       const responseData = await sendRequest(
-        "http://localhost:80/api/folders/deleteFolder",
+        `${process.env.REACT_APP_BACKEND_URL}/api/folders/deleteFolder`,
         "DELETE",
         JSON.stringify({
           folderId: props.folderToDelete,

@@ -68,13 +68,13 @@ export default function Leads() {
         let expert_city = localStorage.getItem("expert_city");
         if (expert_city) {
           response = await sendRequest(
-            "http://localhost:80/api/data/getLeadsExperts",
+            `${process.env.REACT_APP_BACKEND_URL}/api/data/getLeadsExperts`,
             "POST",
             JSON.stringify({ expert_city })
           );
         } else {
           response = await sendRequest(
-            "http://localhost:80/api/data/getLeads",
+            `${process.env.REACT_APP_BACKEND_URL}/api/data/getLeads`,
             "GET"
           );
         }

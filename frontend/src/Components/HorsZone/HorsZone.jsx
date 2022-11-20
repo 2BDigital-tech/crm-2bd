@@ -93,7 +93,7 @@ function HorsZone() {
     const fetchQuotations = async () => {
       try {
         const response = await sendRequest(
-          "http://localhost:80/api/data",
+          `${process.env.REACT_APP_BACKEND_URL}/api/data`,
           "GET"
         );
         // setQuotationData(response);

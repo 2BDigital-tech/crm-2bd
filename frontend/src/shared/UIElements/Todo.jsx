@@ -83,7 +83,7 @@ export default function Todo() {
     event.preventDefault();
     try {
       const responseData = await sendRequest(
-        "http://localhost:80/api/tasks/addTask",
+        `${process.env.REACT_APP_BACKEND_URL}/api/tasks/addTask`,
         "POST",
         JSON.stringify({
           title: taskTitle,

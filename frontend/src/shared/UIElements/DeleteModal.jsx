@@ -37,7 +37,7 @@ const DeleteModal = (props) => {
     event.preventDefault();
     try {
       const responseData = await sendRequest(
-        "http://localhost:80/api/users",
+        `${process.env.REACT_APP_BACKEND_URL}/api/users`,
         "DELETE",
         JSON.stringify({
           userId: props.userToDelete,
