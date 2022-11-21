@@ -6,9 +6,12 @@ const tasksRoutes = require("./routes/task-routes");
 const folderRoutes = require("./routes/folder-routes");
 const HttpError = require("./models/error");
 const mongoose = require("mongoose");
+const path = require("path");
+
 require("dotenv").config();
 const app = express();
 var mongoUtil = require("./connection/mongoUtil");
+
 
 mongoUtil.connectToServer();
 
@@ -21,14 +24,28 @@ app.use((req, res, next) => {
     "Origin,X-Requested-With,Content-Type,Accept,Authorization"
   );
   res.setHeader("Access-Control-Allow-Methods", "*");
-  console.log(req.body);
   next();
 });
+if (process.env.NODE_ENV === "production"){
+  app.use(express.static('frontend/build'));
+}
+
 
 app.use("/api/users", usersRoutes);
 app.use("/api/data", dataRoutes);
 app.use("/api/tasks", tasksRoutes);
 app.use("/api/folders", folderRoutes);
+
+
+// Root Redirects to the build in assets folder
+app.get("/", function (req, res) {
+  res.sendFile(path.join(__dirname, "..", "frontend/build"));
+});
+
+// Any Page Redirects to the build in assets folder index.html that will load the react app
+app.get("*", function (req, res) {
+  res.sendFile(path.join(__dirname, "..", "frontend/build/index.html"));
+});
 
 app.use((req, res, next) => {
   console.log(req);
@@ -51,8 +68,7 @@ mongoose.connect(process.env.MONGODB_URI);
 
 const port = process.env.PORT || 80;
 
-if (process.env.NODE_ENV === "production"){
-    app.use(express.static('frontend/build'));
-}
+i
+
 
 app.listen(port, console.log(`Listening on port ${port} ...`));
