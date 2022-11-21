@@ -134,7 +134,7 @@ export default function Leads() {
     <React.Fragment>
       <div style={styles.paperContainer}>
         <div style={styles.formContainer}>
-          <Stack ml={{ xl: "290px", md: "290px" }} sx={{ mt: "-8%" }}>
+          <Stack ml={{ xl: "291px", md: "290px" }} sx={{ mt: "-8%" }}>
             <Typography
               variant="h5"
               sx={{ mb: "1%" }}
