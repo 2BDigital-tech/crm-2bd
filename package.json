@@ -1,0 +1,19 @@
+{
+  "name": "crm-2bd",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/2BDigital-tech/crm-2bd.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/2BDigital-tech/crm-2bd/issues"
+  },
+  "homepage": "https://github.com/2BDigital-tech/crm-2bd#readme"
+}
