@@ -39,12 +39,12 @@ app.use("/api/folders", folderRoutes);
 
 // Root Redirects to the build in assets folder
 app.get("/", function (req, res) {
-  res.sendFile(path.join(__dirname, "..", "frontend/build"));
+  res.sendFile(path.join(__dirname, "../frontend/build"));
 });
 
 // Any Page Redirects to the build in assets folder index.html that will load the react app
 app.get("*", function (req, res) {
-  res.sendFile(path.join(__dirname, "..", "frontend/build/index.html"));
+  res.sendFile(path.join(__dirname, "../frontend/build/index.html"));
 });
 
 app.use((req, res, next) => {
