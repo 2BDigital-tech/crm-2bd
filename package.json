@@ -4,9 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start:react": "parcel serve frontend/index.html --open --dist-dir frontend/build",
     "start": "node backend/app.js",
-    "build": "parcel build frontend/index.html --dist-dir frontend/build"
+    "build": "cd frontend && npm install --force && cd ../backend && npm install"
   },
   "repository": {
     "type": "git",
@@ -17,8 +16,5 @@
   "bugs": {
     "url": "https://github.com/2BDigital-tech/crm-2bd/issues"
   },
-  "homepage": "https://github.com/2BDigital-tech/crm-2bd#readme",
-  "dependencies": {
-    "parcel": "^2.8.0"
-  }
+  "homepage": "https://github.com/2BDigital-tech/crm-2bd#readme"
 }
