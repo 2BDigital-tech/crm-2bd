@@ -50,4 +50,9 @@ mongoose.connect(process.env.MONGODB_URI);
 // .catch((err) => console.log(err));
 
 const port = process.env.PORT || 80;
+
+if (process.env.NODE_ENV === "production"){
+    app.use(express.static('frontend/build'));
+}
+
 app.listen(port, console.log(`Listening on port ${port} ...`));
