@@ -7,7 +7,6 @@ router.get("/getFolders", folderControllers.getFolders);
 router.post("/addFolder", folderControllers.addFolder);
 router.delete("/deleteFolder", folderControllers.deleteFolder);
 router.patch("/editFolder", folderControllers.editFolder);
-router.post("/:fid/uploadfile", folderControllers.uploadfile);
 
 // router.post("/getLeadsExperts", dataControllers.getLeadsExperts);
 

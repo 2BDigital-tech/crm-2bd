@@ -4,6 +4,7 @@ const usersRoutes = require("./routes/users-routes");
 const dataRoutes = require("./routes/data-routes");
 const tasksRoutes = require("./routes/task-routes");
 const folderRoutes = require("./routes/folder-routes");
+const fileRoutes = require("./routes/file-routes");
 const HttpError = require("./models/error");
 const mongoose = require("mongoose");
 const path = require("path");
@@ -12,10 +13,7 @@ require("dotenv").config();
 const app = express();
 var mongoUtil = require("./connection/mongoUtil");
 
-
 mongoUtil.connectToServer();
-
-app.use(bodyParser.json());
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -26,16 +24,20 @@ app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Methods", "*");
   next();
 });
-if (process.env.NODE_ENV === "production"){
-  app.use(express.static('frontend/build'));
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("frontend/build"));
 }
 
+app.use(express.urlencoded({ extended: true }));
+
+app.use("/api/files", fileRoutes);
+
+// app.use(bodyParser.json());
 
 app.use("/api/users", usersRoutes);
 app.use("/api/data", dataRoutes);
 app.use("/api/tasks", tasksRoutes);
 app.use("/api/folders", folderRoutes);
-
 
 // Root Redirects to the build in assets folder
 app.get("/", function (req, res) {
@@ -67,8 +69,5 @@ mongoose.connect(process.env.MONGODB_URI);
 // .catch((err) => console.log(err));
 
 const port = process.env.PORT || 80;
-
-
-
 
 app.listen(port, console.log(`Listening on port ${port} ...`));

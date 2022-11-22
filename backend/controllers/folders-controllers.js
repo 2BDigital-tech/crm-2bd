@@ -4,10 +4,7 @@ const User = require("../models/user");
 
 const { default: mongoose } = require("mongoose");
 
-const uploadfile = async(req,res,next) => {
-  console.log(req.body);
-  res.status.json({message : "uploaded successfully"});
-}
+
 
 const addFolder = async (req, res, next) => {
   const { folderName, readers } = req.body;
@@ -176,4 +173,3 @@ exports.addFolder = addFolder;
 exports.getFolders = getFolders;
 exports.deleteFolder = deleteFolder;
 exports.editFolder = editFolder;
-exports.uploadfile = uploadfile;
