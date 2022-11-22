@@ -87,6 +87,9 @@ const Login = () => {
         );
         // localStorage.setItem("username", responseData.userName);
       }
+      else{
+        navigate("/login");
+      }
     } catch (err) {
       console.log(err);
     }
