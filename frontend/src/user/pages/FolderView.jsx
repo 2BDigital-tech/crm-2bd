@@ -9,6 +9,12 @@ import { folders } from "../../constants/folder_constants";
 import FolderIcon from "@mui/icons-material/Folder";
 import { FileUploader } from "react-drag-drop-files";
 import PdfIcon from '@mui/icons-material/PictureAsPdfRounded';
+import { FileUpload } from 'primereact/fileupload';
+
+import "primereact/resources/themes/lara-light-indigo/theme.css"; 
+import  "primeicons/primeicons.css";
+import "primereact/resources/primereact.min.css";
+
 
 const styles = {
   paperContainer: {
@@ -31,7 +37,6 @@ const FolderView = () => {
   console.log(files);
 
   const uploadFile = (file) => {
-    file.push({"hey":1});
     setFiles([...files,file]);
   }
   
@@ -53,7 +58,7 @@ const FolderView = () => {
             <div>
               {folders.map((folder, index) => {
                 return (
-                  <Accordion key={index}>
+                  <Accordion key={index} >
                     <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                       <FolderIcon />
                       <Typography>
@@ -61,12 +66,14 @@ const FolderView = () => {
                       </Typography>
                     </AccordionSummary>
                     <AccordionDetails>
-                    <FileUploader 
+                    {/* <FileUploader 
                        allowMultipleFiles
                        handleChange={uploadFile}
                        label="Cliquez / Déposez ici pour importer des documents"
                        hoverTitle="Déposez les fichiers ici"
-                    />
+                    /> */}
+                    <FileUpload name="demo[]" url="./upload" multiple></FileUpload>
+
                     {files.map(file => {
                       return(
                       <Typography >
