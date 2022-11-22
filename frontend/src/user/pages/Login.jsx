@@ -68,7 +68,7 @@ const Login = () => {
     event.preventDefault();
     try {
       const responseData = await sendRequest(
-        "https://crm-2bd.test.com/api/users/login",
+        "pi/users/login",
         "POST",
         JSON.stringify({
           email: email,
