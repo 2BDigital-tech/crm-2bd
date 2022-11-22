@@ -68,7 +68,7 @@ const Login = () => {
     event.preventDefault();
     try {
       const responseData = await sendRequest(
-        "pi/users/login",
+        "https://crm-2bd.herokuapp.com/api/users/login",
         "POST",
         JSON.stringify({
           email: email,

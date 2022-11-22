@@ -31,7 +31,7 @@ if (process.env.NODE_ENV === "production"){
 }
 
 
-app.use("/pi/users", usersRoutes);
+app.use("/api/users", usersRoutes);
 app.use("/api/data", dataRoutes);
 app.use("/api/tasks", tasksRoutes);
 app.use("/api/folders", folderRoutes);
