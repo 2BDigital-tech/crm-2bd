@@ -7,10 +7,10 @@ const multerS3 = require("multer-s3");
 const router = express.Router();
 
 // Set S3 endpoint to DigitalOcean Spaces
-const spacesEndpoint = new aws.Endpoint(process.env.DO_SPACES_URL);
+// const spacesEndpoint = new aws.Endpoint(process.env.DO_SPACES_URL);
 const s3 = new aws.S3({
-  endpoint: spacesEndpoint,
-  region: "us-west-2",
+  endpoint: process.env.DO_SPACES_URL,
+  region: "fra1",
   credentials: {
     accessKeyId: process.env.DO_SPACES_ID,
     secretAccessKey: process.env.DO_SPACES_SECRET,
