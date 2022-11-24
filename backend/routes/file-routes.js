@@ -20,8 +20,8 @@ const s3 = new aws.S3({
 // Change bucket property to your Space name
 const upload = multer({
   storage: multerS3({
-    bucket: process.env.DO_SPACES_BUCKET,
     s3: s3,
+    bucket: process.env.DO_SPACES_BUCKET,
     acl: "public-read",
     key: function (request, file, cb) {
       console.log(file);
