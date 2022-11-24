@@ -18,7 +18,7 @@ const s3 = new aws.S3({
 });
 
 // Change bucket property to your Space name
-const uploadd = multer({
+const upload = multer({
   storage: multerS3({
     s3: s3,
     bucket: process.env.DO_SPACES_BUCKET,
@@ -31,7 +31,7 @@ const uploadd = multer({
 }).array("file", 1);
 
 router.post("/upload", function (request, response, next) {
-  uploadd(request, response, function (error) {
+  upload(request, response, function (error) {
     if (error) {
       console.log(error);
     } else {
