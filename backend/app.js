@@ -34,7 +34,6 @@ app.use("/api/users", usersRoutes);
 app.use("/api/data", dataRoutes);
 app.use("/api/tasks", tasksRoutes);
 app.use("/api/folders", folderRoutes);
-app.use(express.urlencoded({ extended: true }));
 app.use("/api/files", fileRoutes);
 
 // Root Redirects to the build in assets folder
