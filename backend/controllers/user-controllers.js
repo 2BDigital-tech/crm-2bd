@@ -130,10 +130,10 @@ const addUser = async (req, res, next) => {
 
 const login = async (req, res, next) => {
   const errors = validationResult(req);
-  if (hasValidationErrors(errors)) {
-    const error = new HttpError("Identifiants Incorrects", 401);
-    return next(error);
-  }
+  // if (hasValidationErrors(errors)) {
+  //   const error = new HttpError("Identifiants Incorrects", 401);
+  //   return next(error);
+  // }
 
   const { email, password } = req.body;
   let existingUser;

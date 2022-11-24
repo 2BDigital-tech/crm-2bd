@@ -23,12 +23,14 @@ const upload = async (req, res, next) => {
   //       return;
   //     }
   try {
+    // var file = req.files;
     console.log(req);
     return s3Client.putObject(
       {
         Bucket: process.env.DO_SPACES_BUCKET,
         Key: files.demo.originalFilename,
-        Body: fs.createReadStream(req.body.filepath),
+        Body: file.buffer,
+        ContentType: file.mimetype,
         ACL: "public-read",
       },
       async () => res.status(201).send("File uploaded !")

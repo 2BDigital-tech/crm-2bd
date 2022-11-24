@@ -1,4 +1,4 @@
-import React , {useState} from "react";
+import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 import { Stack, Typography } from "@mui/material";
 import Accordion from "@mui/material/Accordion";
@@ -8,13 +8,12 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { folders } from "../../constants/folder_constants";
 import FolderIcon from "@mui/icons-material/Folder";
 import { FileUploader } from "react-drag-drop-files";
-import PdfIcon from '@mui/icons-material/PictureAsPdfRounded';
-import { FileUpload } from 'primereact/fileupload';
+import PdfIcon from "@mui/icons-material/PictureAsPdfRounded";
+import { FileUpload } from "primereact/fileupload";
 
-import "primereact/resources/themes/lara-light-indigo/theme.css"; 
-import  "primeicons/primeicons.css";
+import "primereact/resources/themes/lara-light-indigo/theme.css";
+import "primeicons/primeicons.css";
 import "primereact/resources/primereact.min.css";
-
 
 const styles = {
   paperContainer: {
@@ -29,17 +28,15 @@ const styles = {
   },
 };
 
-
 const FolderView = () => {
   const { state } = useLocation();
-  const [files,setFiles] = useState([]);
+  const [files, setFiles] = useState([]);
 
   console.log(files);
 
   const uploadFile = (file) => {
-    setFiles([...files,file]);
-  }
-  
+    setFiles([...files, file]);
+  };
 
   return (
     <div>
@@ -58,7 +55,7 @@ const FolderView = () => {
             <div>
               {folders.map((folder, index) => {
                 return (
-                  <Accordion key={index} >
+                  <Accordion key={index}>
                     <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                       <FolderIcon />
                       <Typography>
@@ -66,22 +63,25 @@ const FolderView = () => {
                       </Typography>
                     </AccordionSummary>
                     <AccordionDetails>
-                    {/* <FileUploader 
+                      {/* <FileUploader 
                        allowMultipleFiles
                        handleChange={uploadFile}
                        label="Cliquez / Déposez ici pour importer des documents"
                        hoverTitle="Déposez les fichiers ici"
                     /> */}
-                    <FileUpload name="demo[]" url="./upload" multiple></FileUpload>
+                      <FileUpload
+                        name="file"
+                        url="http://localhost:80/api/files/upload"
+                      ></FileUpload>
 
-                    {files.map(file => {
-                      return(
-                      <Typography >
-                        <PdfIcon />
-                        {" "+file.name}
-                      </Typography>
-                      )
-                    })}
+                      {files.map((file) => {
+                        return (
+                          <Typography>
+                            <PdfIcon />
+                            {" " + file.name}
+                          </Typography>
+                        );
+                      })}
                     </AccordionDetails>
                   </Accordion>
                 );
