@@ -1,5 +1,6 @@
 // Load dependencies
 const aws = require("aws-sdk");
+const HttpError = require("../models/error");
 const express = require("express");
 const multer = require("multer");
 const multerS3 = require("multer-s3");
@@ -34,6 +35,8 @@ router.post("/upload", function (request, response, next) {
   upload(request, response, function (error) {
     if (error) {
       console.log(error);
+      const err = new HttpError("Something went wrong", 404);
+      return next(err);
     } else {
       console.log("File Uploaded");
       response.status(201).send("File uploaded !");
