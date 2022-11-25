@@ -68,7 +68,7 @@ const Login = () => {
     event.preventDefault();
     try {
       const responseData = await sendRequest(
-        "http://localhost:80/api/users/login",
+        `${process.env.REACT_APP_BACKEND_URL}/api/users/login`,
         "POST",
         JSON.stringify({
           email: email,
@@ -86,8 +86,7 @@ const Login = () => {
           responseData.city
         );
         // localStorage.setItem("username", responseData.userName);
-      }
-      else{
+      } else {
         navigate("/login");
       }
     } catch (err) {
