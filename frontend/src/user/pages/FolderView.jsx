@@ -71,7 +71,7 @@ const FolderView = () => {
                     /> */}
                       <FileUpload
                         name="file"
-                        url="http://localhost:80/api/files/upload"
+                        url={`${process.env.REACT_APP_BACKEND_URL}/api/files/upload`}
                       ></FileUpload>
 
                       {files.map((file) => {

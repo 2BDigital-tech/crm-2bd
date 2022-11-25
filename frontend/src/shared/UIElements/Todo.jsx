@@ -35,7 +35,9 @@ export default function Todo() {
     const fetchTasks = async () => {
       try {
         const response = await sendRequest(
-          `http://localhost:80/api/tasks/${localStorage.getItem("userId")}`
+          `${
+            process.env.REACT_APP_BACKEND_URL
+          }/api/tasks/${localStorage.getItem("userId")}`
         );
         setTasks(response.tasks);
       } catch (err) {
@@ -68,7 +70,7 @@ export default function Todo() {
   const deleteTask = async (taskId) => {
     try {
       const responseData = await sendRequest(
-        `http://localhost:80/api/tasks/deleteTask/${taskId}`,
+        `${process.env.REACT_APP_BACKEND_URL}/api/tasks/deleteTask/${taskId}`,
         "DELETE"
       );
       if (responseData) {
