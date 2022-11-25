@@ -4,6 +4,7 @@ const HttpError = require("../models/error");
 const express = require("express");
 const multer = require("multer");
 const multerS3 = require("multer-s3");
+require("dotenv").config();
 
 const router = express.Router();
 
