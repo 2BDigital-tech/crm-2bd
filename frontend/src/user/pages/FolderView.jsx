@@ -9,7 +9,7 @@ import { folders } from "../../constants/folder_constants";
 import FolderIcon from "@mui/icons-material/Folder";
 import { FileUploader } from "react-drag-drop-files";
 import PdfIcon from "@mui/icons-material/PictureAsPdfRounded";
-import { Toast } from "primereact/toast";
+import uuid from "react-uuid";
 
 import { useHttpClient } from "../../hooks/http-hook";
 
@@ -46,7 +46,10 @@ const FolderView = () => {
 
   const onUpload = (event, folderId) => {
     for (var i = 0; i < event.files.length; i++) {
-      var fileObj = { folderId: folderId, name: event.files[i].name };
+      var fileObj = {
+        folderId: folderId,
+        name: event.files[i].name,
+      };
       setFiles([...files, fileObj]);
     }
   };
@@ -122,6 +125,7 @@ const FolderView = () => {
                                   `https://${process.env.REACT_APP_DO_SPACES_BUCKET}.${process.env.REACT_APP_DO_SPACES_URL}/${file.name}`
                                 )
                               }
+                              key={uuid()}
                               sx={{
                                 "&:hover": {
                                   color: "black",
