@@ -14,7 +14,6 @@ import AddIcon from "@mui/icons-material/Add";
 import { TableHead, TableRow, TableCell, TableBody } from "@mui/material";
 import { useState } from "react";
 import Modal from "@mui/material/Modal";
-import AddFo from "../../shared/UIElements/AddUserModal";
 import SearchBar from "../../shared/UIElements/SearchBar";
 import { useHttpClient } from "../../hooks/http-hook";
 import LoadingSpinner from "../../shared/UIElements/LoadingSpinner";
@@ -27,7 +26,6 @@ import { useNavigate } from "react-router-dom";
 
 import { AuthContext } from "../../shared/context/auth-context";
 import AddFolder from "../../shared/UIElements/AddFolder";
-
 
 const styles = {
   paperContainer: {

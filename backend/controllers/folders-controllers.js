@@ -4,8 +4,6 @@ const User = require("../models/user");
 
 const { default: mongoose } = require("mongoose");
 
-
-
 const addFolder = async (req, res, next) => {
   const { folderName, readers } = req.body;
 

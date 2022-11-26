@@ -9,6 +9,10 @@ import { folders } from "../../constants/folder_constants";
 import FolderIcon from "@mui/icons-material/Folder";
 import { FileUploader } from "react-drag-drop-files";
 import PdfIcon from "@mui/icons-material/PictureAsPdfRounded";
+import { Toast } from "primereact/toast";
+
+import { useHttpClient } from "../../hooks/http-hook";
+
 import { FileUpload } from "primereact/fileupload";
 
 import "primereact/resources/themes/lara-light-indigo/theme.css";
@@ -31,11 +35,39 @@ const styles = {
 const FolderView = () => {
   const { state } = useLocation();
   const [files, setFiles] = useState([]);
+  const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
-  console.log(files);
+  const onSelect = (event, folderId) => {
+    for (var i = 0; i < event.files.length; i++) {
+      console.log(event.files[i].name);
+      console.log(folderId);
+    }
+  };
 
-  const uploadFile = (file) => {
-    setFiles([...files, file]);
+  const onUpload = (event, folderId) => {
+    for (var i = 0; i < event.files.length; i++) {
+      var fileObj = { folderId: folderId, name: event.files[i].name };
+      setFiles([...files, fileObj]);
+    }
+  };
+
+  const openInNewTab = (url) => {
+    window.open(url, "_blank", "noopener,noreferrer");
+  };
+
+  const chooseOptions = {
+    label: "Selectionner des fichiers",
+    icon: "pi pi-fw pi-plus",
+  };
+  const uploadOptions = {
+    label: "Importer",
+    icon: "pi pi-upload",
+    className: "p-button-success",
+  };
+  const cancelOptions = {
+    label: "Annuler",
+    icon: "pi pi-times",
+    className: "p-button-danger",
   };
 
   return (
@@ -70,18 +102,38 @@ const FolderView = () => {
                        hoverTitle="Déposez les fichiers ici"
                     /> */}
                       <FileUpload
+                        chooseOptions={chooseOptions}
+                        uploadOptions={uploadOptions}
+                        cancelOptions={cancelOptions}
                         name="file"
                         url={`${process.env.REACT_APP_BACKEND_URL}/api/files/upload`}
+                        multiple
+                        // onSelect={(event) => onSelect(event, folder.id)}
+                        onUpload={(event) => onUpload(event, folder.id)}
                       ></FileUpload>
 
-                      {files.map((file) => {
-                        return (
-                          <Typography>
-                            <PdfIcon />
-                            {" " + file.name}
-                          </Typography>
-                        );
-                      })}
+                      {files
+                        .filter((fileObj) => fileObj.folderId === folder.id)
+                        .map((file) => {
+                          return (
+                            <Typography
+                              onClick={() =>
+                                openInNewTab(
+                                  `https://${process.env.REACT_APP_DO_SPACES_BUCKET}.${process.env.REACT_APP_DO_SPACES_URL}/${file.name}`
+                                )
+                              }
+                              sx={{
+                                "&:hover": {
+                                  color: "black",
+                                  cursor: "pointer",
+                                },
+                              }}
+                            >
+                              <PdfIcon />
+                              {" " + file.name}
+                            </Typography>
+                          );
+                        })}
                     </AccordionDetails>
                   </Accordion>
                 );

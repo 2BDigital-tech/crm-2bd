@@ -24,13 +24,17 @@ const upload = multer({
   storage: multerS3({
     s3: s3,
     bucket: process.env.DO_SPACES_BUCKET,
+    contentType: function (request, file, cb) {
+      console.log(file);
+      cb(null, file.mimetype);
+    },
     acl: "public-read",
     key: function (request, file, cb) {
       console.log(file);
       cb(null, file.originalname);
     },
   }),
-}).array("file", 1);
+}).array("file", 5);
 
 router.post("/upload", function (request, response, next) {
   upload(request, response, function (error) {
