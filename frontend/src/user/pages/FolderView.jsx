@@ -102,7 +102,7 @@ const FolderView = () => {
             <div>
               {folders.map((folder, index) => {
                 return (
-                  <Accordion key={index}>
+                  <Accordion key={index} defaultExpanded={true}>
                     <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                       <FolderIcon />
                       <Typography>
