@@ -263,6 +263,7 @@ const Folders = () => {
                             navigate(`/folders/${row.folderId}`, {
                               state: {
                                 folderName: row.name,
+                                folderId: row.folderId,
                               },
                             })
                           }

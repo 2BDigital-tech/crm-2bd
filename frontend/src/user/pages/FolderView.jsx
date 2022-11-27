@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import { Stack, Typography } from "@mui/material";
 import Accordion from "@mui/material/Accordion";
@@ -18,6 +18,7 @@ import { FileUpload } from "primereact/fileupload";
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primeicons/primeicons.css";
 import "primereact/resources/primereact.min.css";
+import { useEffect } from "react";
 
 const styles = {
   paperContainer: {
@@ -36,22 +37,33 @@ const FolderView = () => {
   const { state } = useLocation();
   const [files, setFiles] = useState([]);
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
+  // const onSelect = (event, folderId) => {
+  //   for (var i = 0; i < event.files.length; i++) {
+  //     var fileObj = {
+  //       folderId: folderId,
+  //       name: event.files[i].name,
+  //     };
+  //     setFiles([...files, fileObj]);
+  //   }
+  // };
 
-  const onSelect = (event, folderId) => {
-    for (var i = 0; i < event.files.length; i++) {
-      console.log(event.files[i].name);
-      console.log(folderId);
-    }
-  };
+  useEffect(() => {
+    const fetchDocuments = async () => {
+      try {
+        const response = await sendRequest(
+          `${process.env.REACT_APP_BACKEND_URL}/api/files/getDocuments/${state.folderId}`
+        );
+        console.log(response.docsList);
+        setFiles(response.docsList);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchDocuments();
+  }, []);
 
-  const onUpload = (event, folderId) => {
-    for (var i = 0; i < event.files.length; i++) {
-      var fileObj = {
-        folderId: folderId,
-        name: event.files[i].name,
-      };
-      setFiles([...files, fileObj]);
-    }
+  const onUpload = () => {
+    window.location.reload(false);
   };
 
   const openInNewTab = (url) => {
@@ -109,22 +121,23 @@ const FolderView = () => {
                         uploadOptions={uploadOptions}
                         cancelOptions={cancelOptions}
                         name="file"
-                        url={`${process.env.REACT_APP_BACKEND_URL}/api/files/upload`}
+                        url={`${
+                          process.env.REACT_APP_BACKEND_URL
+                        }/api/files/upload/${state.folderId}/${
+                          folder.id
+                        }/${uuid()}`}
                         multiple
-                        // onSelect={(event) => onSelect(event, folder.id)}
-                        onUpload={(event) => onUpload(event, folder.id)}
+                        onUpload={onUpload}
                       ></FileUpload>
 
                       {files
-                        .filter((fileObj) => fileObj.folderId === folder.id)
+                        .filter(
+                          (fileObj) => fileObj.subFolderIndex == folder.id
+                        )
                         .map((file) => {
                           return (
                             <Typography
-                              onClick={() =>
-                                openInNewTab(
-                                  `https://${process.env.REACT_APP_DO_SPACES_BUCKET}.${process.env.REACT_APP_DO_SPACES_URL}/${file.name}`
-                                )
-                              }
+                              onClick={() => openInNewTab(file.fileUrl)}
                               key={uuid()}
                               sx={{
                                 "&:hover": {
