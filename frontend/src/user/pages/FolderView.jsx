@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 import { Stack, Typography } from "@mui/material";
 import Accordion from "@mui/material/Accordion";
@@ -7,7 +7,6 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { folders } from "../../constants/folder_constants";
 import FolderIcon from "@mui/icons-material/Folder";
-import { FileUploader } from "react-drag-drop-files";
 import PdfIcon from "@mui/icons-material/PictureAsPdfRounded";
 import uuid from "react-uuid";
 import DeleteIcon from "@mui/icons-material/DeleteForeverRounded";
@@ -37,7 +36,7 @@ const styles = {
 const FolderView = () => {
   const { state } = useLocation();
   const [files, setFiles] = useState([]);
-  const { isLoading, error, sendRequest, clearError } = useHttpClient();
+  const { sendRequest } = useHttpClient();
   // const onSelect = (event, folderId) => {
   //   for (var i = 0; i < event.files.length; i++) {
   //     var fileObj = {
@@ -69,7 +68,9 @@ const FolderView = () => {
         `${process.env.REACT_APP_BACKEND_URL}/api/files/deleteDoc/${folderId}/${subFolderId}/${docId}`,
         "DELETE"
       );
-      window.location.reload(false);
+      if (response) {
+        window.location.reload(false);
+      }
     } catch (err) {
       console.log(err);
     }
@@ -128,11 +129,7 @@ const FolderView = () => {
                         uploadOptions={uploadOptions}
                         cancelOptions={cancelOptions}
                         name="file"
-                        url={`${
-                          process.env.REACT_APP_BACKEND_URL
-                        }/api/files/upload/${state.folderId}/${
-                          folder.id
-                        }/${uuid()}`}
+                        url={`${process.env.REACT_APP_BACKEND_URL}/api/files/upload/${state.folderId}/${folder.id}`}
                         multiple
                         onUpload={onUpload}
                       ></FileUpload>

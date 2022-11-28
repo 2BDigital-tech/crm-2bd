@@ -5,6 +5,7 @@ require("dotenv").config();
 const multer = require("multer");
 const multerS3 = require("multer-s3");
 const Document = require("../models/document");
+const uuid = require("uuid").v4;
 
 const s3 = new aws.S3({
   endpoint: process.env.DO_SPACES_URL,
@@ -45,7 +46,7 @@ const upload = multer({
     key: async function (request, file, cb) {
       var fid = request.params.fid;
       var subfid = request.params.subfid;
-      var fileId = request.params.fileId;
+      var fileId = uuid();
       const fileUrl = `https://${process.env.DO_SPACES_BUCKET}.${process.env.DO_SPACES_URL}/${fid}/${subfid}/${fileId}`;
       var today = new Date();
       var date =

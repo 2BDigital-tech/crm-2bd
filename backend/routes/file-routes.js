@@ -5,7 +5,7 @@ const fileControllers = require("../controllers/file-controllers");
 
 const router = express.Router();
 
-router.post("/upload/:fid/:subfid/:fileId", fileControllers.uploadFile);
+router.post("/upload/:fid/:subfid", fileControllers.uploadFile);
 router.get("/getDocuments/:fid", fileControllers.getDocuments);
 router.delete("/deleteDoc/:fid/:subfid/:docId", fileControllers.deleteDoc);
 
