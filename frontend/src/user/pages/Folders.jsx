@@ -286,15 +286,20 @@ const Folders = () => {
                         </Typography>{" "}
                       </TableCell>
 
-                      <TableCell align="right" style={{ color: "white" }}>
+                      <TableCell align="right" style={{ color: "white " }}>
                         <VisibilityIcon
                           sx={{
                             "&:hover": { color: "green", cursor: "pointer" },
                           }}
                           style={{ marginRight: "25px" }}
-                          // onClick={() =>
-                          //   handleOpenSideModals(row.folderId, {}, "clear")
-                          // }
+                          onClick={() =>
+                            navigate(`/folders/${row.folderId}`, {
+                              state: {
+                                folderName: row.name,
+                                folderId: row.folderId,
+                              },
+                            })
+                          }
                         />
                         <EditIcon
                           style={{ marginRight: "25px" }}

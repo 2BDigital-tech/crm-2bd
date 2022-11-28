@@ -10,6 +10,7 @@ import FolderIcon from "@mui/icons-material/Folder";
 import { FileUploader } from "react-drag-drop-files";
 import PdfIcon from "@mui/icons-material/PictureAsPdfRounded";
 import uuid from "react-uuid";
+import DeleteIcon from "@mui/icons-material/DeleteForeverRounded";
 
 import { useHttpClient } from "../../hooks/http-hook";
 
@@ -62,6 +63,18 @@ const FolderView = () => {
     fetchDocuments();
   }, []);
 
+  const deleteDocument = async (folderId, subFolderId, docId) => {
+    try {
+      const response = await sendRequest(
+        `${process.env.REACT_APP_BACKEND_URL}/api/files/deleteDoc/${folderId}/${subFolderId}/${docId}`,
+        "DELETE"
+      );
+      window.location.reload(false);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const onUpload = () => {
     window.location.reload(false);
   };
@@ -110,12 +123,6 @@ const FolderView = () => {
                       </Typography>
                     </AccordionSummary>
                     <AccordionDetails>
-                      {/* <FileUploader 
-                       allowMultipleFiles
-                       handleChange={uploadFile}
-                       label="Cliquez / Déposez ici pour importer des documents"
-                       hoverTitle="Déposez les fichiers ici"
-                    /> */}
                       <FileUpload
                         chooseOptions={chooseOptions}
                         uploadOptions={uploadOptions}
@@ -136,19 +143,36 @@ const FolderView = () => {
                         )
                         .map((file) => {
                           return (
-                            <Typography
-                              onClick={() => openInNewTab(file.fileUrl)}
-                              key={uuid()}
-                              sx={{
-                                "&:hover": {
-                                  color: "black",
-                                  cursor: "pointer",
-                                },
-                              }}
-                            >
-                              <PdfIcon />
-                              {" " + file.name}
-                            </Typography>
+                            <>
+                              <Typography
+                                onClick={() => openInNewTab(file.fileUrl)}
+                                key={uuid()}
+                                sx={{
+                                  "&:hover": {
+                                    color: "black",
+                                    cursor: "pointer",
+                                  },
+                                }}
+                              >
+                                <PdfIcon />
+                                {" " + file.name}
+                              </Typography>
+                              <DeleteIcon
+                                onClick={() =>
+                                  deleteDocument(
+                                    state.folderId,
+                                    folder.id,
+                                    file._id
+                                  )
+                                }
+                                sx={{
+                                  "&:hover": {
+                                    color: "red",
+                                    cursor: "pointer",
+                                  },
+                                }}
+                              />
+                            </>
                           );
                         })}
                     </AccordionDetails>
