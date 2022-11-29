@@ -6,6 +6,7 @@ const multer = require("multer");
 const multerS3 = require("multer-s3");
 const Document = require("../models/document");
 const uuid = require("uuid").v4;
+const Folder = require("../models/folder");
 
 const s3 = new aws.S3({
   endpoint: process.env.DO_SPACES_URL,
@@ -63,8 +64,19 @@ const upload = multer({
         folderId: fid,
         subFolderIndex: subfid,
       });
+      let folder;
       try {
-        await createdDocument.save();
+        folder = await Folder.findById(fid);
+      } catch (err) {
+        console.log(err);
+      }
+      try {
+        const sess = await mongoose.startSession();
+        sess.startTransaction();
+        await createdDocument.save({ session: sess });
+        folder.documents.push(createdDocument);
+        await folder.save({ session: sess });
+        await sess.commitTransaction();
       } catch (err) {
         console.log(err);
         const error = new HttpError(

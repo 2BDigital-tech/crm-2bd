@@ -1,6 +1,7 @@
 const HttpError = require("../models/error");
 const Folder = require("../models/folder");
 const User = require("../models/user");
+const Document = require("../models/document");
 
 const { default: mongoose } = require("mongoose");
 
@@ -109,6 +110,7 @@ const deleteFolder = async (req, res, next) => {
     await User.updateMany({ $pull: { folders: { $eq: folderId } } }).session(
       sess
     );
+    await Document.deleteMany({ folderId: folderId }).session(sess);
     await sess.commitTransaction();
   } catch (err) {
     const error = new HttpError("Something went wrong", 404);

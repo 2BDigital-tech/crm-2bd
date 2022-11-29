@@ -8,7 +8,7 @@ const DocumentSchema = new Schema({
   fileType: { type: String, require: true },
   name: { type: String, required: true },
   date: { type: String, required: true },
-  folderId: { type: String, required: true },
+  folderId: { type: String, required: true, ref: "Folder" },
   subFolderIndex: { type: String, required: true },
 });
 
