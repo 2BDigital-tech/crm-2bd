@@ -37,15 +37,6 @@ const FolderView = () => {
   const { state } = useLocation();
   const [files, setFiles] = useState([]);
   const { sendRequest } = useHttpClient();
-  // const onSelect = (event, folderId) => {
-  //   for (var i = 0; i < event.files.length; i++) {
-  //     var fileObj = {
-  //       folderId: folderId,
-  //       name: event.files[i].name,
-  //     };
-  //     setFiles([...files, fileObj]);
-  //   }
-  // };
 
   useEffect(() => {
     const fetchDocuments = async () => {
