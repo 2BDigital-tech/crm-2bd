@@ -122,6 +122,7 @@ const deleteFolder = async (req, res, next) => {
 
 const editFolder = async (req, res, next) => {
   let { folderId, folderName, readers } = req.body;
+  console.log(readers);
   let folder;
   let existingReaders;
   try {

@@ -131,7 +131,9 @@ const FolderView = () => {
                         )
                         .map((file) => {
                           return (
-                            <>
+                            <div
+                              style={{ display: "flex", alignItems: "center" }}
+                            >
                               <Typography
                                 onClick={() => openInNewTab(file.fileUrl)}
                                 key={uuid()}
@@ -142,25 +144,28 @@ const FolderView = () => {
                                   },
                                 }}
                               >
+                                <DeleteIcon
+                                  onClick={() =>
+                                    deleteDocument(
+                                      state.folderId,
+                                      folder.id,
+                                      file._id
+                                    )
+                                  }
+                                  sx={{
+                                    "&:hover": {
+                                      color: "red",
+                                      cursor: "pointer",
+                                    },
+                                  }}
+                                  style={{ marginLeft: 8 }}
+                                />
                                 <PdfIcon />
-                                {" " + file.name}
                               </Typography>
-                              <DeleteIcon
-                                onClick={() =>
-                                  deleteDocument(
-                                    state.folderId,
-                                    folder.id,
-                                    file._id
-                                  )
-                                }
-                                sx={{
-                                  "&:hover": {
-                                    color: "red",
-                                    cursor: "pointer",
-                                  },
-                                }}
-                              />
-                            </>
+                              <Typography style={{ marginLeft: 8 }}>
+                                {file.name}
+                              </Typography>
+                            </div>
                           );
                         })}
                     </AccordionDetails>
